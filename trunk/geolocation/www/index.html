@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <title>Hello World</title>
+    </head>
+    <body>
+       
+            <h1>PhoneGap</h1>
+            <ul id="position"></ul>
+            <button id="fetch" onclick="GPS.cancelWatch(GPS.watchId);" >Calcular</button>
+            <button id="centrar" onclick="GPS.centerMap();" >Centrar</button>
+        <div id="mapCanvas" style="width:600px; height: 1200px;" ></div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/gps.js"></script>
+        <script type="text/javascript">
+            
+            window.onload = function(){
+                
+                GPS.initialize();
+                
+            }
+        </script>
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlWP6M9z-zsuGTW3NWK1tavW6mXTpa_t8">
+        </script>
+        <script type="text/javascript">
+      function initialize() {
+        console.log('iniciando');
+       var myOptions = {
+                center: new google.maps.LatLng(-33, 151),
+                zoom: 6
+            };
+        var map = new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    </body>
+</html>
