@@ -18,6 +18,14 @@ var GPS = {
     /*
      *  Id del servicio "watchPosition" necesario para poder detenerlo
      */
+    polyline: null,
+    /*
+     *  Id del servicio "watchPosition" necesario para poder detenerlo
+     */
+    routePolyline: null,
+    /*
+     *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia)
+     */
     watchID: 0,
     /*
      *  Marcador del usuario en el mapa
@@ -56,6 +64,8 @@ var GPS = {
         $('#fetch').click(function () {
             GPS.startWatch();
         });
+        GPS.imprimeArreglo();
+        //GPS.dibujaRecorrido();
     },
     /*
      *  Obtiene la posición actual del dispositivo
@@ -70,7 +80,7 @@ var GPS = {
      */
     onSuccessCenter: function (position) {
         GPS.agregaMensaje('SUCCESS: Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
-        var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var myLatlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
         GPS.mapa.setCenter(myLatlng);
         GPS.mapa.panTo(myLatlng);
         GPS.mapa.setZoom(16);
@@ -114,7 +124,13 @@ var GPS = {
      */
     onSuccess: function (position) {
         GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
-        GPS.latlng.push(position);
+        var myLatLng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
+        GPS.latlng.push(myLatLng);
+       // if (GPS.routePolyline) {
+            GPS.inRoute(myLatLng,GPS.routePolyline);
+       // }
+        GPS.dibujaRecorridoLive(myLatLng);
+        GPS.pinOringen.setPosition(myLatLng);
     },
     /*
      *  Envia mensaje a pantalla
@@ -141,11 +157,9 @@ var GPS = {
                     map: GPS.mapa,
                     position: results[0].geometry.location
                 });
-
                 GPS.calcularRuta();
             } else {
                 GPS.agregaMensaje("Geocode was not successful for the following reason: " + status);
-                //alert("Geocode was not successful for the following reason: " + status);
             }
         });
     },
@@ -166,8 +180,16 @@ var GPS = {
         };
         GPS.directionsService.route(request, function (result, status) {
             if (status == google.maps.DirectionsStatus.OK) {
+                var index = GPS.calulaRutaCorta(result.routes);
+                GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
                 GPS.directionsDisplay.setDirections(result);
-                GPS.directionsDisplay.setRouteIndex(GPS.calulaRutaCorta(result.routes));
+                GPS.directionsDisplay.setRouteIndex(index);
+                GPS.routePolyline = GPS.getPolyline(result.routes[index]);
+                GPS.inRoute(origen,GPS.routePolyline);
+                GPS.agregaMensaje('Miguel Hidalgo');
+                GPS.inRoute(new google.maps.LatLng(21.163795, -101.664502),GPS.routePolyline);
+                GPS.agregaMensaje('Punto Random');
+                GPS.inRoute(new google.maps.LatLng(21.126491, -101.688706),GPS.routePolyline);
             } else {
                 GPS.agregaMensaje("direction false");
             }
@@ -197,6 +219,77 @@ var GPS = {
             counter++;
         }
         return  routeIndex;
+    },
+    /*
+     * @deprecated
+     * Imprime en consola el arreglo de latlng creado
+     */
+    imprimeArreglo: function(){
+        GPS.agregaMensaje('Imprime array: '+GPS.latlng.length);
+        for (var x in GPS.latlng) {
+            console.log(GPS.latlng[x]);
+        }
+    },
+    /*
+     *  Dibuja la ruta recorrida en tiempo real, mueve el mapa y el pin a la nueva posición
+     *  @param LatLng latlng latitud y longitud nuevos
+     */
+    dibujaRecorridoLive: function(latlng){
+            GPS.polylineLive.getPath().push(latlng);
+            GPS.pinOrigen.setPosition(latlng);
+            GPS.mapa.panTo(latlng);
+    },
+    /*
+     *  @deprecated
+     *  Dibuja el camino recorrido en base al arreglo total de posiciones ( no tiempo real )
+     */
+    dibujaRecorrido: function(){
+        GPS.agregaMensaje('Dibuja Recorrido');
+        GPS.polyline = new google.maps.Polyline({
+            map: GPS.mapa,
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.7,
+            strokeWeight: 5,
+            visible: true,
+            zIndex: 1,
+            path:GPS.latlng
+        });
+    },
+    /*
+     *  Obtiene el polyline usado para comprobar si se recorre la ruta en base a la ruta obtenida
+     *  @oaram route route ruta a obtener el polyline
+     */
+    getPolyline: function(route){
+       var polyline = new google.maps.Polyline({
+					path: [],
+					strokeColor: '#FF0000',
+					strokeWeight: 3
+				});
+        var path = route.overview_path;
+        var legs = route.legs;
+        for (i=0;i<legs.length;i++) {
+           var steps = legs[i].steps;
+           for (j=0;j<steps.length;j++) {
+             var nextSegment = steps[j].path;
+             for (k=0;k<nextSegment.length;k++) {
+                polyline.getPath().push(nextSegment[k]);
+             }
+           }
+        }
+        return polyline;                                        
+    },
+    /*
+     *  Detecta si la posicion dada está en la ruta o no
+     *  @param latlng myPosition posicion a comprobar
+     *  @param google.maps.Polyline polyline ruta a coprobar
+     */
+    inRoute : function(myPosition,polyline){
+         console.log(google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline,Math.pow(10,-2)));
+        if (google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline,Math.pow(10,-3))) {
+            GPS.agregaMensaje('Estoy en la ruta');
+        }else{
+            GPS.agregaMensaje('No estoy en la ruta');
+        }
     }
 }
 
