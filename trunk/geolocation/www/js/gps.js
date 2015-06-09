@@ -1,124 +1,114 @@
-/*
-function GPS(){
-    this.map;
-    this.watchId = 0;
-    
-    this.initialize = function(){
-        console.log('initialize');
-        this.bindEvents();
-    };
-    this.bindEvents = function(){
-        console.log('bindEvents');
-        document.addEventListener('deviceready',this.onDeviceReady, false);
-    };
-    this.cancelWatch = function(){
-        console.log(this.watchID );
-        navigator.geolocation.clearWatch(this.watchID );
-        this.agregaMensaje('terminado');
-    };
-    this.centrarMapa = function(){
-        console.log('centrar');
-        navigator.geolocation.getCurrentPosition(this.onSuccessCenter, this.onError);
-    };
-    this.onSuccessCenter = function(position){
-        this.gregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
-        var myLatlng = new google.maps.latlng(position.coords.latitude,position.coords.longitude);
-        map.setCenter(myLatlng);
-        map.setZoom(11); 
-    };
-    
-    this.onDeviceReady = function() {
-        this.agregaMensaje('Listo');
-        //document.getElementById('fetch').onclick = GPS.getPosition();
-        this.watchID = navigator.geolocation.watchPosition(this.onSuccess,this.onError);
-        console.log(this.watchID );
-    }
-    
-    this.onSuccess = function(position) {
-        this.agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
-    }
-    this.onError =function (error) {
-       this.agregaMensaje(error);
-    }
-    
-    var latlng =[];
-    this.agregaMensaje = function (mensaje){
-        console.log(mensaje);
-        var node = document.createElement("LI");                 // Create a <li> node
-        var textnode = document.createTextNode(mensaje);         // Create a text node
-        node.appendChild(textnode);
-        latlng.push(node);// Append the text to <li>
-        document.getElementById("position").appendChild(node);
-    }
-    
-    
-}
-*/
-//var gps = new GPS();
-
 var GPS ={
+    /*
+     *  Mapa a utilizar
+     */
     mapa: null,
+    /*
+     *  Id del servicio "watchPosition" necesario para poder detenerlo
+     */
     watchID: 0,
-    getPosition : getPosition,
-    onSuccess : onSuccess,
-    onError : onError,
+    /*
+     *  Marcador del usuario en el mapa
+     */
+    pin: null,
+    /*
+     *  arreglo de coordenadas del usuario
+     */
+    latlng : [],
+     /*
+      * Funcion que inicia el objeto
+      */
     initialize : function() {
         console.log('deviceready');
         this.bindEvents();
     },
+    /*
+     *  agrega el evento "deviceready" para poder llamar los plugins del celular (geolocation) de manera segura
+     */
    bindEvents : function() {
-        document.addEventListener('deviceready', onDeviceReady, false);
+        document.addEventListener('deviceready', this.onDeviceReady, false);
     },
+    /*
+     *  Cancela el servicio "watchPosition", cambia evento en el boton "fetch" para poder iniciarlo de nuevo
+     */
     cancelWatch: function(){
-        console.log(GPS.watchID );
         navigator.geolocation.clearWatch(GPS.watchID );
-        agregaMensaje('terminado');
+        GPS.agregaMensaje('terminado');
+        $('#fetch').html('Iniciar');
+        $('#fetch').unbind( "click" );
+        $('#fetch').click(function(){
+            GPS.startWatch();
+        });
     },
+    /*
+     *  Obtiene la posición actual del dispositivo
+     */
     centrarMapa: function(){
-        console.log('centrar');
-        agregaMensaje('Loading...');
+        GPS.agregaMensaje('Loading...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
+    /*
+     *  Centra el mapa en la posicion del dispositivo y cambia la posición del pin
+     *  @param Object position Objeto de posición generado por el servicio getCurrentPosition o watchPosition
+     */
     onSuccessCenter : function(position){
-          agregaMensaje('SUCCESS: Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+          GPS.agregaMensaje('SUCCESS: Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
           var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-          mapa.setCenter(myLatlng);
-          mapa.panTo(myLatlng);
-          mapa.setZoom(16);
-          var marker = new google.maps.Marker({
-                position: myLatlng,
-                map: mapa,
-                title: 'My Posicion'
-            });
-        }
-}
-    
-    function onDeviceReady() {
-        agregaMensaje('Listo');
-        //document.getElementById('fetch').onclick = GPS.getPosition();
+          GPS.mapa.setCenter(myLatlng);
+          GPS.mapa.panTo(myLatlng);
+          GPS.mapa.setZoom(16);
+          GPS.pin.setPosition(myLatlng);
+    },
+    /*
+     * Se llama al estar listo el dispositivo, centra el mapa en la posicion y agrega evento para poder inciciar el servicio de rastreo
+     */
+    onDeviceReady: function(){
+        GPS.agregaMensaje('Listo');
+        GPS.centrarMapa();
+        GPS.agregaMensaje('Si watch');
+        $('#fetch').html('Iniciar');
+        $('#fetch').unbind( "click" );
+        $('#fetch').click(function(){
+            GPS.startWatch();
+        });
+    },
+    /*
+     *  Inicia el servicio de rastreo
+     */
+    startWatch: function(){
+        GPS.agregaMensaje('start watch');
         var options = {enableHighAccuracy: true};
-        GPS.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError,options);
-        console.log(GPS.watchID );
-    }
-    function getPosition() {
-        //navigator.geolocation.getCurrentPosition(GPS.onSuccess, GPS.onError);
-        console.log('deviceready');
-    }
-    
-    function onSuccess(position) {
-        agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
-    }
-    function onError(error) {
-       agregaMensaje(error);
-    }
-    var latlng =[];
-    function agregaMensaje(mensaje){
-        console.log(mensaje);
-        var node = document.createElement("LI");                 // Create a <li> node
-        var textnode = document.createTextNode(mensaje);         // Create a text node
-        
+        this.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError,options);
+        $('#fetch').html('Cancelar');
+        $('#fetch').unbind( "click" );
+        $('#fetch').click(function(){
+            GPS.cancelWatch();
+        });
+    },
+    /*
+     *  Manda un mensaje en caso de no poder obtener la posición
+     */
+    onError : function(error){
+       GPS.agregaMensaje(error);
+    },
+    /*
+     *  Guarda la posicíon obtenida en un arreglo e imprime la posicion en pantalla
+     *  @param Object position Objeto de posición generado por el servicio getCurrentPosition o watchPosition
+     */
+    onSuccess : function(position){
+        GPS.agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+        GPS.latlng.push(position);
+    },
+    /*
+     *  Envia mensaje a pantalla
+     *  @oaram String mensaje Mensaje a enviar a pantalla
+     */
+    agregaMensaje: function (mensaje){
+        var node = document.createElement("LI");                
+        var textnode = document.createTextNode(mensaje);        
         node.appendChild(textnode);
-        latlng.push(node);// Append the text to <li>
         document.getElementById("position").appendChild(node);
-        
     }
+}
+
+    
