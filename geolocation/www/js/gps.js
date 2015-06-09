@@ -1,4 +1,63 @@
+/*
+function GPS(){
+    this.map;
+    this.watchId = 0;
+    
+    this.initialize = function(){
+        console.log('initialize');
+        this.bindEvents();
+    };
+    this.bindEvents = function(){
+        console.log('bindEvents');
+        document.addEventListener('deviceready',this.onDeviceReady, false);
+    };
+    this.cancelWatch = function(){
+        console.log(this.watchID );
+        navigator.geolocation.clearWatch(this.watchID );
+        this.agregaMensaje('terminado');
+    };
+    this.centrarMapa = function(){
+        console.log('centrar');
+        navigator.geolocation.getCurrentPosition(this.onSuccessCenter, this.onError);
+    };
+    this.onSuccessCenter = function(position){
+        this.gregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+        var myLatlng = new google.maps.latlng(position.coords.latitude,position.coords.longitude);
+        map.setCenter(myLatlng);
+        map.setZoom(11); 
+    };
+    
+    this.onDeviceReady = function() {
+        this.agregaMensaje('Listo');
+        //document.getElementById('fetch').onclick = GPS.getPosition();
+        this.watchID = navigator.geolocation.watchPosition(this.onSuccess,this.onError);
+        console.log(this.watchID );
+    }
+    
+    this.onSuccess = function(position) {
+        this.agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+    }
+    this.onError =function (error) {
+       this.agregaMensaje(error);
+    }
+    
+    var latlng =[];
+    this.agregaMensaje = function (mensaje){
+        console.log(mensaje);
+        var node = document.createElement("LI");                 // Create a <li> node
+        var textnode = document.createTextNode(mensaje);         // Create a text node
+        node.appendChild(textnode);
+        latlng.push(node);// Append the text to <li>
+        document.getElementById("position").appendChild(node);
+    }
+    
+    
+}
+*/
+//var gps = new GPS();
+
 var GPS ={
+    mapa: null,
     watchID: 0,
     getPosition : getPosition,
     onSuccess : onSuccess,
@@ -15,23 +74,30 @@ var GPS ={
         navigator.geolocation.clearWatch(GPS.watchID );
         agregaMensaje('terminado');
     },
-    centerMap: function(){
+    centrarMapa: function(){
         console.log('centrar');
+        agregaMensaje('Loading...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
     onSuccessCenter : function(position){
-          agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
-          var myLatlng = new google.maps.latlng(position.coords.latitude,position.coords.longitude);
-          map.setCenter(myLatlng);
-          map.setZoom(11);
-            
+          agregaMensaje('SUCCESS: Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+          var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          mapa.setCenter(myLatlng);
+          mapa.panTo(myLatlng);
+          mapa.setZoom(16);
+          var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: mapa,
+                title: 'My Posicion'
+            });
         }
 }
     
     function onDeviceReady() {
         agregaMensaje('Listo');
         //document.getElementById('fetch').onclick = GPS.getPosition();
-        GPS.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError);
+        var options = {enableHighAccuracy: true};
+        GPS.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError,options);
         console.log(GPS.watchID );
     }
     function getPosition() {
