@@ -27,11 +27,12 @@
        
             <h1>PhoneGap</h1>
             <ul id="position"></ul>
-            <button id="fetch" onclick="GPS.cancelWatch(GPS.watchId);" >Calcular</button>
+            <button id="fetch" onclick="" >Calcular</button>
             <button id="centrar" onclick="GPS.centrarMapa();" >Centrar</button>
         <div id="mapCanvas" style="width:350px; height: 300px;" ></div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
         <script type="text/javascript" src="js/gps.js"></script>
         <script type="text/javascript">
             
@@ -42,19 +43,18 @@
         </script>
         <script type="text/javascript">
             //;
-            
+          
           var mapa ; 
       function initialize() {
-       GPS.initialize();
-       console.log(new google.maps.LatLng(-33, 151));
+        GPS.initialize();
         var myOptions = {
-                 center: new google.maps.LatLng(-33, 151),
-                 zoom: 6
-             };
-       mapa= new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
-       
-       
-       
+            center: new google.maps.LatLng( 19, -99.1333),
+            zoom: 4
+        };
+       GPS.mapa= new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
+       GPS.pin = new google.maps.Marker({
+                map: GPS.mapa
+            });
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>

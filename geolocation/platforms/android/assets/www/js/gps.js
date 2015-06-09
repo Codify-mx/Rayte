@@ -1,4 +1,4 @@
-
+/*
 function GPS(){
     this.map;
     this.watchId = 0;
@@ -53,10 +53,11 @@ function GPS(){
     
     
 }
+*/
+//var gps = new GPS();
 
-var gps = new GPS();
-/*
 var GPS ={
+    mapa: null,
     watchID: 0,
     getPosition : getPosition,
     onSuccess : onSuccess,
@@ -73,23 +74,30 @@ var GPS ={
         navigator.geolocation.clearWatch(GPS.watchID );
         agregaMensaje('terminado');
     },
-    centerMap: function(){
+    centrarMapa: function(){
         console.log('centrar');
+        agregaMensaje('Loading...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
     onSuccessCenter : function(position){
-          agregaMensaje('Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
-          var myLatlng = new google.maps.latlng(position.coords.latitude,position.coords.longitude);
-          map.setCenter(myLatlng);
-          map.setZoom(11);
-            
+          agregaMensaje('SUCCESS: Lat: '+position.coords.latitude+' Lng: '+position.coords.longitude);
+          var myLatlng = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          mapa.setCenter(myLatlng);
+          mapa.panTo(myLatlng);
+          mapa.setZoom(16);
+          var marker = new google.maps.Marker({
+                position: myLatlng,
+                map: mapa,
+                title: 'My Posicion'
+            });
         }
 }
     
     function onDeviceReady() {
         agregaMensaje('Listo');
         //document.getElementById('fetch').onclick = GPS.getPosition();
-        GPS.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError);
+        var options = {enableHighAccuracy: true};
+        GPS.watchID = navigator.geolocation.watchPosition(GPS.onSuccess,GPS.onError,options);
         console.log(GPS.watchID );
     }
     function getPosition() {
@@ -114,4 +122,3 @@ var GPS ={
         document.getElementById("position").appendChild(node);
         
     }
-*/
