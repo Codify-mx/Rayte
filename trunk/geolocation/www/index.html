@@ -28,30 +28,33 @@
             <h1>PhoneGap</h1>
             <ul id="position"></ul>
             <button id="fetch" onclick="GPS.cancelWatch(GPS.watchId);" >Calcular</button>
-            <button id="centrar" onclick="GPS.centerMap();" >Centrar</button>
-        <div id="mapCanvas" style="width:600px; height: 1200px;" ></div>
+            <button id="centrar" onclick="GPS.centrarMapa();" >Centrar</button>
+        <div id="mapCanvas" style="width:350px; height: 300px;" ></div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/gps.js"></script>
         <script type="text/javascript">
             
-            window.onload = function(){
-                
-                GPS.initialize();
-                
-            }
+            
         </script>
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlWP6M9z-zsuGTW3NWK1tavW6mXTpa_t8">
         </script>
         <script type="text/javascript">
+            //;
+            
+          var mapa ; 
       function initialize() {
-        console.log('iniciando');
-       var myOptions = {
-                center: new google.maps.LatLng(-33, 151),
-                zoom: 6
-            };
-        var map = new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
+       GPS.initialize();
+       console.log(new google.maps.LatLng(-33, 151));
+        var myOptions = {
+                 center: new google.maps.LatLng(-33, 151),
+                 zoom: 6
+             };
+       mapa= new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
+       
+       
+       
       }
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
