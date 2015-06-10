@@ -24,6 +24,10 @@ var GPS = {
      */
     routePolyline: null,
     /*
+     *  Id del servicio "watchPosition" necesario para poder detenerlo
+     */
+    polylineLive: null,
+    /*
      *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia)
      */
     watchID: 0,
@@ -104,6 +108,7 @@ var GPS = {
      */
     startWatch: function () {
         GPS.agregaMensaje('start watch');
+        GPS.polylineLive.setPath([]);
         var options = {enableHighAccuracy: true};
         this.watchID = navigator.geolocation.watchPosition(GPS.onSuccess, GPS.onError, options);
         $('#fetch').html('Cancelar');
@@ -126,9 +131,10 @@ var GPS = {
         GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
         var myLatLng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
         GPS.latlng.push(myLatLng);
-       // if (GPS.routePolyline) {
+        if (GPS.routePolyline) {
             GPS.inRoute(myLatLng,GPS.routePolyline);
-       // }
+        }
+        GPS.agregaMensaje('Recorrido live');
         GPS.dibujaRecorridoLive(myLatLng);
         GPS.pinOringen.setPosition(myLatLng);
     },
@@ -140,6 +146,7 @@ var GPS = {
         var node = document.createElement("LI");
         var textnode = document.createTextNode(mensaje);
         node.appendChild(textnode);
+        console.log(mensaje);
         document.getElementById("position").appendChild(node);
     },
     /*
@@ -153,10 +160,7 @@ var GPS = {
             if (status == google.maps.GeocoderStatus.OK) {
                 GPS.agregaMensaje("Encontrado");
                 GPS.mapa.setCenter(results[0].geometry.location);
-                GPS.pinDestino = new google.maps.Marker({
-                    map: GPS.mapa,
-                    position: results[0].geometry.location
-                });
+                GPS.pinDestino.setPosition(results[0].geometry.location);
                 GPS.calcularRuta();
             } else {
                 GPS.agregaMensaje("Geocode was not successful for the following reason: " + status);
@@ -186,10 +190,6 @@ var GPS = {
                 GPS.directionsDisplay.setRouteIndex(index);
                 GPS.routePolyline = GPS.getPolyline(result.routes[index]);
                 GPS.inRoute(origen,GPS.routePolyline);
-                GPS.agregaMensaje('Miguel Hidalgo');
-                GPS.inRoute(new google.maps.LatLng(21.163795, -101.664502),GPS.routePolyline);
-                GPS.agregaMensaje('Punto Random');
-                GPS.inRoute(new google.maps.LatLng(21.126491, -101.688706),GPS.routePolyline);
             } else {
                 GPS.agregaMensaje("direction false");
             }
@@ -238,6 +238,7 @@ var GPS = {
             GPS.polylineLive.getPath().push(latlng);
             GPS.pinOrigen.setPosition(latlng);
             GPS.mapa.panTo(latlng);
+            GPS.agregaMensaje('Dibujado live: '+latlng);
     },
     /*
      *  @deprecated
@@ -290,6 +291,23 @@ var GPS = {
         }else{
             GPS.agregaMensaje('No estoy en la ruta');
         }
+    },
+    getTaxi: function(){
+        var jqxhr  = $.ajax({
+            method: "GET",
+            url: "http://104.131.60.162/index.php/REST/getTaxisLocation",
+            dataType: "json",
+            crossDomain : true,
+            success: function(objJSON){
+                console.log(objJSON);
+                var lat = new google.maps.LatLng(objJSON[0],objJSON[1]);
+                GPS.mapa.panTo(lat);
+                GPS.pinOrigen.setPosition(lat);
+            },
+            error: function( jqXHR,  textStatus,  errorThrown ){
+                console.log(errorThrown);
+            }
+          });
     }
 }
 
