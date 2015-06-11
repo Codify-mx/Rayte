@@ -22,9 +22,9 @@ var GPS = {
      *      aux: linea auxiliar
      */
     polyline: {
-            route: null,
-            live: null,
-            aux: null
+        route: null,
+        live: null,
+        aux: null
     },
     /*
      *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia)
@@ -50,14 +50,14 @@ var GPS = {
     /*
      * Guardar instancia para eventos al mantener presionado sobre el mapa
      */
-    longPress :  null,
+    longPress: null,
     /*
      *  agrega el evento "deviceready" para poder llamar los plugins del celular (geolocation) de manera segura
      */
 
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-       // google.maps.event.addDomListener(GPS.mapa, 'drag', GPS.updateMapCenter);
+        // google.maps.event.addDomListener(GPS.mapa, 'drag', GPS.updateMapCenter);
     },
     /*
      *  Cancela el servicio "watchPosition", cambia evento en el boton "fetch" para poder iniciarlo de nuevo
@@ -70,7 +70,10 @@ var GPS = {
         $('#fetch').click(function () {
             GPS.startWatch();
         });
-       // GPS.imprimeArreglo();
+        var lanlng_txt = GPS.latlng.join(',');
+        console.log('text: ' + lanlng_txt);
+
+        // GPS.imprimeArreglo();
         //GPS.dibujaRecorrido();
     },
     /*
@@ -86,7 +89,7 @@ var GPS = {
      */
     onSuccessCenter: function (position) {
         GPS.agregaMensaje('SUCCESS: Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
-        var myLatlng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
+        var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         GPS.mapa.setCenter(myLatlng);
         GPS.mapa.panTo(myLatlng);
         GPS.mapa.setZoom(16);
@@ -99,15 +102,15 @@ var GPS = {
         GPS.agregaMensaje('Listo');
         GPS.centrarMapa();
         GPS.agregaMensaje('Si watch');
-        $('#fetch').html('Iniciar');
+        $('#fetch').html('Rastrear');
         $('#fetch').unbind("click");
         $('#fetch').click(function () {
             GPS.startWatch();
         });
-       
+        GPS.initiatePushNotifications();
 
-       // $( "body" ).bind( "taphold", GPS.menuPresionado );
-        
+        // $( "body" ).bind( "taphold", GPS.menuPresionado );
+
     },
     /*
      *  Inicia el servicio de rastreo
@@ -135,10 +138,10 @@ var GPS = {
      */
     onSuccess: function (position) {
         GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
-        var myLatLng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
+        var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         GPS.latlng.push(myLatLng);
         if (GPS.polyline.route) {
-            GPS.inRoute(myLatLng,GPS.polyline.route);
+            GPS.inRoute(myLatLng, GPS.polyline.route);
         }
         GPS.agregaMensaje('Recorrido live');
         GPS.dibujaRecorridoLive(myLatLng);
@@ -170,23 +173,23 @@ var GPS = {
      */
     codeLatLng: function () {
         var latlng = GPS.pin.destino.getPosition();
-        GPS.geocoder.geocode({'latLng': latlng}, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            console.log(results);
-            alert(results[0].formatted_address);W
-          } else {
-            GPS.validarCodeAddress(results,status);
-          }
+        GPS.geocoder.geocode({'latLng': latlng}, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                console.log(results);
+                alert(results[0].formatted_address);
+                W
+            } else {
+                GPS.validarCodeAddress(results, status);
+            }
         });
     },
-    
     /*
      *  Calcula la ruta mas corta entre dos puntos y la muestra en el mapa
      */
     calcularRuta: function () {
         GPS.agregaMensaje("Calcular ruta");
-        var origen = GPS.pin.origen.getPosition();
-        var destino = GPS.pin.destino.getPosition();
+        var origen = GPS.pin.origen.getPosition() || '';
+        var destino = GPS.pin.destino.getPosition() || '';
         GPS.agregaMensaje('Origen: ' + origen);
         GPS.agregaMensaje('Destino: ' + destino);
         var request = {
@@ -226,8 +229,8 @@ var GPS = {
      * @deprecated
      * Imprime en consola el arreglo de latlng creado
      */
-    imprimeArreglo: function(){
-        GPS.agregaMensaje('Imprime array: '+GPS.latlng.length);
+    imprimeArreglo: function () {
+        GPS.agregaMensaje('Imprime array: ' + GPS.latlng.length);
         for (var x in GPS.latlng) {
             console.log(GPS.latlng[x]);
         }
@@ -236,17 +239,17 @@ var GPS = {
      *  Dibuja la ruta recorrida en tiempo real, mueve el mapa y el pin a la nueva posición
      *  @param LatLng latlng latitud y longitud nuevos
      */
-    dibujaRecorridoLive: function(latlng){
-            GPS.polyline.live.getPath().push(latlng);
-            GPS.pin.origen.setPosition(latlng);
-            GPS.mapa.panTo(latlng);
-            GPS.agregaMensaje('Dibujado live: '+latlng);
+    dibujaRecorridoLive: function (latlng) {
+        GPS.polyline.live.getPath().push(latlng);
+        GPS.pin.origen.setPosition(latlng);
+        GPS.mapa.panTo(latlng);
+        GPS.agregaMensaje('Dibujado live: ' + latlng);
     },
     /*
      *  @deprecated
      *  Dibuja el camino recorrido en base al arreglo total de posiciones ( no tiempo real )
      */
-    dibujaRecorrido: function(){
+    dibujaRecorrido: function () {
         GPS.agregaMensaje('Dibuja Recorrido');
         GPS.polyline.aux = new google.maps.Polyline({
             map: GPS.mapa,
@@ -255,70 +258,70 @@ var GPS = {
             strokeWeight: 5,
             visible: true,
             zIndex: 1,
-            path:GPS.latlng
+            path: GPS.latlng
         });
     },
     /*
      *  Obtiene el polyline usado para comprobar si se recorre la ruta en base a la ruta obtenida
      *  @oaram route route ruta a obtener el polyline
      */
-    getPolyline: function(route){
-       var polyline = new google.maps.Polyline({
-					path: [],
-					strokeColor: '#FF0000',
-					strokeWeight: 3
-				});
+    getPolyline: function (route) {
+        var polyline = new google.maps.Polyline({
+            path: [],
+            strokeColor: '#FF0000',
+            strokeWeight: 3
+        });
         var path = route.overview_path;
         var legs = route.legs;
-        for (i=0;i<legs.length;i++) {
-           var steps = legs[i].steps;
-           for (j=0;j<steps.length;j++) {
-             var nextSegment = steps[j].path;
-             for (k=0;k<nextSegment.length;k++) {
-                polyline.getPath().push(nextSegment[k]);
-             }
-           }
+        for (i = 0; i < legs.length; i++) {
+            var steps = legs[i].steps;
+            for (j = 0; j < steps.length; j++) {
+                var nextSegment = steps[j].path;
+                for (k = 0; k < nextSegment.length; k++) {
+                    polyline.getPath().push(nextSegment[k]);
+                }
+            }
         }
-        return polyline;                                        
+        return polyline;
     },
     /*
      *  Detecta si la posicion dada está en la ruta o no
      *  @param latlng myPosition posicion a comprobar
      *  @param google.maps.Polyline polyline ruta a coprobar
      */
-    inRoute : function(myPosition,polyline){
-         console.log(google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline,Math.pow(10,-2)));
-        if (google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline,Math.pow(10,-3))) {
+    inRoute: function (myPosition, polyline) {
+        console.log(google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline, Math.pow(10, -2)));
+        if (google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline, Math.pow(10, -3))) {
             GPS.agregaMensaje('Estoy en la ruta');
-        }else{
+        } else {
             GPS.agregaMensaje('No estoy en la ruta');
         }
     },
     /*
      * Obtiene una posición aleatoria del servidor, mueve el pin de destion a la posicion
      */
-    getTaxi: function(){
-        var jqxhr  = $.ajax({
+    getTaxi: function () {
+        var jqxhr = $.ajax({
             method: "GET",
             url: "http://104.131.60.162/index.php/REST/getTaxisLocation",
             dataType: "json",
-            crossDomain : true,
-            success: function(objJSON){
+            crossDomain: true,
+            success: function (objJSON) {
                 console.log(objJSON);
-                var lat = new google.maps.LatLng(objJSON[0],objJSON[1]);
+                var lat = new google.maps.LatLng(objJSON[0], objJSON[1]);
                 GPS.mapa.panTo(lat);
                 GPS.pin.destino.setPosition(lat);
                 GPS.calcularRuta();
             },
-            error: function( jqXHR,  textStatus,  errorThrown ){
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             }
-          });
+        });
     },
     /*
      *  Coloca un marcador en el centro actual del mapa y calcula la ruta hacia el mismo
      */
-    irCentro: function(){
+    irCentro: function () {
         GPS.pin.destino.setPosition(GPS.mapa.getCenter());
         GPS.calcularRuta();
         GPS.codeLatLng();
@@ -327,19 +330,19 @@ var GPS = {
      *  Pregunta si se desea calcular la ruta a la posicion donde se mantiene presionado sobre el mapa
      *  @param google.maps.LatLng latlng posicion hacia la cual se desea calcular la ruta
      */
-    menuPresionado : function(latlng){
-         navigator.notification.confirm(
-            'Ruta hasta aqui?', // message
-             function(buttonIndex){
-                if (buttonIndex === 1) {
-                    GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(),latlng.lng()));
-                    GPS.codeLatLng();
-                    GPS.calcularRuta();
-                }
-             },            // callback to invoke with index of button pressed
-            'Ver ruta',           // title
-            ['Si','No']         // buttonLabels
-        );
+    menuPresionado: function (latlng) {
+        navigator.notification.confirm(
+                'Ruta hasta aqui?', // message
+                function (buttonIndex) {
+                    if (buttonIndex === 1) {
+                        GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(), latlng.lng()));
+                        GPS.codeLatLng();
+                        GPS.calcularRuta();
+                    }
+                }, // callback to invoke with index of button pressed
+                'Ver ruta', // title
+                ['Si', 'No']         // buttonLabels
+                );
     },
     /*
      *  Determina que realizar en base al estatus obtenido al generar la ruta
@@ -347,81 +350,136 @@ var GPS = {
      *  @param google.maps.DirectionsStatus status estatus al generar la ruta
      */
     validarRuta: function (result, status) {
-                console.log(status);
-                
-                switch (status) {
-                    case google.maps.DirectionsStatus.OK:
-                        var index = GPS.calulaRutaCorta(result.routes);
-                        GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
-                        GPS.directionsDisplay.setDirections(result);
-                        GPS.directionsDisplay.setRouteIndex(index);
-                        GPS.polyline.route = GPS.getPolyline(result.routes[index]);
-                        GPS.inRoute(origen,GPS.polyline.route);
-                    break;
-                    case google.maps.DirectionsStatus.INVALID_REQUEST:
-                            GPS.agregaMensaje("Solicitud Inválida");
-                    break;
-                    case google.maps.DirectionsStatus.MAX_WAYPOINTS_EXCEEDED:
-                            GPS.agregaMensaje("Demasiados puntos intermedios");
-                    break;
-                    case google.maps.DirectionsStatus.NOT_FOUND:
-                            GPS.agregaMensaje("Algun punto intermedio no fue encontrado");
-                    break;
-                    case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
-                            GPS.agregaMensaje("Limite de peticiones");
-                    break;
-                    case google.maps.DirectionsStatus.REQUEST_DENIED:
-                            GPS.agregaMensaje("Se denegó el acceso a la api");
-                    break;
-                    case google.maps.DirectionsStatus.UNKNOWN_ERROR:
-                            GPS.agregaMensaje("No se pudo procesar debido a un error del servidor");
-                    break;
-                    case google.maps.DirectionsStatus.ZERO_RESULTS:
-                            GPS.agregaMensaje("No se pudo encontrar una ruta entre el origen y el destino");
-                    break;
-                    default:
-                         GPS.agregaMensaje("direction false");
-                        break;
-                }
-        },
+        console.log(status);
+
+        switch (status) {
+            case google.maps.DirectionsStatus.OK:
+                var index = GPS.calulaRutaCorta(result.routes);
+                GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
+                GPS.directionsDisplay.setDirections(result);
+                GPS.directionsDisplay.setRouteIndex(index);
+                GPS.polyline.route = GPS.getPolyline(result.routes[index]);
+                GPS.inRoute(origen, GPS.polyline.route);
+                break;
+            case google.maps.DirectionsStatus.INVALID_REQUEST:
+                GPS.agregaMensaje("Solicitud Inválida");
+                break;
+            case google.maps.DirectionsStatus.MAX_WAYPOINTS_EXCEEDED:
+                GPS.agregaMensaje("Demasiados puntos intermedios");
+                break;
+            case google.maps.DirectionsStatus.NOT_FOUND:
+                GPS.agregaMensaje("Algun punto intermedio no fue encontrado");
+                break;
+            case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
+                GPS.agregaMensaje("Limite de peticiones");
+                break;
+            case google.maps.DirectionsStatus.REQUEST_DENIED:
+                GPS.agregaMensaje("Se denegó el acceso a la api");
+                break;
+            case google.maps.DirectionsStatus.UNKNOWN_ERROR:
+                GPS.agregaMensaje("No se pudo procesar debido a un error del servidor");
+                break;
+            case google.maps.DirectionsStatus.ZERO_RESULTS:
+                GPS.agregaMensaje("No se pudo encontrar una ruta entre el origen y el destino");
+                break;
+            default:
+                GPS.agregaMensaje("direction false");
+                break;
+        }
+    },
     /*
      *  Determina que realizar en base al estatus obtenido al buscar la direccion
      *  @param google.maps.GeocoderResult result objeto enviado por el servicio geocoder
      *  @param google.maps.GeocoderStatus status estatus al generar la dirección
      */
-        validarCodeAddress: function (results, status) {
-                console.log(status);
-                switch (status) {
-                    case google.maps.GeocoderStatus.OK:
-                        GPS.agregaMensaje("Encontrado");
-                        GPS.mapa.setCenter(results[0].geometry.location);
-                        GPS.pin.destino.setPosition(results[0].geometry.location);
-                        GPS.calcularRuta();
-                    break;
-                    case google.maps.GeocoderStatus.ERROR:
-                            GPS.agregaMensaje("Geocoder: No se pudo contactar con los servidores");
-                    break;
-                    case google.maps.GeocoderStatus.INVALID_REQUEST:
-                            GPS.agregaMensaje("Geocoder: Solicitud Inválida");
-                    break;
-                    case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-                            GPS.agregaMensaje("Geocoder: Limite de peticiones");
-                    break;
-                    case google.maps.GeocoderStatus.REQUEST_DENIED:
-                            GPS.agregaMensaje("Geocoder: Se denegó el acceso a la api");
-                    break;
-                    case google.maps.GeocoderStatus.UNKNOWN_ERROR:
-                            GPS.agregaMensaje("Geocoder: No se pudo procesar debido a un error del servidor");
-                    break;
-                    case google.maps.GeocoderStatus.ZERO_RESULTS:
-                             GPS.agregaMensaje("Geocoder: No se pudo encontrar la direccion especificada");
-                    break;
-                
-                    default:
-                         GPS.agregaMensaje("geocoder false");
-                        break;
-                }
+    validarCodeAddress: function (results, status) {
+        console.log(status);
+        switch (status) {
+            case google.maps.GeocoderStatus.OK:
+                GPS.agregaMensaje("Encontrado");
+                GPS.mapa.setCenter(results[0].geometry.location);
+                GPS.pin.destino.setPosition(results[0].geometry.location);
+                GPS.calcularRuta();
+                break;
+            case google.maps.GeocoderStatus.ERROR:
+                GPS.agregaMensaje("Geocoder: No se pudo contactar con los servidores");
+                break;
+            case google.maps.GeocoderStatus.INVALID_REQUEST:
+                GPS.agregaMensaje("Geocoder: Solicitud Inválida");
+                break;
+            case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
+                GPS.agregaMensaje("Geocoder: Limite de peticiones");
+                break;
+            case google.maps.GeocoderStatus.REQUEST_DENIED:
+                GPS.agregaMensaje("Geocoder: Se denegó el acceso a la api");
+                break;
+            case google.maps.GeocoderStatus.UNKNOWN_ERROR:
+                GPS.agregaMensaje("Geocoder: No se pudo procesar debido a un error del servidor");
+                break;
+            case google.maps.GeocoderStatus.ZERO_RESULTS:
+                GPS.agregaMensaje("Geocoder: No se pudo encontrar la direccion especificada");
+                break;
+            default:
+                GPS.agregaMensaje("geocoder false");
+                break;
         }
+    },
+    initiatePushNotifications: function () {
+        var platform = device.platform.toLowerCase();
+        var pushNotification = window.plugins.pushNotification;
+        console.log('Platform: ' + platform);
+        if (platform == 'android') {
+            pushNotification.register(GPS.successHandler, GPS.errorHandler, {"senderID": "988953457179", "ecb": "GPS.onNotificationGCM"});
+        }
+        if (platform.indexOf('ios') !== -1)
+        {
+            pushNotification.register(GPS.tokenHandler, GPS.errorHandler, {"badge": "false", "sound": "true", "alert": "true", "ecb": "app.onNotificationAPN"});
+        }
+    },
+    onNotificationAPN: function (event) {
+        if (event.alert) {
+            alert(event.alert);
+        }
+        /*
+        if (event.sound) {
+            var snd = new Media(event.sound);
+            snd.play();
+        }
+        */
+    },
+    onNotificationGCM: function (e) {
+        console.log(e);
+        switch (e.event)
+        {
+            case 'registered':
+                if (e.regid.length > 0)
+                {
+                   // registrarDispositivo(e.regid, 'android');
+                    console.log('ANDROID ID: '+e.regid);    
+                }
+                break;
+
+            case 'message':
+                console.log(e.message); 
+                //swal(e.message);
+                break;
+
+            case 'error':
+                break;
+
+            default:
+                break;
+        }
+    },
+    tokenHandler: function (msg) {
+        //registrarDispositivo(msg, 'ios');
+    },
+    successHandler: function (result) {
+        console.log(result);
+    },
+    errorHandler: function (error) {
+        console.log(result);
+    }
 }
 
 /* Funciones para simular evento click al mantener presionado sobre el mapa */
@@ -433,43 +491,44 @@ var GPS = {
  *  @param int length tiempo en milisegundos que se requerirá mantener presionado
  */
 function LongPress(map, length) {
-  this.length_ = length;
-  var me = this;
-  me.map_ = map;
-  me.timeoutId_ = null;
-  google.maps.event.addListener(map, 'mousedown', function(e) {
-    me.onMouseDown_(e);
-  });
-  google.maps.event.addListener(map, 'mouseup', function(e) {
-    me.onMouseUp_(e);
-  });
-  google.maps.event.addListener(map, 'drag', function(e) {
-    me.onMapDrag_(e);
-  });
-};
+    this.length_ = length;
+    var me = this;
+    me.map_ = map;
+    me.timeoutId_ = null;
+    google.maps.event.addListener(map, 'mousedown', function (e) {
+        me.onMouseDown_(e);
+    });
+    google.maps.event.addListener(map, 'mouseup', function (e) {
+        me.onMouseUp_(e);
+    });
+    google.maps.event.addListener(map, 'drag', function (e) {
+        me.onMapDrag_(e);
+    });
+}
+;
 
 /*
  *  Evita que el evento sea llamado si no dura el tiempo suficiente
  */
-LongPress.prototype.onMouseUp_ = function(e) {
-  clearTimeout(this.timeoutId_);
+LongPress.prototype.onMouseUp_ = function (e) {
+    clearTimeout(this.timeoutId_);
 };
 /*
  *  Comienza un contador para llamar al evento presionado
  */
-LongPress.prototype.onMouseDown_ = function(e) {
-  clearTimeout(this.timeoutId_);
-  var map = this.map_;
-  var event = e;
-  this.timeoutId_ = setTimeout(function() {
-    google.maps.event.trigger(map, 'longpress', event);
-  }, this.length_);
+LongPress.prototype.onMouseDown_ = function (e) {
+    clearTimeout(this.timeoutId_);
+    var map = this.map_;
+    var event = e;
+    this.timeoutId_ = setTimeout(function () {
+        google.maps.event.trigger(map, 'longpress', event);
+    }, this.length_);
 };
 
 /*
  *  Evita que el evento sea llamado si se esta desplazando el mapa
  */
-LongPress.prototype.onMapDrag_ = function(e) {
-  clearTimeout(this.timeoutId_);
+LongPress.prototype.onMapDrag_ = function (e) {
+    clearTimeout(this.timeoutId_);
 };
 
