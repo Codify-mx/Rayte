@@ -51,11 +51,16 @@ var GPS = {
         this.bindEvents();
     },
     /*
+     * Guardar instancia para eventos al mantener presionado sobre el mapa
+     */
+    longPress :  null,
+    /*
      *  agrega el evento "deviceready" para poder llamar los plugins del celular (geolocation) de manera segura
      */
 
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+       // google.maps.event.addDomListener(GPS.mapa, 'drag', GPS.updateMapCenter);
     },
     /*
      *  Cancela el servicio "watchPosition", cambia evento en el boton "fetch" para poder iniciarlo de nuevo
@@ -68,7 +73,7 @@ var GPS = {
         $('#fetch').click(function () {
             GPS.startWatch();
         });
-        GPS.imprimeArreglo();
+       // GPS.imprimeArreglo();
         //GPS.dibujaRecorrido();
     },
     /*
@@ -102,6 +107,10 @@ var GPS = {
         $('#fetch').click(function () {
             GPS.startWatch();
         });
+       
+
+       // $( "body" ).bind( "taphold", GPS.menuPresionado );
+        
     },
     /*
      *  Inicia el servicio de rastreo
@@ -156,17 +165,33 @@ var GPS = {
     codeAddress: function () {
         GPS.agregaMensaje("Buscando");
         var address = document.getElementById("address").value;
-        GPS.geocoder.geocode({'address': address}, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                GPS.agregaMensaje("Encontrado");
-                GPS.mapa.setCenter(results[0].geometry.location);
-                GPS.pinDestino.setPosition(results[0].geometry.location);
-                GPS.calcularRuta();
+        GPS.geocoder.geocode({'address': address}, GPS.validarCodeAddress);
+    },
+    codeLatLng: function () {
+        var latlng = GPS.pinDestino.getPosition();
+        GPS.geocoder.geocode({'latLng': latlng}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            console.log(results);
+            alert(results[0].formatted_address);
+            /*
+            if (results[1]) {
+              map.setZoom(11);
+              marker = new google.maps.Marker({
+                  position: latlng,
+                  map: map
+              });
+              
+              //infowindow.setContent(results[1].formatted_address);
+              //infowindow.open(map, marker);
             } else {
-                GPS.agregaMensaje("Geocode was not successful for the following reason: " + status);
-            }
+              alert('No results found');
+            }*/
+          } else {
+            alert('Geocoder failed due to: ' + status);
+          }
         });
     },
+    
     /*
      *  Calcula la ruta mas corta entre dos puntos y la muestra en el mapa
      */
@@ -182,18 +207,7 @@ var GPS = {
             travelMode: google.maps.TravelMode.DRIVING,
             provideRouteAlternatives: true
         };
-        GPS.directionsService.route(request, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                var index = GPS.calulaRutaCorta(result.routes);
-                GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
-                GPS.directionsDisplay.setDirections(result);
-                GPS.directionsDisplay.setRouteIndex(index);
-                GPS.routePolyline = GPS.getPolyline(result.routes[index]);
-                GPS.inRoute(origen,GPS.routePolyline);
-            } else {
-                GPS.agregaMensaje("direction false");
-            }
-        });
+        GPS.directionsService.route(request, GPS.validarRuta);
     },
     /*
      *  Calcula el indice de la ruta más corta en distancia entre el arreglo de rutas encontrado
@@ -302,13 +316,137 @@ var GPS = {
                 console.log(objJSON);
                 var lat = new google.maps.LatLng(objJSON[0],objJSON[1]);
                 GPS.mapa.panTo(lat);
-                GPS.pinOrigen.setPosition(lat);
+                GPS.pinDestino.setPosition(lat);
+                GPS.calcularRuta();
             },
             error: function( jqXHR,  textStatus,  errorThrown ){
                 console.log(errorThrown);
             }
           });
-    }
+    },
+    irCentro: function(){
+        GPS.pinDestino.setPosition(GPS.mapa.getCenter());
+        GPS.calcularRuta();
+        GPS.codeLatLng();
+    },
+    menuPresionado : function(latlng){
+         navigator.notification.confirm(
+            'Ruta hasta aqui?', // message
+             function(buttonIndex){
+                if (buttonIndex === 1) {
+                    GPS.pinDestino.setPosition(new google.maps.LatLng(latlng.lat(),latlng.lng()));
+                    GPS.codeLatLng();
+                    GPS.calcularRuta();
+                }
+             },            // callback to invoke with index of button pressed
+            'Game Over',           // title
+            ['Si','No']         // buttonLabels
+        );
+    },
+    validarRuta: function (result, status) {
+                console.log(status);
+                
+                switch (status) {
+                    case google.maps.DirectionsStatus.OK:
+                        var index = GPS.calulaRutaCorta(result.routes);
+                        GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
+                        GPS.directionsDisplay.setDirections(result);
+                        GPS.directionsDisplay.setRouteIndex(index);
+                        GPS.routePolyline = GPS.getPolyline(result.routes[index]);
+                        GPS.inRoute(origen,GPS.routePolyline);
+                    break;
+                    case google.maps.DirectionsStatus.INVALID_REQUEST:
+                            GPS.agregaMensaje("Solicitud Inválida");
+                    break;
+                    case google.maps.DirectionsStatus.MAX_WAYPOINTS_EXCEEDED:
+                            GPS.agregaMensaje("Demasiados puntos intermedios");
+                    break;
+                    case google.maps.DirectionsStatus.NOT_FOUND:
+                            GPS.agregaMensaje("Algun punto intermedio no fue encontrado");
+                    break;
+                    case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
+                            GPS.agregaMensaje("Limite de peticiones");
+                    break;
+                    case google.maps.DirectionsStatus.REQUEST_DENIED:
+                            GPS.agregaMensaje("Se denegó el acceso a la api");
+                    break;
+                    case google.maps.DirectionsStatus.UNKNOWN_ERROR:
+                            GPS.agregaMensaje("No se pudo procesar debido a un error del servidor");
+                    break;
+                    case google.maps.DirectionsStatus.ZERO_RESULTS:
+                            GPS.agregaMensaje("No se pudo encontrar una ruta entre el origen y el destino");
+                    break;
+                    default:
+                         GPS.agregaMensaje("direction false");
+                        break;
+                }
+        },
+        validarCodeAddress: function (results, status) {
+                console.log(status);
+                switch (status) {
+                    case google.maps.GeocoderStatus.OK:
+                        GPS.agregaMensaje("Encontrado");
+                        GPS.mapa.setCenter(results[0].geometry.location);
+                        GPS.pinDestino.setPosition(results[0].geometry.location);
+                        GPS.calcularRuta();
+                    break;
+                    case google.maps.GeocoderStatus.ERROR:
+                            GPS.agregaMensaje("Geocoder: No se pudo contactar con los servidores");
+                    break;
+                    case google.maps.GeocoderStatus.INVALID_REQUEST:
+                            GPS.agregaMensaje("Geocoder: Solicitud Inválida");
+                    break;
+                    case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
+                            GPS.agregaMensaje("Geocoder: Limite de peticiones");
+                    break;
+                    case google.maps.GeocoderStatus.REQUEST_DENIED:
+                            GPS.agregaMensaje("Geocoder: Se denegó el acceso a la api");
+                    break;
+                    case google.maps.GeocoderStatus.UNKNOWN_ERROR:
+                            GPS.agregaMensaje("Geocoder: No se pudo procesar debido a un error del servidor");
+                    break;
+                    case google.maps.GeocoderStatus.ZERO_RESULTS:
+                             GPS.agregaMensaje("Geocoder: No se pudo encontrar la direccion especificada");
+                    break;
+                
+                    default:
+                         GPS.agregaMensaje("geocoder false");
+                        break;
+                }
+        }
 }
 
+/*
+ * Funciones para simular evento click al mantener presionado sobre el mapa
+ */
+
+function LongPress(map, length) {
+  this.length_ = length;
+  var me = this;
+  me.map_ = map;
+  me.timeoutId_ = null;
+  google.maps.event.addListener(map, 'mousedown', function(e) {
+    me.onMouseDown_(e);
+  });
+  google.maps.event.addListener(map, 'mouseup', function(e) {
+    me.onMouseUp_(e);
+  });
+  google.maps.event.addListener(map, 'drag', function(e) {
+    me.onMapDrag_(e);
+  });
+};
+LongPress.prototype.onMouseUp_ = function(e) {
+  clearTimeout(this.timeoutId_);
+};
+LongPress.prototype.onMouseDown_ = function(e) {
+  clearTimeout(this.timeoutId_);
+  var map = this.map_;
+  var event = e;
+  this.timeoutId_ = setTimeout(function() {
+    google.maps.event.trigger(map, 'longpress', event);
+  }, this.length_);
+};
+LongPress.prototype.onMapDrag_ = function(e) {
+  clearTimeout(this.timeoutId_);
+};
 
