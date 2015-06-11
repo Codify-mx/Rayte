@@ -4,7 +4,7 @@ var GPS = {
      */
     mapa: null,
     /*
-     *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia)
+     *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia) y viceversa
      */
     geocoder: null,
     /*
@@ -16,32 +16,29 @@ var GPS = {
      */
     directionsDisplay: null,
     /*
-     *  Id del servicio "watchPosition" necesario para poder detenerlo
+     *  Objeto que contiene las diferentes polylineas a utilizar
+     *      route: linea de la ruta, utilizada para detectar si se está saliendo o no de la ruta
+     *      live: linea generada en vase al movimiento del dispositivo
+     *      aux: linea auxiliar
      */
-    polyline: null,
-    /*
-     *  Id del servicio "watchPosition" necesario para poder detenerlo
-     */
-    routePolyline: null,
-    /*
-     *  Id del servicio "watchPosition" necesario para poder detenerlo
-     */
-    polylineLive: null,
+    polyline: {
+            route: null,
+            live: null,
+            aux: null
+    },
     /*
      *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia)
      */
     watchID: 0,
     /*
-     *  Marcador del usuario en el mapa
+     *  Objeto que conitene los diferentes marcadores a utilizar
+     *      origen: marcador punto de origen (dispositivo)
+     *      destino: marcador del lugar  al cual se quiere llegar
      */
-    pinOrigen: null,
-    /*
-     *  Marcador del destino en el mapa
-     */
-    pinDestino: null,
-    /*
-     *  arreglo de coordenadas del usuario
-     */
+    pin: {
+        origen: null,
+        destino: null
+    },
     latlng: [],
     /*
      * Funcion que inicia el objeto
@@ -93,7 +90,7 @@ var GPS = {
         GPS.mapa.setCenter(myLatlng);
         GPS.mapa.panTo(myLatlng);
         GPS.mapa.setZoom(16);
-        GPS.pinOrigen.setPosition(myLatlng);
+        GPS.pin.origen.setPosition(myLatlng);
     },
     /*
      * Se llama al estar listo el dispositivo, centra el mapa en la posicion y agrega evento para poder inciciar el servicio de rastreo
@@ -117,7 +114,7 @@ var GPS = {
      */
     startWatch: function () {
         GPS.agregaMensaje('start watch');
-        GPS.polylineLive.setPath([]);
+        GPS.polyline.live.setPath([]);
         var options = {enableHighAccuracy: true};
         this.watchID = navigator.geolocation.watchPosition(GPS.onSuccess, GPS.onError, options);
         $('#fetch').html('Cancelar');
@@ -140,8 +137,8 @@ var GPS = {
         GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
         var myLatLng = new google.maps.LatLng( position.coords.latitude, position.coords.longitude);
         GPS.latlng.push(myLatLng);
-        if (GPS.routePolyline) {
-            GPS.inRoute(myLatLng,GPS.routePolyline);
+        if (GPS.polyline.route) {
+            GPS.inRoute(myLatLng,GPS.polyline.route);
         }
         GPS.agregaMensaje('Recorrido live');
         GPS.dibujaRecorridoLive(myLatLng);
@@ -167,27 +164,18 @@ var GPS = {
         var address = document.getElementById("address").value;
         GPS.geocoder.geocode({'address': address}, GPS.validarCodeAddress);
     },
+    /*
+     *  Obtiene la dirección (Calle numero colonia)  mediante una posicion (latlng)
+     *  imprime la dirección
+     */
     codeLatLng: function () {
-        var latlng = GPS.pinDestino.getPosition();
+        var latlng = GPS.pin.destino.getPosition();
         GPS.geocoder.geocode({'latLng': latlng}, function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             console.log(results);
-            alert(results[0].formatted_address);
-            /*
-            if (results[1]) {
-              map.setZoom(11);
-              marker = new google.maps.Marker({
-                  position: latlng,
-                  map: map
-              });
-              
-              //infowindow.setContent(results[1].formatted_address);
-              //infowindow.open(map, marker);
-            } else {
-              alert('No results found');
-            }*/
+            alert(results[0].formatted_address);W
           } else {
-            alert('Geocoder failed due to: ' + status);
+            GPS.validarCodeAddress(results,status);
           }
         });
     },
@@ -197,8 +185,8 @@ var GPS = {
      */
     calcularRuta: function () {
         GPS.agregaMensaje("Calcular ruta");
-        var origen = GPS.pinOrigen.getPosition();
-        var destino = GPS.pinDestino.getPosition();
+        var origen = GPS.pin.origen.getPosition();
+        var destino = GPS.pin.destino.getPosition();
         GPS.agregaMensaje('Origen: ' + origen);
         GPS.agregaMensaje('Destino: ' + destino);
         var request = {
@@ -249,8 +237,8 @@ var GPS = {
      *  @param LatLng latlng latitud y longitud nuevos
      */
     dibujaRecorridoLive: function(latlng){
-            GPS.polylineLive.getPath().push(latlng);
-            GPS.pinOrigen.setPosition(latlng);
+            GPS.polyline.live.getPath().push(latlng);
+            GPS.pin.origen.setPosition(latlng);
             GPS.mapa.panTo(latlng);
             GPS.agregaMensaje('Dibujado live: '+latlng);
     },
@@ -260,7 +248,7 @@ var GPS = {
      */
     dibujaRecorrido: function(){
         GPS.agregaMensaje('Dibuja Recorrido');
-        GPS.polyline = new google.maps.Polyline({
+        GPS.polyline.aux = new google.maps.Polyline({
             map: GPS.mapa,
             strokeColor: '#FF0000',
             strokeOpacity: 0.7,
@@ -306,6 +294,9 @@ var GPS = {
             GPS.agregaMensaje('No estoy en la ruta');
         }
     },
+    /*
+     * Obtiene una posición aleatoria del servidor, mueve el pin de destion a la posicion
+     */
     getTaxi: function(){
         var jqxhr  = $.ajax({
             method: "GET",
@@ -316,7 +307,7 @@ var GPS = {
                 console.log(objJSON);
                 var lat = new google.maps.LatLng(objJSON[0],objJSON[1]);
                 GPS.mapa.panTo(lat);
-                GPS.pinDestino.setPosition(lat);
+                GPS.pin.destino.setPosition(lat);
                 GPS.calcularRuta();
             },
             error: function( jqXHR,  textStatus,  errorThrown ){
@@ -324,25 +315,37 @@ var GPS = {
             }
           });
     },
+    /*
+     *  Coloca un marcador en el centro actual del mapa y calcula la ruta hacia el mismo
+     */
     irCentro: function(){
-        GPS.pinDestino.setPosition(GPS.mapa.getCenter());
+        GPS.pin.destino.setPosition(GPS.mapa.getCenter());
         GPS.calcularRuta();
         GPS.codeLatLng();
     },
+    /*
+     *  Pregunta si se desea calcular la ruta a la posicion donde se mantiene presionado sobre el mapa
+     *  @param google.maps.LatLng latlng posicion hacia la cual se desea calcular la ruta
+     */
     menuPresionado : function(latlng){
          navigator.notification.confirm(
             'Ruta hasta aqui?', // message
              function(buttonIndex){
                 if (buttonIndex === 1) {
-                    GPS.pinDestino.setPosition(new google.maps.LatLng(latlng.lat(),latlng.lng()));
+                    GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(),latlng.lng()));
                     GPS.codeLatLng();
                     GPS.calcularRuta();
                 }
              },            // callback to invoke with index of button pressed
-            'Game Over',           // title
+            'Ver ruta',           // title
             ['Si','No']         // buttonLabels
         );
     },
+    /*
+     *  Determina que realizar en base al estatus obtenido al generar la ruta
+     *  @param google.maps.DirectionsResult result objeto enviado por el servicio de dirección al generar la ruta
+     *  @param google.maps.DirectionsStatus status estatus al generar la ruta
+     */
     validarRuta: function (result, status) {
                 console.log(status);
                 
@@ -352,8 +355,8 @@ var GPS = {
                         GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
                         GPS.directionsDisplay.setDirections(result);
                         GPS.directionsDisplay.setRouteIndex(index);
-                        GPS.routePolyline = GPS.getPolyline(result.routes[index]);
-                        GPS.inRoute(origen,GPS.routePolyline);
+                        GPS.polyline.route = GPS.getPolyline(result.routes[index]);
+                        GPS.inRoute(origen,GPS.polyline.route);
                     break;
                     case google.maps.DirectionsStatus.INVALID_REQUEST:
                             GPS.agregaMensaje("Solicitud Inválida");
@@ -381,13 +384,18 @@ var GPS = {
                         break;
                 }
         },
+    /*
+     *  Determina que realizar en base al estatus obtenido al buscar la direccion
+     *  @param google.maps.GeocoderResult result objeto enviado por el servicio geocoder
+     *  @param google.maps.GeocoderStatus status estatus al generar la dirección
+     */
         validarCodeAddress: function (results, status) {
                 console.log(status);
                 switch (status) {
                     case google.maps.GeocoderStatus.OK:
                         GPS.agregaMensaje("Encontrado");
                         GPS.mapa.setCenter(results[0].geometry.location);
-                        GPS.pinDestino.setPosition(results[0].geometry.location);
+                        GPS.pin.destino.setPosition(results[0].geometry.location);
                         GPS.calcularRuta();
                     break;
                     case google.maps.GeocoderStatus.ERROR:
@@ -416,10 +424,14 @@ var GPS = {
         }
 }
 
-/*
- * Funciones para simular evento click al mantener presionado sobre el mapa
- */
+/* Funciones para simular evento click al mantener presionado sobre el mapa */
 
+
+/*
+ *  Genera el evento para detectar si se manteien presionado sobre el mapa
+ *  @param google.maps.Map map Mapa al que se le añadirá el evento
+ *  @param int length tiempo en milisegundos que se requerirá mantener presionado
+ */
 function LongPress(map, length) {
   this.length_ = length;
   var me = this;
@@ -435,9 +447,16 @@ function LongPress(map, length) {
     me.onMapDrag_(e);
   });
 };
+
+/*
+ *  Evita que el evento sea llamado si no dura el tiempo suficiente
+ */
 LongPress.prototype.onMouseUp_ = function(e) {
   clearTimeout(this.timeoutId_);
 };
+/*
+ *  Comienza un contador para llamar al evento presionado
+ */
 LongPress.prototype.onMouseDown_ = function(e) {
   clearTimeout(this.timeoutId_);
   var map = this.map_;
@@ -446,6 +465,10 @@ LongPress.prototype.onMouseDown_ = function(e) {
     google.maps.event.trigger(map, 'longpress', event);
   }, this.length_);
 };
+
+/*
+ *  Evita que el evento sea llamado si se esta desplazando el mapa
+ */
 LongPress.prototype.onMapDrag_ = function(e) {
   clearTimeout(this.timeoutId_);
 };

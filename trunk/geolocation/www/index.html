@@ -77,14 +77,14 @@
                 disableDefaultUI: true
             };
             GPS.mapa= new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
-            GPS.pinOrigen = new google.maps.Marker({
+            GPS.pin.origen = new google.maps.Marker({
                      map: GPS.mapa
                  });
-            GPS.pinDestino = new google.maps.Marker({
+            GPS.pin.destino = new google.maps.Marker({
                      map: GPS.mapa
                  });
            GPS.geocoder = new google.maps.Geocoder();
-            GPS.polylineLive =  new google.maps.Polyline({
+           GPS.polyline.live =  new google.maps.Polyline({
                         map: GPS.mapa,
                         strokeColor: '#FF0000',
                         strokeOpacity: 0.7,
