@@ -19,7 +19,10 @@ var mainView = app.addView('.view-main', {
     domCache: true
 });
 
-$(document).on('pageInit', function (e) {
+$(document).on('touchstart', '*', function () {
+    alert('0asdas');
+})
 
+$(document).on('pageInit', function (e) {
     app.closePanel();
 });
