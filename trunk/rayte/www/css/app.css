@@ -132,6 +132,57 @@ html,body
     position: absolute;
     right: 8px;
 }
-.map-button:nth-child(2){
+.map-button:first-child{
     top:   40px;
 }
+.map-menu .row{
+    margin: 5px 0 5px;
+}
+
+.map-menu{
+    padding: 10px 15px;
+    position: absolute;
+    width: 91%;
+    bottom: 0px;
+}
+#map-canvas{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 115px;
+}
+
+.popover,.popover-angle:after{
+    background: #009bdb;
+    
+}
+.popover-about{
+    padding: 0 10px 10px;
+    text-align: center;
+}
+#modal-map{
+    height: 200px;
+    background: grey;
+}
+.popover-about h3{
+    color: white;
+}
+
+.popover-about .row:last-child{
+    background: white;
+}
+
+.popover-about ul{
+    margin-top: 0;
+    list-style: none;
+}
+
+.popover-about ul li:first-child{
+   color: #009bdb;
+   font-weight: bold;
+}
+
+ul.detalle{
+    color: #CCC;
+}
+
