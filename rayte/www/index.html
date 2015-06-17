@@ -1,152 +1,210 @@
 <!DOCTYPE html>
-<html >
+<html>
     <head>
-        <title>Rayte</title>
-        <link rel="stylesheet" type="text/css" href="./css/mobile-angular-ui-base.min.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            body,.container{
-                padding-top: 20px;
-            }
-            
-            #mapCanvas{
-                width: 100%;
-                height: 100%;
-                position: absolute;
-            }
-            
-            #position{
-                display: none;
-            }
-        </style>
+        <meta charset="utf-8">
+        <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <title></title>
+        <link rel="stylesheet" href="css/framework7.min.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" id="css" href="css/app.css">
+        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+        <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-ipad.png">
+        <link rel="apple-touch-icon" sizes="12+0x120" href="img/touch-icon-iphone-retina.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-ipad-retina.png">
     </head>
-    <body >
-            <div id="mapCanvas" ></div>
-            <div class="container col-xs-12" ng-controller="mainCtrl as GPS">
-                <h1>Rayte</h1>
-                <div class="row">
-                    <div class="col-xs-12">
-                       <input type="text" id="address" class="form-control col-xs-12" value="Obteniendo Ubicaci&oacute;n" />
-                    </div>
-                </div>
-                <br />        
-                <div class="row">
-                    <div class="col-xs-6">
-                       <button id="fetch" class="btn btn-info col-xs-12" >Rastrear</button>
-                    </div>
-                    <div class="col-xs-6">
-                       <button id="centrar" class="btn btn-info col-xs-12" onclick="GPS.centrarMapa();" >Centrar</button>
-                   </div>
-                </div>
-                <br />
-                 <div class="row">
-                    <div class="col-xs-6">
-                       <input type="text" id="address" class="form-control col-xs-12" value="" />
-                    </div>
-                    <div class="col-xs-6">
-                       <button id="buscar" class="btn btn-primary col-xs-12" onclick="GPS.codeAddress();" >Buscar</button>
-                   </div>
-                 </div>
-                 <br />
-                 <div class="row">
-                    <div class="col-xs-6">
-                       <button id="taxi" class="btn btn-primary col-xs-12" onclick="GPS.getTaxi();" >Buscar Taxi</button>
-                   </div>
-                    <div class="col-xs-6">
-                       <button id="irCentro" class="btn btn-primary col-xs-12" onclick="GPS.irCentro();" >Ir a Centro</button>
-                   </div>
-                 </div>
-                 <br />
-                 <div class="row">
-                    <div class="col-xs-6">
-                       <button id="pedirTaxi" class="btn btn-primary col-xs-12" onclick="GPS.pedirTaxi()" >Solicitar Taxi</button>
-                   </div>
-                 </div> 
-                <div class="row">
-                    <ul id="position"></ul>
+    <body>
+        <div class="statusbar-overlay"></div>
+        <div class="panel-overlay"></div>
+        <div class="panel panel-right panel-reveal">
+            <div class="content-block">
+                <img src="" alt=""/>
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content" id="cart">
+                            <div class="item-media"><i class="fa fa-shopping-cart fa-lg"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Perfil</div>
+                                <div class="item-after"></div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-   
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
-        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
-        <script type="text/javascript" src="js/gps.js"></script>
-        <script type="text/javascript" src="js/PushNotification.js"></script>
+        </div>
 
+        <div class="views">
+            <div class="view view-login ">
+                <div class="page">
+                    <div class="page-content login-screen-content">
+                        <div class="login-screen-title">
+                            <img src="img/logo.png" alt="" />
+                        </div>
+                        <div class="ciudad">
+                            <div id="slider">
+                                <div id="slider-1"></div>
+                                <div id="slider-2"></div>
+                            </div>
+                        </div>
+                        <div class="botones">
+                            <a class="open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
+                            <a href="#" id="registrate">Registrate</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="login-screen">
+                    <div class="view">
+                        <div class="page">
+                            <div class="page-content login-screen-content">
+                                <div class="login-screen-title">Rayte</div>
+                                <form>
+                                    <div class="list-block">
+                                        <ul>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">Usuario</div>
+                                                    <div class="item-input">
+                                                        <input type="text" name="username" placeholder="Your username">
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title label">Contrase&ntilde;a</div>
+                                                    <div class="item-input">
+                                                        <input type="password" name="password" placeholder="Your password">
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="list-block">
+                                        <ul>
+                                            <li><a href="#" id="doLogin" class="item-link list-button">Iniciar</a></li>
+                                        </ul>
+                                        <div class="list-block-label">
+                                            <p><a href="#" class="close-login-screen">Regresar</a></p>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="view view-main">
+                <!--
+                <div class="navbar">
+                    <div data-page="index" class="navbar-inner">
+                        <div class="right">
+                            <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div class="pages navbar-through toolbar-through">
+                    <div data-page="index" class="page">
+                        <div class="page-content">
+                            <div id="map-canvas" ></div>
+                            <div class="content-block map-container">
+                                <button class="map-button map-panel-button">menu</button>
+                                <button class="map-button map-center-button">ubic</button> 
+                            </div>
+                            <div class="map-menu">
+                                <div class="row">
+                                    <button id="search-address-button" class="col-25">Bus</button>
+                                    <input id="map-address" type="text" placeholder="Direccion..." class="col-75"/>
+                                </div>
+                                <div class="row">
+                                    <button id="van-taxi-button"class="col-50 van">Camioneta</button>
+                                    <button id="car-taxi-button" class="col-50 car">Coche</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-15"></div>
+                                    <button id="request-taxi-button" class="col-75 boton">Pedir Taxi</button>
+                                    <div class="col-15"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popover popover-about">
+                            <div class="popover-angle"></div>
+                            <div class="popover-inner">
+                                
+                                <div class="row">
+                                    <h3 class="col-100">Recorrido</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="col-100" id="modal-map" ></div>
+                                </div>
+                                <div class="row">
+                                   <ul class="col-50" >
+                                    <li>Detalles</li>
+                                    <li>Nombre</li>
+                                    <li>ID</li>
+                                    <li>Placas</li>
+                                   </ul>
+                                    <ul class="col-50">
+                                        <li>Tiempo Estimado</li>
+                                        <li>6:00 min</li>
+                                    </ul>
+                                </div>
+                             <!--
+                              <div class="content-block">
+                                <p>Recorrido</p>
+                                <div id="modal-map" ></div>
+                                <div 
+                              </div>
+                              -->
+                            </div>
+                          </div>
+                    </div>
+                    <div data-page="categorias" id="categorias" class="page cached">
+                        <div class="page-content">
+                            <a href="#" class="link" id="back-catalogo"><i class="icon icon-back"></i><span>Atras</span></a>
+                            <div class="content-block">
+                                <h2>categorias</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/framework7.min.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/require.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="js/sweetalert.min.js"></script>
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlWP6M9z-zsuGTW3NWK1tavW6mXTpa_t8">
         </script>
-        <script type="text/javascript">
-          
-          
-        var mapa ; 
-        function initialize() {
-            GPS.initialize();
-            var myOptions = {
-                center: new google.maps.LatLng( 19, -99.1333),
-                zoom: 4,
-                disableDefaultUI: true
-            };
-            GPS.mapa= new google.maps.Map(document.getElementById('mapCanvas'), myOptions);
-            GPS.pin.origen = new google.maps.Marker({
-                     map: GPS.mapa
-                 });
-            GPS.pin.destino = new google.maps.Marker({
-                     map: GPS.mapa
-                 });
-           GPS.geocoder = new google.maps.Geocoder();
-           GPS.polyline.live =  new google.maps.Polyline({
-                        map: GPS.mapa,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 0.7,
-                        strokeWeight: 5,
-                        visible: true,
-                        path:[]
-                      });
-            GPS.directionsService = new google.maps.DirectionsService();
-            GPS.directionsDisplay = new google.maps.DirectionsRenderer({
-                map: GPS.mapa,
-                draggable: false,
-                suppressMarkers:true
+
+        <script>
+            $(document).ready(function () {
+                document.addEventListener('deviceready', rayte.onDeviceReady, false);
             });
-            GPS.longPress = new LongPress(GPS.mapa,750);
-            google.maps.event.addListener(GPS.mapa,'longpress',function(event){GPS.menuPresionado(event.latLng);});
-           /*
-               var intervalo = setInterval(function(){
-                    console.log('interval');
-                    var jqxhr = $.ajax({
-                            method: "POST",
-                            url: "http://104.131.60.162/index.php/REST/requestTaxi",
-                            dataType: "text",
-                            data: { 'lat': 'latitud' },
-                            crossDomain: true,
-                            success: function (objJSON) {
-                                console.log('exito getTaxi: '+objJSON);
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                console.log('error taxi: '+textStatus);
-                            }
-                        });
-                    var jqxhr1 = $.ajax({
-                            method: "POST",
-                            url: "http://104.131.60.162/index.php/REST/savePosition",
-                            dataType: "text",
-                            data: { 'latlng': 'latitudLong',  },
-                            crossDomain: true,
-                            success: function (objJSON) {
-                                console.log('exito SavePosition: '+objJSON);
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                console.log('error taxi: '+textStatus);
-                            }
-                        });
-                    },3000);
-         */       
-        }
-        
-        google.maps.event.addDomListener(window, 'load', initialize);
-        
-    </script>
+        </script>
+
+        <script type="text/javascript">
+            var $$ = jQuery;
+        </script>
+        <script>
+            var css = jQuery("#css");
+            var href = css.attr('href');
+            css.attr('href', href + '?t=' + utils.date('YmdHis'));
+            require('js/app.js', function () {
+                $('#doLogin').touchstart(function () {
+                    user.login();
+                });
+            });
+        </script>
+
+
+        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
