@@ -24,7 +24,12 @@
             <div id="mapCanvas" ></div>
             <div class="container col-xs-12" ng-controller="mainCtrl as GPS">
                 <h1>Rayte</h1>
-                
+                <div class="row">
+                    <div class="col-xs-12">
+                       <input type="text" id="address" class="form-control col-xs-12" value="Obteniendo Ubicaci&oacute;n" />
+                    </div>
+                </div>
+                <br />        
                 <div class="row">
                     <div class="col-xs-6">
                        <button id="fetch" class="btn btn-info col-xs-12" >Rastrear</button>
@@ -54,7 +59,7 @@
                  <br />
                  <div class="row">
                     <div class="col-xs-6">
-                       <button id="pedirTaxi" class="btn btn-primary col-xs-12" onclick="" >Solicitar Taxi</button>
+                       <button id="pedirTaxi" class="btn btn-primary col-xs-12" onclick="GPS.pedirTaxi()" >Solicitar Taxi</button>
                    </div>
                  </div> 
                 <div class="row">
