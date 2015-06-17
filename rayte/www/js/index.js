@@ -16,25 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
-    // Application Constructor
-    initialize: function() {
-        this.bindEvents();
-    },
 
-    bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
-    },
+var rayte = {
     onDeviceReady: function() {
-        //app.receivedEvent('deviceready');
-         navigator.geolocation.getCurrentPosition(app.onSuccess, app.onError);
-        //v//ar options = { frequency: 3000 };
-//this.watchID = navigator.geolocation.watchPosition(onSuccessWatch, onError, options);
-    },
-    onSuccessWatch: function(position){ console.log('waddaup' );},
-    onSuccess: function(position){ console.log('lat: '+ position.coords.latitude +' lng: ' +position.coords.longitude );},
-    onError: function(error){ console.log('error: '+ error.message );},
-    watchID: 0
+         var networkState = navigator.connection.type;
+         console.log(networkState);
+         if ( networkState === Connection.NONE  ) {
+            alert("No hay conexion");
+         }
+    }
 };
+
+
 
 
