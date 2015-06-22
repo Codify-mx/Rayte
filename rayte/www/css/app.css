@@ -144,45 +144,113 @@ html,body
     position: absolute;
     width: 91%;
     bottom: 0px;
+    background: white;
 }
 #map-canvas{
     position: absolute;
     width: 100%;
     top: 0;
-    bottom: 115px;
+    bottom: 145px;
+}
+.map-menu-on-route{
+    display: none;
+}
+.map-menu-on-route ul{
+    margin: 5px 0 15px 0;
+    padding: 0;
+    list-style: none;
+    font-size: smaller;
+}
+
+.map-menu-on-route ul:first-child{
+    border-right: 2px solid #b9bd30;
+    margin-left: 15px;
+    padding-right: 15px;
+}
+
+.map-menu-on-route ul:last-child{
+        padding-left: 30px;
+}
+.map-menu-on-route ul .time{
+        font-weight: bold;
+        margin-top: 10%;
+        font-size:large;
+    }
+.map-menu-on-route ul li:first-child{
+   color: #009bdb;
+   font-weight: bold;
+}
+.page-content{
+    background: white;
+}
+.separador{
+    background: #b9bd30;
 }
 
 .popover,.popover-angle:after{
     background: #009bdb;
     
 }
-.popover-about{
+.map-popover{
     padding: 0 10px 10px;
     text-align: center;
+    font-size: smaller;
+    display: none;
+    opacity: 1;
+    position: absolute;
 }
-#modal-map{
-    height: 200px;
-    background: grey;
-}
-.popover-about h3{
+
+
+.map-popover .row.header{
     color: white;
+    background: #009bdb;
+    margin: 0;
+}
+.map-popover .row{
+    margin: 1em 0;
 }
 
-.popover-about .row:last-child{
+.map-popover .title{
+    font-weight: bold;
+    color: #009bdb;
+}
+
+.map-popover .route label{
+    font-weight:bold;
+}
+.map-popover .route{
+    padding: .5em 0;
+}
+
+.map-popover .container{
     background: white;
+    padding: 1em;
+}
+.map-popover .preview [class^="col-"] span:first-child{
+    border-bottom: 1px solid #b9bd30;
+    font-weight: bold;
+    padding-bottom: 3px;
+}
+.map-popover .preview .col-50 span:last-child{
+    font-weight: bold;
+    padding-top: 3px;
+    font-size: 1.3em;
 }
 
-.popover-about ul{
-    margin-top: 0;
-    list-style: none;
-}
 
-.popover-about ul li:first-child{
-   color: #009bdb;
-   font-weight: bold;
-}
 
-ul.detalle{
-    color: #CCC;
+.blured{
+    width:100%;
+    top:0;
+    bottom:0;
+    position: absolute;
+    background: black;
+    opacity: .4;
+    display: none;
 }
-
+@media screen and (max-device-width: 480px) and (orientation: portrait){
+  .popover{
+      width: 270px;
+      margin: 0 auto;
+  }
+}
