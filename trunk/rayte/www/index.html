@@ -131,37 +131,43 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="popover popover-about">
-                            <div class="popover-angle"></div>
+                        
+                        <div id="popover-confirm" class="popover map-popover">
                             <div class="popover-inner">
-                                
-                                <div class="row">
+                                <div class="row header">
                                     <h3 class="col-100">Recorrido</h3>
                                 </div>
-                                <div class="row">
-                                    <div class="col-100" id="modal-map" ></div>
+                                <div class="container">
+                                    <div class="row title">
+                                        <label class="col-100">Hemos seleccionado la mejor ruta para ti</label>
+                                    </div>
+                                    <div class="row no-gutter route">
+                                        <label class="col-25">Origen</label>
+                                        <span id="popover-confirm-start" class="col-75">Soy una direccion de origen</span>
+                                    </div>
+                                    <div class="row no-gutter route">
+                                        <label class="col-25">Destino</label>
+                                        <span id="popover-confirm-end" class="col-75">Soy una direccion de destino</span>
+                                    </div>
+                                    <div class="row preview">
+                                        <div class="col-50">
+                                            <div class="row">
+                                                <span class="col-100">Tiempo de llegada</span>
+                                                <span id="popover-confirm-time" class="col-100">3:00 min</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-50">
+                                            <div class="row">
+                                                 <span class="col-100">Costo</span>
+                                                 <span id="popover-confirm-cost" class="col-100">$ 50.00</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                   <ul class="col-50" >
-                                    <li>Detalles</li>
-                                    <li>Nombre</li>
-                                    <li>ID</li>
-                                    <li>Placas</li>
-                                   </ul>
-                                    <ul class="col-50">
-                                        <li>Tiempo Estimado</li>
-                                        <li>6:00 min</li>
-                                    </ul>
-                                </div>
-                             <!--
-                              <div class="content-block">
-                                <p>Recorrido</p>
-                                <div id="modal-map" ></div>
-                                <div 
-                              </div>
-                              -->
                             </div>
                           </div>
+                        <div class="blured"></div>
                     </div>
                     <div data-page="categorias" id="categorias" class="page cached">
                         <div class="page-content">

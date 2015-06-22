@@ -39,9 +39,20 @@ var user = {};
         zoom: 4,
         disableDefaultUI: true
     };
+    /*
+    var styles = [
+   {
+     featureType: "poi",
+     stylers: [
+      { visibility: "off" }
+     ]   
+    }
+];
+    */
     mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
     require('js/gps.js',function(){
         GPS.mapa = mapa.canvas;
+        GPS.mapaModal = mapa.modal;
         GPS.iniciaMapa();
         mapa = {};
         $('.map-panel-button').touchstart(function () {
@@ -53,7 +64,6 @@ var user = {};
         GPS.centrarMapa();
         app.hidePreloader();
     });
-
 }
 
 
