@@ -11,8 +11,8 @@
         <title></title>
         <link rel="stylesheet" href="css/framework7.min.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
-        <link rel="stylesheet" id="css" href="css/app.css">
         <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+        <link rel="stylesheet" id="css" href="css/app.css">
         <link rel="apple-touch-icon" href="touch-icon-iphone.png">
         <link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-ipad.png">
         <link rel="apple-touch-icon" sizes="12+0x120" href="img/touch-icon-iphone-retina.png">
@@ -183,6 +183,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="arror-down"></div>
                           </div>
                         <div id="popover-rate" class="popover map-popover">
                             <div class="popover-inner">
@@ -195,18 +196,29 @@
                                             <span class="col-100">Califica tu experiencia</span>
                                         </div>
                                     </div>
-                                    <fieldset class="rating">
-                                        <input type="radio" id="star2" name="rating" value="5" />
-                                        <label class = "full" for="star2" ></label>
-                                        <input type="radio" id="star2" name="rating" value="4" />
-                                        <label class = "full" for="star2" ></label>
-                                        <input type="radio" id="star2" name="rating" value="3" />
-                                        <label class = "full" for="star2" ></label>
-                                        <input type="radio" id="star2" name="rating" value="2" />
-                                        <label class = "full" for="star2" ></label>
-                                        <input type="radio" id="star1" name="rating" value="1" />
-                                        <label class = "full" for="star1" ></label>
+                                    <div class="row service">
+                                        <label class="col-100">Servicio</label>
+                                        <fieldset class="rating">
+                                            <input type="radio" id="star5" name="rating" value="5" />
+                                            <label class = "full" for="star5" ></label>
+                                            <input type="radio" id="star4" name="rating" value="4" />
+                                            <label class = "full" for="star4" ></label>
+                                            <input type="radio" id="star3" name="rating" value="3" />
+                                            <label class = "full" for="star3" ></label>
+                                            <input type="radio" id="star2" name="rating" value="2" />
+                                            <label class = "full" for="star2" ></label>
+                                            <input type="radio" id="star1" name="rating" value="1" />
+                                            <label class = "full" for="star1" ></label>
                                     </fieldset>
+                                    </div>
+                                    <div class="row service">
+                                        <label class="col-100">Comentarios</label>
+                                        <textarea id="popover-rate-comments" class="col-100" ></textarea>
+                                        <span class="col-100" >Omitir este paso</span>
+                                    </div>
+                                    <div class="row">
+                                        <a class="btn-send" href="#">Enviar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
