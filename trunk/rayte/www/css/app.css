@@ -128,16 +128,47 @@ html,body
 .map-container > .content-block-inner{
     background: none;
 }
+
+
+#request-taxi-button{
+    color: #009bdb;
+    border: 2px solid #b9bd30;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 10px auto;
+    padding: 10px 40px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: white;
+}
+
+#request-taxi-button.active{
+   background-color: #b9bd30;
+   color: white;
+}
+
 .map-button{
     position: absolute;
     right: 8px;
+    background-size: cover;
+    height: 40px;
+    width: 40px;
+}
+
+.map-panel-button{
+    background-image: url("../assets/iconos/menu.png");
+}
+
+.map-center-button{
+    background-image: url("../assets/iconos/ubicacion.png");
 }
 .map-button:first-child{
-    top:   40px;
+    top:   20px;
 }
 .map-menu .row{
     margin: 5px 0 5px;
 }
+
 
 .map-menu{
     padding: 10px 15px;
