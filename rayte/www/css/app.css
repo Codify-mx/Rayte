@@ -237,7 +237,54 @@ html,body
     font-size: 1.3em;
 }
 
+.map-popover .service label:first-child{
+    text-align: left;
+    font-weight: bold;
+    color: #009bdb;
+    margin-left:5px;
+}
+.map-popover .service fieldset{
+    padding-left: 0;
+    margin-left: 0; 
+    padding-bottom: 0;
+}
 
+.map-popover .service textarea{
+  resize: none;
+  margin: 5px;
+  border-radius: 4px;
+  border-color: #d1d1d1;
+  height: 75px;
+}
+
+.map-popover .service span{
+  color: #7d7d7d;
+}
+
+.map-popover .btn-send{
+  margin: 0 auto;
+  color: white;
+  background-color: #009bdb;
+  padding:5px;
+  width: 110px;
+  border-radius: 5px;
+  letter-spacing: 2px; 
+  font-weight: lighter;
+  border: 1px solid #009bdb;
+}
+
+.map-popover .btn-send.active{
+  color: #009bdb;
+  background-color: white;
+}
+
+.arrow-down {
+	width: 0; 
+	height: 0; 
+	border-left: 20px solid transparent;
+	border-right: 20px solid transparent;
+	border-top: 20px solid #009bdb;
+}
 
 .blured{
     width:100%;
@@ -282,13 +329,4 @@ html,body
  float: right; 
 }
 
-/***** CSS Magic to Highlight Stars on Hover *****/
-
-.rating > input:checked ~ label, /* show gold star when clicked */
-.rating:not(:checked) > label:hover, /* hover current star */
-.rating:not(:checked) > label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
-
-.rating > input:checked + label:hover, /* hover current star when changing rating */
-.rating > input:checked ~ label:hover,
-.rating > label:hover ~ input:checked ~ label, /* lighten current selection */
-.rating > input:checked ~ label:hover ~ label { color: #FFED85;  } 
+.rating > input:checked ~ label { color: #FFD700;  } 
