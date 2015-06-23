@@ -41,13 +41,13 @@ var user = {};
     };
     /*
     var styles = [
-   {
-     featureType: "poi",
-     stylers: [
-      { visibility: "off" }
-     ]   
-    }
-];
+        {
+          featureType: "poi",
+          stylers: [
+           { visibility: "off" }
+          ]   
+        }
+    ];
     */
     mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
     require('js/gps.js',function(){
