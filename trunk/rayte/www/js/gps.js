@@ -3,7 +3,6 @@ var GPS = {
      *  Mapa a utilizar
      */
     mapa: null,
-    mapaModal: null,
     /*
      *  Geocoder utilizado para encontrar latlng mediante direcciones (calle,numero,colonia) y viceversa
      */
@@ -54,13 +53,11 @@ var GPS = {
      * Guardar instancia para eventos al mantener presionado sobre el mapa
      */
     longPress: null,
-    confirmaRide: false,
     /*
      *  agrega el evento "deviceready" para poder llamar los plugins del celular (geolocation) de manera segura
      */
     bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
-        // google.maps.event.addDomListener(GPS.mapa, 'drag', GPS.updateMapCenter);
     },
     /*
      *  Cancela el servicio "watchPosition", cambia evento en el boton "fetch" para poder iniciarlo de nuevo
@@ -75,15 +72,11 @@ var GPS = {
         });
         var lanlng_txt = GPS.latlng.join(',');
         console.log('text: ' + lanlng_txt);
-
-        // GPS.imprimeArreglo();
-        //GPS.dibujaRecorrido();
     },
     /*
      *  Obtiene la posición actual del dispositivo
      */
     centrarMapa: function () {
-        //GPS.agregaMensaje('Loading...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
     /*
@@ -117,15 +110,11 @@ var GPS = {
             GPS.pedirTaxi();
         });
         GPS.initiatePushNotifications();
-
-
-        // $( "body" ).bind( "taphold", GPS.menuPresionado );
     },
     /*
      *  Inicia el servicio de rastreo
      */
     startWatch: function () {
-        GPS.agregaMensaje('start watch');
         GPS.polyline.live.setPath([]);
         var options = {enableHighAccuracy: true};
         this.watchID = navigator.geolocation.watchPosition(GPS.onSuccess, GPS.onError, options);
@@ -134,7 +123,6 @@ var GPS = {
         $('#fetch').click(function () {
             GPS.cancelWatch();
         });
-
     },
     /*
      *  Manda un mensaje en caso de no poder obtener la posición
@@ -153,10 +141,8 @@ var GPS = {
         if (GPS.polyline.route) {
             GPS.inRoute(myLatLng, GPS.polyline.route);
         }
-        GPS.agregaMensaje('Recorrido live');
         GPS.dibujaRecorridoLive(myLatLng);
         GPS.pin.usuario.setPosition(myLatLng);
-        console.log('enviar pos');
         var jqrh = $.ajax({
             method: "POST",
             url: "http://104.131.60.162/index.php/REST/savePosition",
@@ -345,8 +331,17 @@ var GPS = {
             GPS.agregaMensaje('No estoy en la ruta');
         }
     },
+    /*
+     *  arreglo de taxis auxiliar
+     */
     taxis: [],
+    /*
+     * identifica si es camioneta o carro 
+     */
     tipoTaxi: null,
+    /*
+     *  cambia el valor de tipo taxi
+     */
     setTipoTaxi: function (val) {
         GPS.tipoTaxi = val;
     },
@@ -496,6 +491,9 @@ var GPS = {
                 break;
         }
     },
+    /*
+     *  inicia el servicio de notificaciones push
+     */
     initiatePushNotifications: function () {
         try {
             var platform = device.platform.toLowerCase();
@@ -516,6 +514,9 @@ var GPS = {
             });
         }
     },
+    /*
+     *  Controla las notificaciones push en IOS
+     */
     onNotificationAPN: function (event) {
         if (event.alert) {
         }
@@ -524,6 +525,9 @@ var GPS = {
             snd.play();
         }
     },
+    /*
+     *  Controla las notificaciones push en android
+     */
     onNotificationGCM: function (e) {
         switch (e.event)
         {
@@ -598,15 +602,27 @@ var GPS = {
                 break;
         }
     },
+    /*
+     *  Funcion si se registra adecuadamente el servicio de notificaciones push en ios
+     */
     tokenHandler: function (msg) {
         //registrarDispositivo(msg, 'ios');
     },
+    /*
+     * Funcion si se registra adecuadamente el servicio de notificaciones push en androids
+     */
     successHandler: function (result) {
         console.log(result);
     },
+    /*
+     *  incion si ocurre error al registrar dispositivo para notificaciones push
+     */
     errorHandler: function (error) {
         console.log(error);
     },
+    /*
+     *  Registra el id de notificaciones push y tipo de dispositivo en la base de datos 
+     */
     registrarDispositivo: function (id, plataforma) {
         var jqxhr = $.ajax({
             method: "POST",
@@ -627,6 +643,10 @@ var GPS = {
             }
         });
     },
+    /*
+     *  pide un taxi específico, si no está disponible o se cancela, busca el siquiente taxi
+     *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
+     */
     pedirTaxi: function (taxi) {
         var OlatLng = GPS.pin.usuario.getPosition();
         var DlatLng = GPS.pin.destino.getPosition();
@@ -702,6 +722,9 @@ var GPS = {
             }
         });
     },
+    /*
+     * Verifica que tipo de conexion tiene el dispositivo, si no existe conexion manda mensaje de error
+     */
     checkConnection: function () {
         var networkState = navigator.connection.type;
         if (networkState === Connection.NONE) {
@@ -713,7 +736,13 @@ var GPS = {
             });
         }
     },
+    /*
+     * Se guarda el intervalo utilizado para pedir la solicitud del taxi
+     */
     taxiInterval: null,
+    /*
+     *  Pide la posición actual del taxi y actualizza el mapa, se ejecuta cada 1.2 segundos
+     */
     actualizaPinTaxi: function () {
         GPS.pin.taxi.idTaxi = GPS.pin.taxi.idTaxi || 35;
         GPS.taxiInterval = setInterval(function () {
@@ -750,6 +779,10 @@ var GPS = {
             });
         }, 1200);
     },
+    /*
+     * Determina que taxi está mas cerca a la ubicacion del usuario
+     * @param {Array[Object]} rutas Arreglo de posiciones del taxi {lat,lng}
+     */
     buscaTaxistaCercano: function (rutas) {
         try {
             if (Array.isArray(rutas)) {
@@ -782,6 +815,9 @@ var GPS = {
             //siguiente ? 
         }
     },
+    /*
+     *  Funcion auxiliar para ordenar los taxis por distancia
+     */
     comparaDistanciaTaxis: function (a, b) {
         if (a.distancia < b.distancia)
             return -1;
@@ -789,6 +825,9 @@ var GPS = {
             return 1;
         return 0;
     },
+    /*
+     *  Muestra una ventana swal sin botones para mostrar información, debe ser cerrada manualente
+     */
     swalPreloader: function (message) {
         swal({
             title: "Espere porfavor",
@@ -822,15 +861,18 @@ var GPS = {
         $$('.blured').show();
 
     },
+    /*
+     * Inicia todos los componentes del mapa, notificaciones y hace binding de los eventos
+     */
     iniciaMapa: function () {
         GPS.initiatePushNotifications();
+        
         GPS.pin.usuario = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-usuario.png',
             },
             animation: google.maps.Animation.DROP
-
         });
 
         GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: false});
@@ -852,6 +894,7 @@ var GPS = {
             },
             animation: google.maps.Animation.DROP
         });
+        
         GPS.pin.taxi = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
@@ -859,6 +902,7 @@ var GPS = {
             },
             animation: google.maps.Animation.DROP
         });
+        
         GPS.geocoder = new google.maps.Geocoder();
         GPS.polyline.live = new google.maps.Polyline({
             map: GPS.mapa,
@@ -868,45 +912,57 @@ var GPS = {
             visible: true,
             path: []
         });
+        
         GPS.directionsService = new google.maps.DirectionsService();
         GPS.directionsDisplay = new google.maps.DirectionsRenderer({
             map: GPS.mapa,
             draggable: false,
             suppressMarkers: true
         });
+        
         GPS.longPress = new LongPress(GPS.mapa, 750);
         google.maps.event.addListener(GPS.mapa, 'longpress', function (event) {
             GPS.menuPresionado(event.latLng);
         });
+        
         GPS.mapa.setOptions({
             styles: [
                 {
                     featureType: "poi",
                     stylers: [
-                        {visibility: "off"}
+                        {
+                            visibility: "off"
+                        }
                     ]
                 }
             ]});
         /** eventos a botones **/
+        
         $$('#map-address').focus(function (e) {
             $$(this).val('');
         });
+        
         $$('#map-address').blur(function (e) {
             if (!$$(this).val())
                 $('#map-address').val(GPS.pin.usuario.address);
         });
+        
         $('#van-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(1);
         });
+        
         $('#car-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(2);
         });
+        
         $('#request-taxi-button').touchstart(function () {
             GPS.getTaxi();
         });
+        
         $('#search-address-button').touchstart(function () {
             GPS.codeAddress();
         });
+        
         $('#popover-confirm-yes').touchstart(function () {
             GPS.pin.taxi.setMap(GPS.mapa);
             GPS.pin.usuario.setMap(GPS.mapa);
@@ -947,8 +1003,8 @@ var GPS = {
 
 /*
  *  Genera el evento para detectar si se manteien presionado sobre el mapa
- *  @param google.maps.Map map Mapa al que se le añadirá el evento
- *  @param int length tiempo en milisegundos que se requerirá mantener presionado
+ *  @param { google.maps.Map } map Mapa al que se le añadirá el evento
+ *  @param { int } length tiempo en milisegundos que se requerirá mantener presionado
  */
 function LongPress(map, length) {
     this.length_ = length;
@@ -965,7 +1021,7 @@ function LongPress(map, length) {
         me.onMapDrag_(e);
     });
 }
-;
+
 
 var taxi = {};
 
