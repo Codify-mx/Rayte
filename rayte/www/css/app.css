@@ -152,31 +152,31 @@ html,body
     top: 0;
     bottom: 145px;
 }
-.map-menu-on-route{
+.on-route{
     display: none;
 }
-.map-menu-on-route ul{
+.on-route ul{
     margin: 5px 0 15px 0;
     padding: 0;
     list-style: none;
     font-size: smaller;
 }
 
-.map-menu-on-route ul:first-child{
+.on-route ul:first-child{
     border-right: 2px solid #b9bd30;
     margin-left: 15px;
     padding-right: 15px;
 }
 
-.map-menu-on-route ul:last-child{
+.on-route ul:last-child{
         padding-left: 30px;
 }
-.map-menu-on-route ul .time{
+.on-route ul .time{
         font-weight: bold;
         margin-top: 10%;
         font-size:large;
     }
-.map-menu-on-route ul li:first-child{
+.on-route ul li:first-child{
    color: #009bdb;
    font-weight: bold;
 }
