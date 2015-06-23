@@ -112,36 +112,37 @@
                         <div class="page-content">
                             <div id="map-canvas" ></div>
                             <div class="content-block map-container">
-                                <button class="map-button map-panel-button">menu</button>
-                                <button class="map-button map-center-button">ubic</button> 
+                                <a class="map-button map-panel-button"></a>
+                                <a class="map-button map-center-button"></a> 
                             </div>
                             <div class="map-menu">
-                                <div class="row">
-                                    <button id="search-address-button" class="col-25">Bus</button>
-                                    <input id="map-address" type="text" placeholder="Direccion..." class="col-75"/>
+                                <div class="map-main-menu">
+                                    <div class="row">
+                                        <button id="search-address-button" class="col-25">Bus</button>
+                                        <input id="map-address" type="text" placeholder="Direccion..." class="col-75"/>
+                                    </div>
+                                    <div class="row">
+                                        <button id="van-taxi-button"class="col-50 van">Camioneta</button>
+                                        <button id="car-taxi-button" class="col-50 car">Coche</button>
+                                    </div> 
+                                </div>
+                                
+                                <div class="on-route">
+                                    <div class="row">
+                                        <ul class="col-50">
+                                            <li>Detalles</li>
+                                            <li id="taxi-conductor">Nombre</li>
+                                            <li id="taxi-id">ID</li>
+                                            <li id="taxi-placas">Placas</li>
+                                        </ul>
+                                        <ul class="col-50">
+                                            <li>Tiempo Estimado</li>
+                                            <li class="time" >9:00 min</li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="row">
-                                    <button id="van-taxi-button"class="col-50 van">Camioneta</button>
-                                    <button id="car-taxi-button" class="col-50 car">Coche</button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-15"></div>
-                                    <button id="request-taxi-button" class="col-75 boton">Pedir Taxi</button>
-                                    <div class="col-15"></div>
-                                </div>
-                            </div>
-                            <div class="map-menu on-route">
-                                <div class="row">
-                                    <ul class="col-50">
-                                        <li>Detalles</li>
-                                        <li id="taxi-conductor">Nombre</li>
-                                        <li id="taxi-id">ID</li>
-                                        <li id="taxi-placas">Placas</li>
-                                    </ul>
-                                    <ul class="col-50">
-                                        <li>Tiempo Estimado</li>
-                                        <li class="time" >9:00 min</li>
-                                    </ul>
+                                    <a id="request-taxi-button" class="col-100">PEDIR RAYTE</a>
                                 </div>
                             </div>
                         </div>
