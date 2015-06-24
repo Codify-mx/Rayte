@@ -86,6 +86,7 @@ var GPS = {
      *  Obtiene la posición actual del dispositivo
      */
     centrarMapa: function () {
+        //app.hidePreloader();
         app.showPreloader('Buscando ubicacion ...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
@@ -95,10 +96,11 @@ var GPS = {
      */
     onSuccessCenter: function (position) {
         var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        //GPS.mapa.panTo(myLatlng);
         GPS.mapa.setCenter(myLatlng);
-        GPS.mapa.panTo(myLatlng);
         GPS.mapa.setZoom(16);
         GPS.pin.usuario.setPosition(myLatlng);
+        $$('.fixed-marker').show();
         GPS.codeLatLng(myLatlng, GPS.pin.usuario, true);
         app.hidePreloader();
     },
@@ -198,11 +200,12 @@ var GPS = {
      */
     codeLatLng: function (latlng, pin, centrar) {
         GPS.geocoder.geocode({'latLng': latlng}, function (results, status) {
-            console.log(status);
             if (status == google.maps.GeocoderStatus.OK) {
-                pin.address = results[0].formatted_address;
+                var dir = results[0].address_components;
+                var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
+                pin.address = direccion;
                 if (centrar)
-                    $('#map-address').val(results[0].formatted_address);
+                    $('#map-address').val(direccion);
             } else {
                 // GPS.validarCodeAddress(results, status);
             }
@@ -492,10 +495,11 @@ var GPS = {
     validarCodeAddress: function (results, status) {
         switch (status) {
             case google.maps.GeocoderStatus.OK:
-                GPS.agregaMensaje("Encontrado");
                 //GPS.mapa.setCenter(results[0].geometry.location);
                 GPS.pin.destino.setPosition(results[0].geometry.location);
-                GPS.pin.destino.address = results[0].formatted_address;
+                var dir = results[0].address_components;
+                var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
+                GPS.pin.destino.address = direccion;
                 GPS.calcularRuta();
                 break;
             case google.maps.GeocoderStatus.ERROR:
@@ -896,9 +900,12 @@ var GPS = {
                 GPS.directionsDisplay.setRouteIndex(GPS.rutas.usuario.index);
                 GPS.pin.usuario.setPosition(ruta.legs[0].start_location);
                 GPS.pin.destino.setPosition(ruta.legs[0].end_location);
+                GPS.pin.usuario.setMap(GPS.mapa);
                 GPS.pin.destino.setMap(GPS.mapa);
                 GPS.directionsDisplay.setMap(GPS.mapa);
                 GPS.pin.taxi.setMap(null);
+                $$('.fixed-marker').hide();
+                app.hidePreloader();
             break;
             case 'taxi':
                 var ruta  = GPS.rutas.taxi.directions.routes[GPS.rutas.taxi.index];
@@ -907,15 +914,19 @@ var GPS = {
                 GPS.pin.taxi.setPosition(ruta.legs[0].start_location);
                 GPS.pin.usuario.setPosition(ruta.legs[0].end_location);
                 GPS.pin.taxi.setMap(GPS.mapa);
+                GPS.pin.usuario.setMap(GPS.mapa);
                 GPS.directionsDisplay.setMap(GPS.mapa);
                 GPS.pin.destino.setMap(null);
+                $$('.fixed-marker').hide();
+                app.hidePreloader();
             break;
             default:
                 $$('.map-popover').hide();
                 $$('.map-main-menu').show();
                 $$('.on-route').hide();
-                GPS.pin.taxi.setMap(null);
                 GPS.directionsDisplay.setDirections({routes:[]});
+                GPS.pin.taxi.setMap(null);
+                GPS.pin.usuario.setMap(null);
                 GPS.pin.destino.setMap(null);
                 GPS.centrarMapa();
             break;
@@ -928,13 +939,17 @@ var GPS = {
         GPS.initiatePushNotifications();
 
         GPS.pin.usuario = new google.maps.Marker({
-            map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-usuario.png',
-            },
-            animation: google.maps.Animation.DROP
+            }
         });
+        
+        GPS.overlay =  new google.maps.OverlayView();
+        GPS.overlay.draw = function() {};
+        GPS.overlay.setMap(GPS.mapa);
+       
 
+        
         GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: false});
 
         google.maps.event.addListener(GPS.pin.usuario, "position_changed", function () {
@@ -946,23 +961,29 @@ var GPS = {
                 GPS.pin.usuario.setPosition(GPS.mapa.getCenter());
                 GPS.codeLatLng(GPS.mapa.getCenter(), GPS.pin.usuario, true);
             }
-        })
+        });
+        
+        google.maps.event.addListenerOnce(GPS.mapa,'center_changed',function(){
+            $$('<div/>').addClass('fixed-marker').appendTo(GPS.mapa.getDiv());
+            var p = GPS.overlay.getProjection().fromLatLngToContainerPixel(GPS.mapa.getCenter());
+            var markerHeight = $$('.fixed-marker').height();
+            var markerWidth = $$('.fixed-marker').width()/2;
+            $$('.fixed-marker').offset({top:(p.y-markerHeight),left:(p.x-markerWidth)});
+        });
 
 
         GPS.pin.destino = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-destino.png',
-            },
-            animation: google.maps.Animation.DROP
+            }
         });
         
         GPS.pin.taxi = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-taxi.png',
-            },
-            animation: google.maps.Animation.DROP
+            }
         });
         
         GPS.geocoder = new google.maps.Geocoder();
@@ -1031,6 +1052,13 @@ var GPS = {
             GPS.codeAddress();
         });
         
+        $('.map-panel-button').touchstart(function () {
+            app.openPanel('right');
+        });
+        $('.map-center-button').touchstart(function () {
+           GPS.muestraRutaMapa();
+        });
+        
         $('#popover-confirm-yes').touchstart(function () {
             GPS.muestraRutaMapa('taxi');
             GPS.actualizaPinTaxi();
@@ -1039,8 +1067,11 @@ var GPS = {
             $$('.map-main-menu').hide();
             $$('.on-route').show();
             setTimeout(function () {
-                GPS.showModal('#popover-rate', '#request-taxi-button');
+                GPS.muestraRutaMapa('usuario');
                 clearInterval(GPS.taxiInterval);
+                setTimeout(function(){
+                    GPS.showModal('#popover-rate', '#request-taxi-button');
+                    }, 5000);
             }, 5000);
         });
 
@@ -1058,6 +1089,8 @@ var GPS = {
             $$(this).removeClass('active');
             GPS.muestraRutaMapa();
         });
+        
+        GPS.muestraRutaMapa();
     }
 }
 
