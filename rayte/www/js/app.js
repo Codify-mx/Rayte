@@ -54,14 +54,7 @@ var user = {};
         GPS.mapa = mapa.canvas;
         GPS.mapaModal = mapa.modal;
         GPS.iniciaMapa();
-        mapa = {};
-        $('.map-panel-button').touchstart(function () {
-            app.openPanel('right');
-        });
-        $('.map-center-button').touchstart(function () {
-            GPS.centrarMapa();
-        });
-        GPS.centrarMapa();
+        //mapa = {};
         app.hidePreloader();
     });
 }

@@ -128,14 +128,16 @@ html,body
 .map-container > .content-block-inner{
     background: none;
 }
-
+div[data-page="index"] .page-content{
+ /* overflow: hidden;*/
+}
 
 #request-taxi-button{
     color: #009bdb;
     border: 2px solid #b9bd30;
     text-transform: uppercase;
     text-align: center;
-    margin: 10px auto;
+    margin: 10px auto 0;
     padding: 10px 40px;
     border-radius: 5px;
     font-weight: bold;
@@ -153,6 +155,7 @@ html,body
     background-size: cover;
     height: 40px;
     width: 40px;
+    top: 20px;
 }
 
 .map-panel-button{
@@ -161,6 +164,7 @@ html,body
 
 .map-center-button{
     background-image: url("../assets/iconos/ubicacion.png");
+    top: 65px;
 }
 .map-button:first-child{
     top:   20px;
@@ -173,7 +177,7 @@ html,body
 .map-menu{
     padding: 10px 15px;
     position: absolute;
-    width: 91%;
+    width: calc(100% - 2.3em);
     bottom: 0px;
     background: white;
 }
@@ -181,7 +185,7 @@ html,body
     position: absolute;
     width: 100%;
     top: 0;
-    bottom: 145px;
+    bottom: 180px;
 }
 .on-route{
     display: none;
@@ -196,12 +200,13 @@ html,body
 .on-route ul:first-child{
     border-right: 2px solid #b9bd30;
     margin-left: 15px;
-    padding-right: 15px;
+    padding-left: 15px;
 }
-
+/*
 .on-route ul:last-child{
         padding-left: 30px;
 }
+*/
 .on-route ul .time{
         font-weight: bold;
         margin-top: 10%;
@@ -326,15 +331,6 @@ html,body
     opacity: .4;
     display: none;
 }
-@media screen and (max-device-width: 480px) and (orientation: portrait){
-  .popover{
-      width: 270px;
-      margin: 0 auto;
-  }
-}
-
-
-
 
 .rating { 
   border: none;
@@ -360,4 +356,84 @@ html,body
  float: right; 
 }
 
-.rating > input:checked ~ label { color: #FFD700;  } 
+.rating > input:checked ~ label { color: #FFD700;  }
+
+
+.van{
+    background-image: url("../assets/vehiculos/van.png");
+}
+.car{
+    background-image: url("../assets/vehiculos/auto.png");
+    border-left: 2px solid #b9bd30;
+}
+.vehicle{
+    height:50px; 
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.vehicle-container{
+    padding-top: 10px;
+}
+
+
+.search-address{
+    background: #b9bd30;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    bottom: 135px;
+    width: 100%;
+    padding: 5px 1px;
+}
+.search-address input[type="text"]{
+    background: #b9bd30;
+    border: none;
+    border-left: 2px solid white;;
+    color: white;
+    height:100%;
+    padding-left: 5px;
+    font-size: smaller;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.search-address a{
+    background-image: url("../assets/iconos/lupa.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    height:100%;
+    background-position: center;
+}
+
+.search-address input[type="text"]::-webkit-input-placeholder{
+   color: white; 
+}
+.search-address input[type="text"]:-moz-placeholder{
+   color: white; 
+}
+.search-address input[type="text"]::-moz-placeholder{
+   color: white; 
+}
+.search-address input[type="text"]:-ms-input-placeholder{
+   color: white; 
+}
+
+.fixed-marker{
+    height: 66px;
+    width: 48px;
+    background: url('http://104.131.60.162/indicador-usuario.png');
+    bacground-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    display: none;
+    z-index: 1;
+}
+
+
+@media screen and (max-device-width: 480px) and (orientation: portrait){
+  .popover{
+      width: 270px;
+      margin: 0 auto;
+  }
+}

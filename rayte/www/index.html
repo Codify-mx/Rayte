@@ -111,22 +111,19 @@
                     <div data-page="index" class="page">
                         <div class="page-content">
                             <div id="map-canvas" ></div>
-                            <div class="content-block map-container">
-                                <a class="map-button map-panel-button"></a>
-                                <a class="map-button map-center-button"></a> 
-                            </div>
+                            <a class="map-button map-panel-button"></a>
+                            <a class="map-button map-center-button"></a>
                             <div class="map-menu">
                                 <div class="map-main-menu">
-                                    <div class="row">
-                                        <button id="search-address-button" class="col-25">Bus</button>
-                                        <input id="map-address" type="text" placeholder="Direccion..." class="col-75"/>
+                                    <div class="row no-gutter search-address">
+                                        <a id="search-address-button" class="col-15"></a>
+                                        <input id="map-address" type="text" placeholder="Destino..." class="col-85"/>
                                     </div>
-                                    <div class="row">
-                                        <button id="van-taxi-button"class="col-50 van">Camioneta</button>
-                                        <button id="car-taxi-button" class="col-50 car">Coche</button>
+                                    <div class="row no-gutter vehicle-container">
+                                        <a id="van-taxi-button"class="col-50 vehicle van" href="#"></a>
+                                        <a id="car-taxi-button" class="col-50 vehicle car" href="#"></a>
                                     </div> 
                                 </div>
-                                
                                 <div class="on-route">
                                     <div class="row">
                                         <ul class="col-50">
@@ -135,7 +132,7 @@
                                             <li id="taxi-id">ID</li>
                                             <li id="taxi-placas">Placas</li>
                                         </ul>
-                                        <ul class="col-50">
+                                        <ul class="col-40">
                                             <li>Tiempo Estimado</li>
                                             <li class="time" >9:00 min</li>
                                         </ul>
