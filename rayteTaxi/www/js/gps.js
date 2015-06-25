@@ -202,7 +202,7 @@ var GPS = {
         GPS.geocoder.geocode({'latLng': latlng}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 var dir = results[0].address_components;
-                var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
+                var direccion = dir[1].short_name + ' ' + dir[0].short_name + ', ' + dir[2].short_name;
                 pin.address = direccion;
                 if (centrar)
                     $('#map-address').val(direccion);
@@ -393,7 +393,7 @@ var GPS = {
                         });
                     }
                 });
-            }else{
+            } else {
                 swal({
                     title: "Elige un Destino!!",
                     text: 'Seleccione La ubicacion de destino',
@@ -417,30 +417,6 @@ var GPS = {
         GPS.pin.destino.setPosition(GPS.mapa.getCenter());
         GPS.calcularRuta();
         GPS.codeLatLng(GPS.pin.destino.getPosition(), GPS.pin.destino);
-    },
-    /*
-     *  Pregunta si se desea calcular la ruta a la posicion donde se mantiene presionado sobre el mapa
-     *  @param google.maps.LatLng latlng posicion hacia la cual se desea calcular la ruta
-     */
-    menuPresionado: function (latlng) {
-
-        swal({
-            title: "Seleccionar destino",
-            text: "¿ Ruta hasta aquí ?",
-            type: "",
-            showCancelButton: true,
-            confirmButtonColor: "#009bdb",
-            confirmButtonText: "Si",
-            cancelButtonText: "No",
-            cancelButtonColor: "#2f3946",
-            closeOnConfirm: true,
-            animation: false,
-        },
-                function () {
-                    GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(), latlng.lng()));
-                    GPS.codeLatLng(GPS.pin.destino.getPosition(), GPS.pin.destino);
-                    GPS.calcularRuta();
-                });
     },
     /*
      *  Determina que realizar en base al estatus obtenido al generar la ruta
@@ -498,7 +474,7 @@ var GPS = {
                 //GPS.mapa.setCenter(results[0].geometry.location);
                 GPS.pin.destino.setPosition(results[0].geometry.location);
                 var dir = results[0].address_components;
-                var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
+                var direccion = dir[1].short_name + ' ' + dir[0].short_name + ', ' + dir[2].short_name;
                 GPS.pin.destino.address = direccion;
                 GPS.calcularRuta();
                 break;
@@ -562,7 +538,7 @@ var GPS = {
     /*
      *  Controla las notificaciones push en android
      */
-    onNotificationGCM: function (e) { 
+    onNotificationGCM: function (e) {
         switch (e.event)
         {
             case 'registered':
@@ -887,15 +863,15 @@ var GPS = {
                 }
             }
         });
-        $$(me).css('top', (modalOffset.top - meHeight-20));
+        $$(me).css('top', (modalOffset.top - meHeight - 20));
         $$(me).css('left', ((deviceWidth / 2) - (meWidth / 2)));
         $$(me).show();
         $$('.blured').show();
     },
-    muestraRutaMapa: function(tipo){
-        switch(tipo) {
+    muestraRutaMapa: function (tipo) {
+        switch (tipo) {
             case 'usuario':
-                var ruta  = GPS.rutas.usuario.directions.routes[GPS.rutas.usuario.index];
+                var ruta = GPS.rutas.usuario.directions.routes[GPS.rutas.usuario.index];
                 GPS.directionsDisplay.setDirections(GPS.rutas.usuario.directions);
                 GPS.directionsDisplay.setRouteIndex(GPS.rutas.usuario.index);
                 GPS.pin.usuario.setPosition(ruta.legs[0].start_location);
@@ -906,9 +882,9 @@ var GPS = {
                 GPS.pin.taxi.setMap(null);
                 $$('.fixed-marker').hide();
                 app.hidePreloader();
-            break;
+                break;
             case 'taxi':
-                var ruta  = GPS.rutas.taxi.directions.routes[GPS.rutas.taxi.index];
+                var ruta = GPS.rutas.taxi.directions.routes[GPS.rutas.taxi.index];
                 GPS.directionsDisplay.setDirections(GPS.rutas.taxi.directions);
                 GPS.directionsDisplay.setRouteIndex(GPS.rutas.taxi.index);
                 GPS.pin.taxi.setPosition(ruta.legs[0].start_location);
@@ -919,17 +895,17 @@ var GPS = {
                 GPS.pin.destino.setMap(null);
                 $$('.fixed-marker').hide();
                 app.hidePreloader();
-            break;
+                break;
             default:
                 $$('.map-popover').hide();
                 $$('.map-main-menu').show();
                 $$('.on-route').hide();
-                GPS.directionsDisplay.setDirections({routes:[]});
+                GPS.directionsDisplay.setDirections({routes: []});
                 GPS.pin.taxi.setMap(null);
                 GPS.pin.usuario.setMap(null);
                 GPS.pin.destino.setMap(null);
                 GPS.centrarMapa();
-            break;
+                break;
         }
     },
     /*
@@ -940,16 +916,17 @@ var GPS = {
 
         GPS.pin.usuario = new google.maps.Marker({
             icon: {
-                url: 'http://104.131.60.162/indicador-usuario.png',
+                url: 'http://104.131.60.162/indicador-taxi.png',
             }
         });
-        
-        GPS.overlay =  new google.maps.OverlayView();
-        GPS.overlay.draw = function() {};
-        GPS.overlay.setMap(GPS.mapa);
-       
 
-        
+        GPS.overlay = new google.maps.OverlayView();
+        GPS.overlay.draw = function () {
+        };
+        GPS.overlay.setMap(GPS.mapa);
+
+
+
         GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: false});
 
         google.maps.event.addListener(GPS.pin.usuario, "position_changed", function () {
@@ -962,13 +939,13 @@ var GPS = {
                 GPS.codeLatLng(GPS.mapa.getCenter(), GPS.pin.usuario, true);
             }
         });
-        
-        google.maps.event.addListenerOnce(GPS.mapa,'center_changed',function(){
+
+        google.maps.event.addListenerOnce(GPS.mapa, 'center_changed', function () {
             $$('<div/>').addClass('fixed-marker').appendTo(GPS.mapa.getDiv());
             var p = GPS.overlay.getProjection().fromLatLngToContainerPixel(GPS.mapa.getCenter());
             var markerHeight = $$('.fixed-marker').height();
-            var markerWidth = $$('.fixed-marker').width()/2;
-            $$('.fixed-marker').offset({top:(p.y-markerHeight),left:(p.x-markerWidth)});
+            var markerWidth = $$('.fixed-marker').width() / 2;
+            $$('.fixed-marker').offset({top: (p.y - markerHeight), left: (p.x - markerWidth)});
         });
 
 
@@ -978,14 +955,14 @@ var GPS = {
                 url: 'http://104.131.60.162/indicador-destino.png',
             }
         });
-        
+
         GPS.pin.taxi = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-taxi.png',
             }
         });
-        
+
         GPS.geocoder = new google.maps.Geocoder();
         GPS.polyline.live = new google.maps.Polyline({
             map: GPS.mapa,
@@ -995,20 +972,15 @@ var GPS = {
             visible: true,
             path: []
         });
-        
+
         GPS.directionsService = new google.maps.DirectionsService();
         GPS.directionsDisplay = new google.maps.DirectionsRenderer({
             map: GPS.mapa,
             draggable: false,
             suppressMarkers: true,
-            directions: {routes:[]}
+            directions: {routes: []}
         });
-        
-        GPS.longPress = new LongPress(GPS.mapa, 750);
-        google.maps.event.addListener(GPS.mapa, 'longpress', function (event) {
-            GPS.menuPresionado(event.latLng);
-        });
-        
+
         GPS.mapa.setOptions({
             styles: [
                 {
@@ -1021,44 +993,44 @@ var GPS = {
                 }
             ]});
         /** eventos a botones **/
-        
+
         $$('#map-address').focus(function (e) {
             $$(this).val('');
         });
-        
+
         $$('#map-address').blur(function (e) {
             if (!$$(this).val())
                 $('#map-address').val(GPS.pin.usuario.address);
         });
-        
+
         $('#van-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(1);
         });
-        
+
         $('#car-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(2);
         });
-        
+
         $('#request-taxi-button').touchstart(function () {
             $$(this).addClass('active');
         });
-        
+
         $('#request-taxi-button').touchend(function () {
             $$(this).removeClass('active');
             GPS.getTaxi();
         });
-        
+
         $('#search-address-button').touchstart(function () {
             GPS.codeAddress();
         });
-        
+
         $('.map-panel-button').touchstart(function () {
             app.openPanel('right');
         });
         $('.map-center-button').touchstart(function () {
-           GPS.muestraRutaMapa();
+            GPS.muestraRutaMapa();
         });
-        
+
         $('#popover-confirm-yes').touchstart(function () {
             GPS.muestraRutaMapa('taxi');
             GPS.actualizaPinTaxi();
@@ -1069,9 +1041,9 @@ var GPS = {
             setTimeout(function () {
                 GPS.muestraRutaMapa('usuario');
                 clearInterval(GPS.taxiInterval);
-                setTimeout(function(){
+                setTimeout(function () {
                     GPS.showModal('#popover-rate', '#request-taxi-button');
-                    }, 5000);
+                }, 5000);
             }, 5000);
         });
 
@@ -1089,60 +1061,9 @@ var GPS = {
             $$(this).removeClass('active');
             GPS.muestraRutaMapa();
         });
-        
+
         GPS.muestraRutaMapa();
     }
 }
 
-/* Funciones para simular evento click al mantener presionado sobre el mapa */
-
-
-/*
- *  Genera el evento para detectar si se manteien presionado sobre el mapa
- *  @param { google.maps.Map } map Mapa al que se le añadirá el evento
- *  @param { int } length tiempo en milisegundos que se requerirá mantener presionado
- */
-function LongPress(map, length) {
-    this.length_ = length;
-    var me = this;
-    me.map_ = map;
-    me.timeoutId_ = null;
-    google.maps.event.addListener(map, 'mousedown', function (e) {
-        me.onMouseDown_(e);
-    });
-    google.maps.event.addListener(map, 'mouseup', function (e) {
-        me.onMouseUp_(e);
-    });
-    google.maps.event.addListener(map, 'drag', function (e) {
-        me.onMapDrag_(e);
-    });
-}
-
-
-var taxi = {};
-
-/*
- *  Evita que el evento sea llamado si no dura el tiempo suficiente
- */
-LongPress.prototype.onMouseUp_ = function (e) {
-    clearTimeout(this.timeoutId_);
-};
-/*
- *  Comienza un contador para llamar al evento presionado
- */
-LongPress.prototype.onMouseDown_ = function (e) {
-    clearTimeout(this.timeoutId_);
-    var map = this.map_;
-    var event = e;
-    this.timeoutId_ = setTimeout(function () {
-        google.maps.event.trigger(map, 'longpress', event);
-    }, this.length_);
-};
-
-/*
- *  Evita que el evento sea llamado si se esta desplazando el mapa
- */
-LongPress.prototype.onMapDrag_ = function (e) {
-    clearTimeout(this.timeoutId_);
-};
 

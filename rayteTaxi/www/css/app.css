@@ -95,41 +95,34 @@ html,body
 }
 .ciudad
 {
-    margin-top: 113px;
+    margin-top: 23.9%;
 }
 .botones
 {
     width:100%;
     position: absolute;
     bottom:0;
-    /* EOZ 150615 */
     text-align: center; 
 }
 .botones a
 {
     color: #A5DE37;
     height: 100%;
-    width: 34%;
-    float: left;
-    font-size: 13px;
+    width: 98.5%;
+    font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
-    border: 1px solid #A5DE37;
+    border: 2.5px solid #A5DE37;
     text-align: center;
-    padding-bottom: 10px;
-    padding-top: 14px;
-    padding-left: 24px;
-    padding-right: 24px;
-    /* EOZ 150615 */
-    float: none;
     display: inline-block;
+    padding: 5% 0 5% 0;
 }
 
 .map-container > .content-block-inner{
     background: none;
 }
 div[data-page="index"] .page-content{
- /* overflow: hidden;*/
+    /* overflow: hidden;*/
 }
 
 #request-taxi-button{
@@ -145,8 +138,8 @@ div[data-page="index"] .page-content{
 }
 
 #request-taxi-button.active{
-   background-color: #b9bd30;
-   color: white;
+    background-color: #b9bd30;
+    color: white;
 }
 
 .map-button{
@@ -185,7 +178,7 @@ div[data-page="index"] .page-content{
     position: absolute;
     width: 100%;
     top: 0;
-    bottom: 180px;
+    bottom: 0px;
 }
 .on-route{
     display: none;
@@ -208,13 +201,13 @@ div[data-page="index"] .page-content{
 }
 */
 .on-route ul .time{
-        font-weight: bold;
-        margin-top: 10%;
-        font-size:large;
-    }
+    font-weight: bold;
+    margin-top: 10%;
+    font-size:large;
+}
 .on-route ul li:first-child{
-   color: #009bdb;
-   font-weight: bold;
+    color: #009bdb;
+    font-weight: bold;
 }
 .page-content{
     background: white;
@@ -225,18 +218,18 @@ div[data-page="index"] .page-content{
 
 .popover,.popover-angle:after{
     background: #009bdb;
-    
+
 }
 
 .popover:after{
-  content:"";
-  border-left: 20px solid  transparent;
-  border-right: 20px  solid  transparent;
-  border-top: 20px  solid #009bdb;
-  position:absolute;
-  bottom:0;
-  margin-bottom: -20px;
-  margin-left: -20px;
+    content:"";
+    border-left: 20px solid  transparent;
+    border-right: 20px  solid  transparent;
+    border-top: 20px  solid #009bdb;
+    position:absolute;
+    bottom:0;
+    margin-bottom: -20px;
+    margin-left: -20px;
 }
 .map-popover{
     padding: 0 10px 10px;
@@ -297,53 +290,53 @@ div[data-page="index"] .page-content{
 }
 
 .map-popover .service textarea{
-  resize: none;
-  margin: 5px;
-  border-radius: 4px;
-  border-color: #d1d1d1;
-  height: 75px;
+    resize: none;
+    margin: 5px;
+    border-radius: 4px;
+    border-color: #d1d1d1;
+    height: 75px;
 }
 
 .map-popover .service span{
-  color: #7d7d7d;
+    color: #7d7d7d;
 }
 
 .map-popover .btn-send{
-  margin: 0 auto;
-  color: white;
-  background-color: #009bdb;
-  padding:5px;
-  width: 110px;
-  border-radius: 5px;
-  letter-spacing: 2px; 
-  font-weight: lighter;
-  border: 1px solid #009bdb;
+    margin: 0 auto;
+    color: white;
+    background-color: #009bdb;
+    padding:5px;
+    width: 110px;
+    border-radius: 5px;
+    letter-spacing: 2px; 
+    font-weight: lighter;
+    border: 1px solid #009bdb;
 }
 
 .map-popover .btn-send.active{
-  color: #009bdb;
-  background-color: white;
+    color: #009bdb;
+    background-color: white;
 }
 
 #popover-confirm-no {
-  background: url('../assets/iconos/cancelar.png') no-repeat center;
-  background-size: contain;
-  height: 3em;
-  border-right: 1px solid #2f3946;
+    background: url('../assets/iconos/cancelar.png') no-repeat center;
+    background-size: contain;
+    height: 3em;
+    border-right: 1px solid #2f3946;
 }
 
 #popover-confirm-yes {
-  background: url('../assets/iconos/aceptar.png') no-repeat center;
-  background-size: contain;
-  height: 3em;
+    background: url('../assets/iconos/aceptar.png') no-repeat center;
+    background-size: contain;
+    height: 3em;
 }
 
 .arrow-down {
-	width: 0; 
-	height: 0; 
-	border-left: 20px solid transparent;
-	border-right: 20px solid transparent;
-	border-top: 20px solid #009bdb;
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #009bdb;
 }
 
 .blured{
@@ -358,27 +351,27 @@ div[data-page="index"] .page-content{
 }
 
 .rating { 
-  border: none;
-  float: left;
+    border: none;
+    float: left;
 }
 
 .rating > input { display: none; } 
 .rating > label:before { 
-  margin: 5px;
-  font-size: 1.25em;
-  font-family: FontAwesome;
-  display: inline-block;
-  content: "\f005";
+    margin: 5px;
+    font-size: 1.25em;
+    font-family: FontAwesome;
+    display: inline-block;
+    content: "\f005";
 }
 
 .rating > .half:before { 
-  content: "\f089";
-  position: absolute;
+    content: "\f089";
+    position: absolute;
 }
 
 .rating > label { 
-  color: #ddd; 
- float: right; 
+    color: #ddd; 
+    float: right; 
 }
 
 .rating > input:checked ~ label { color: #FFD700;  }
@@ -432,16 +425,16 @@ div[data-page="index"] .page-content{
 }
 
 .search-address input[type="text"]::-webkit-input-placeholder{
-   color: white; 
+    color: white; 
 }
 .search-address input[type="text"]:-moz-placeholder{
-   color: white; 
+    color: white; 
 }
 .search-address input[type="text"]::-moz-placeholder{
-   color: white; 
+    color: white; 
 }
 .search-address input[type="text"]:-ms-input-placeholder{
-   color: white; 
+    color: white; 
 }
 
 .fixed-marker{
@@ -457,8 +450,12 @@ div[data-page="index"] .page-content{
 
 
 @media screen and (max-device-width: 480px) and (orientation: portrait){
-  .popover{
-      width: 270px;
-      margin: 0 auto;
-  }
+    .popover{
+        width: 270px;
+        margin: 0 auto;
+    }
+}
+
+input.placeholder {
+    text-align: center;
 }

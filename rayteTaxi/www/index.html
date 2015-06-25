@@ -52,8 +52,7 @@
                             </div>
                         </div>
                         <div class="botones">
-                            <a class="open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
-                            <a href="#" id="registrate">Registrate</a>
+                            <a class="open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar</a>
                         </div>
                     </div>
                 </div>
@@ -61,23 +60,14 @@
                     <div class="view">
                         <div class="page">
                             <div class="page-content login-screen-content">
-                                <div class="login-screen-title">Rayte</div>
+                                <div class="login-screen-title"> <img src="img/logo.png" alt="" /></div>
                                 <form>
                                     <div class="list-block">
                                         <ul>
                                             <li class="item-content">
                                                 <div class="item-inner">
-                                                    <div class="item-title label">Usuario</div>
                                                     <div class="item-input">
-                                                        <input type="text" name="username" placeholder="Your username">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">Contrase&ntilde;a</div>
-                                                    <div class="item-input">
-                                                        <input type="password" name="password" placeholder="Your password">
+                                                        <input type="text" name="username" placeholder="Usuario">
                                                     </div>
                                                 </div>
                                             </li>
@@ -98,50 +88,10 @@
                 </div>
             </div>
             <div class="view view-main">
-                <!--
-                <div class="navbar">
-                    <div data-page="index" class="navbar-inner">
-                        <div class="right">
-                            <a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>
-                        </div>
-                    </div>
-                </div>
-                -->
                 <div class="pages navbar-through toolbar-through">
                     <div data-page="index" class="page">
                         <div class="page-content">
                             <div id="map-canvas" ></div>
-                            <a class="map-button map-panel-button"></a>
-                            <a class="map-button map-center-button"></a>
-                            <div class="map-menu">
-                                <div class="map-main-menu">
-                                    <div class="row no-gutter search-address">
-                                        <a id="search-address-button" class="col-15"></a>
-                                        <input id="map-address" type="text" placeholder="Destino..." class="col-85"/>
-                                    </div>
-                                    <div class="row no-gutter vehicle-container">
-                                        <a id="van-taxi-button"class="col-50 vehicle van" href="#"></a>
-                                        <a id="car-taxi-button" class="col-50 vehicle car" href="#"></a>
-                                    </div> 
-                                </div>
-                                <div class="on-route">
-                                    <div class="row">
-                                        <ul class="col-50">
-                                            <li>Detalles</li>
-                                            <li id="taxi-conductor">Nombre</li>
-                                            <li id="taxi-id">ID</li>
-                                            <li id="taxi-placas">Placas</li>
-                                        </ul>
-                                        <ul class="col-40">
-                                            <li>Tiempo Estimado</li>
-                                            <li class="time" >9:00 min</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <a id="request-taxi-button" class="col-100">PEDIR RAYTE</a>
-                                </div>
-                            </div>
                         </div>
 
                         <div id="popover-confirm" class="popover map-popover">
@@ -220,14 +170,6 @@
                             </div>
                         </div>
                         <div class="blured"></div>
-                    </div>
-                    <div data-page="categorias" id="categorias" class="page cached">
-                        <div class="page-content">
-                            <a href="#" class="link" id="back-catalogo"><i class="icon icon-back"></i><span>Atras</span></a>
-                            <div class="content-block">
-                                <h2>categorias</h2>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
