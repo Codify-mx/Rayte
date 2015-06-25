@@ -887,7 +887,7 @@ var GPS = {
                 }
             }
         });
-        $$(me).css('top', (modalOffset.top - meHeight));
+        $$(me).css('top', (modalOffset.top - meHeight-20));
         $$(me).css('left', ((deviceWidth / 2) - (meWidth / 2)));
         $$(me).show();
         $$('.blured').show();
