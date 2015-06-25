@@ -23,7 +23,6 @@
         <div class="panel-overlay"></div>
         <div class="panel panel-right panel-reveal">
             <div class="content-block">
-                <!--<img src="./assets/iconos/usuario.png" alt="usuario"/>-->
                 <div class="item-title profile-pic">¡Bienvenido <span id="usr-name">Usuario!</span></div>    
                 <div class="list-block">
                     <ul>
@@ -62,7 +61,7 @@
                                 <div class="item-after"></div>
                             </div>
                         </li>
-                        <li class="item-content" id="cart">
+                        <li class="item-content" id="logout">
                             <div class="item-media"><i class="fa menu-logout fa-lg"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">Cerrar sesi&oacute;n</div>
@@ -92,9 +91,9 @@
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                         </div>
-                        <div class="botones">
-                            <a class="open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
-                            <a href="#" id="registrate">Registrate</a>
+                        <div class="row no-gutter botones">
+                            <a class="col-50 open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
+                            <a class="col-50" href="#" id="registrate">Registrate</a>
                         </div>
                     </div>
                 </div>
@@ -110,7 +109,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">Usuario</div>
                                                     <div class="item-input">
-                                                        <input type="text" name="username" placeholder="Your username">
+                                                        <input type="text" name="username" id="usuario" placeholder="Your username">
                                                     </div>
                                                 </div>
                                             </li>
@@ -118,7 +117,7 @@
                                                 <div class="item-inner">
                                                     <div class="item-title label">Contrase&ntilde;a</div>
                                                     <div class="item-input">
-                                                        <input type="password" name="password" placeholder="Your password">
+                                                        <input type="password" id="password" name="password" placeholder="Your password">
                                                     </div>
                                                 </div>
                                             </li>
@@ -126,7 +125,7 @@
                                     </div>
                                     <div class="list-block">
                                         <ul>
-                                            <li><a href="#" id="doLogin" class="item-link list-button">Iniciar</a></li>
+                                            <li><a href="#" id="login-boton" class="item-link list-button">Iniciar</a></li>
                                         </ul>
                                         <div class="list-block-label">
                                             <p><a href="#" class="close-login-screen">Regresar</a></p>
@@ -298,9 +297,40 @@
             var href = css.attr('href');
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
             require('js/app.js', function () {
-                $('#doLogin').touchstart(function () {
-                    user.login();
-                });
+                //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+                if (parseInt(localStorage.login) === 1 )
+                {
+                    $(".view-login").hide();
+                    $(".view-main").show();
+                    mapa.opciones = {
+                        center: new google.maps.LatLng(19, -99.1333),
+                        zoom: 4,
+                        disableDefaultUI: true
+                    };
+                    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
+                    require('js/gps.js', function () {
+                        GPS.mapa = mapa.canvas;
+                        GPS.mapaModal = mapa.modal;
+                        GPS.iniciaMapa();
+                        mapa = {};
+                        app.hidePreloader();
+                    });
+                    app.allowPanelOpen = true;
+                    //init.inflate();
+                    /*
+                    if (localStorage.cliente_actual !== undefined && localStorage.cliente_actual !== '' &&
+                            parseInt(localStorage.cliente_actual) !== 0 && localStorage.cliente_actual !== 'null'
+                            && localStorage.cliente_actual !== 'NaN' && typeof localStorage.cliente_nombre !== "undefined" &&
+                            localStorage.cliente_nombre !== '' && localStorage.clientes !== '[]')
+                    {
+                        $("#cliente_actual").html('Cliente actual: ' + localStorage.cliente_nombre);
+                    }
+                    else
+                    {
+                        localStorage.cliente_actual = '';
+                    }
+                    */
+                }
             });
         </script>
 

@@ -572,7 +572,7 @@ var GPS = {
                         method: "POST",
                         url: "http://104.131.60.162/index.php/REST/saveID",
                         dataType: "json",
-                        data: {'id': e.regid},
+                        data: {id: e.regid, id_usuario: app.ls.id_usuario},
                         crossDomain: true,
                         success: function (objJSON) {
                         },
@@ -681,12 +681,16 @@ var GPS = {
      *  pide un taxi específico, si no está disponible o se cancela, busca el siquiente taxi
      *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
      */
-    pedirTaxi: function (taxi) {
+    pedirTaxi: function () {
+        app.showPreloader('Pidiendo Taxi...');
         var OlatLng = GPS.pin.usuario.getPosition();
         var DlatLng = GPS.pin.destino.getPosition();
-        var datos = {
-            'taxiId': taxi.id,
+        /*
+         *'taxiId': taxi.id,
             'ubicacionTaxi': JSON.stringify(taxi.latlng),
+            */
+        var datos = {
+            'id_usuario': app.ls.id_usuario,
             'latlngOrigen': JSON.stringify(OlatLng),
             'direccionOrigen': GPS.pin.usuario.address,
             'latlngDestino': JSON.stringify(DlatLng),
@@ -720,7 +724,7 @@ var GPS = {
                         GPS.directionsService.route(request, GPS.validarRutaTaxi);
                     } else {
                         console.log('pedir taxi vacio');
-                        GPS.taxis.shift();
+                        /*GPS.taxis.shift();
                         if (GPS.taxis.length) {
                             GPS.pedirTaxi(GPS.taxis[0]);
                         } else {
@@ -732,6 +736,7 @@ var GPS = {
                                 confirmButtonText: "Aceptar"
                             });
                         }
+                        */
                     }
                 } catch (e) {
                     app.hidePreloader();
@@ -745,6 +750,7 @@ var GPS = {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 app.hidePreloader();
+                console.log(datos);
                 swal({
                     title: "Error al pedir taxi!",
                     text: textStatus + ': ' + errorThrown,
@@ -1051,7 +1057,8 @@ var GPS = {
         
         $$(document).on('touchend','#request-taxi-button', function(){
             $$(this).removeClass('active');
-            GPS.getTaxi();
+            //GPS.getTaxi();
+            GPS.pedirTaxi();
         });
         
         $$(document).on('touchcancel','#request-taxi-button', function(){
