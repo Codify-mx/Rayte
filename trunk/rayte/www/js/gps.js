@@ -1032,47 +1032,46 @@ var GPS = {
             if (!$$(this).val())
                 $('#map-address').val(GPS.pin.usuario.address);
         });
-        /*
-        $('#van-taxi-button').touchstart(function () {
-            GPS.setTipoTaxi(1);
-        });*/
-        $$("#van-taxi-button").swipe( "enable");
-        $$("#van-taxi-button").swipe( {
-            swipe:function(event, direction, distance, duration, fingerCount) {
-              console.log('izq');  
-            },
-            threshold: 0
+        
+        /* Eventos para map menu */
+        $$(document).on('touchstart','#search-address-button', function(){
+            GPS.codeAddress();
         });
-        /*
-        $('#car-taxi-button').touchstart(function () {
+        $$(document).on('touchstart','#car-taxi-button', function(){
             GPS.setTipoTaxi(2);
         });
-        */
-        $('#request-taxi-button').touchstart(function () {
+        
+        $$(document).on('touchstart','#van-taxi-button', function(){
+            GPS.setTipoTaxi(1);
+        });
+        
+        $$(document).on('touchstart','#request-taxi-button', function(){
             $$(this).addClass('active');
         });
         
-        $('#request-taxi-button').touchend(function () {
+        $$(document).on('touchend','#request-taxi-button', function(){
             $$(this).removeClass('active');
             GPS.getTaxi();
         });
         
-        $('#search-address-button').touchstart(function () {
-            GPS.codeAddress();
+        $$(document).on('touchcancel','#request-taxi-button', function(){
+            $$(this).removeClass('active');
         });
         
-        $('.map-panel-button').touchstart(function () {
+        /* Eventos para botones de mapa */
+        $$(document).on('touchstart','.map-panel-button', function(){
             app.openPanel('right');
         });
-        $('.map-center-button').touchstart(function () {
+        
+        $$(document).on('touchstart','.map-center-button', function(){
            GPS.muestraRutaMapa();
         });
         
-        $('#popover-confirm-yes').touchstart(function () {
+        /* Eventos para popover confirm */
+        $$(document).on('touchstart','#popover-confirm-yes', function(){
             GPS.muestraRutaMapa('taxi');
             GPS.actualizaPinTaxi();
             $$('#popover-confirm').hide();
-            //$$('.blured').hide();
             $$('.blured').removeClass('active');
             $$('.map-main-menu').hide();
             $$('.on-route').show();
@@ -1085,24 +1084,36 @@ var GPS = {
             }, 5000);
         });
 
-        $('#popover-confirm-no').touchstart(function () {
+        $$(document).on('touchstart','#popover-confirm-no', function(){
             GPS.muestraRutaMapa();
             $$('#popover-confirm').hide();
-            //$$('.blured').hide();
             $$('.blured').removeClass('active');
         });
-
-        $('.btn-send').touchstart(function () {
+        
+        /* Eventos para popover rate */
+        $$(document).on('touchstart','.btn-send', function(){
             $$(this).addClass('active');
+            GPS.muestraRutaMapa();
         });
-
-        $('.btn-send').touchend(function () {
+        
+        $$(document).on('touchend','.btn-send', function(e){
             $$(this).removeClass('active');
             GPS.muestraRutaMapa();
         });
         
+        $$(document).on('touchcancel','.btn-send',function(e){
+            $$(this).removeClass('active');
+        });
         
+        /* Eventos para  menu panel */
+        $$(document).on('touchstart','.item-content', function(e){
+           $$(this).addClass('active'); 
+        });
         
+        $$(document).on('touchend touchcancel','.item-content', function(e){
+           $$(this).removeClass('active');
+        });
+
         GPS.muestraRutaMapa();
     }
 }
