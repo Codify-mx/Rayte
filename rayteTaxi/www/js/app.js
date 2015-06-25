@@ -30,26 +30,24 @@ $(document).on('pageInit', function (e) {
 
 var mapa = {};
 var user = {};
-user.login = function () {
-    app.closePanel();
-    app.showPreloader('Espere');
-    $(".view-login").hide();
-    $(".view-main").show();
-    mapa.opciones = {
-        center: new google.maps.LatLng(19, -99.1333),
-        zoom: 4,
-        disableDefaultUI: true
-    };
-    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
-    require('js/gps.js', function () {
-        GPS.mapa = mapa.canvas;
-        GPS.mapaModal = mapa.modal;
-        GPS.iniciaMapa();
-        mapa = {};
-        app.hidePreloader();
-    });
 
-    app.allowPanelOpen = true;
+user.login = function () {
+    require('js/taxi.js', function () {
+        var id = $("#taxi-user").val().trim();
+        if (id === '')
+        {
+            swal({
+                title: "Error al hacer login",
+                text: "Datos incorrectos",
+                type: "error",
+                confirmButtonText: "Aceptar"
+            });
+        }
+        else
+        {
+            TAXI.login(id);
+        }
+    });
 }
 
 
