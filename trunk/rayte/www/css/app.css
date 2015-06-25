@@ -354,6 +354,10 @@ div[data-page="index"] .page-content{
     background: black;
     opacity: .4;
     display: none;
+    z-index: -1;
+}
+.blured.active{
+    display: block;
     z-index: 1;
 }
 
