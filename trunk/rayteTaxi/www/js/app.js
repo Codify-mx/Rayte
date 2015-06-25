@@ -19,6 +19,7 @@ var mainView = app.addView('.view-main', {
     domCache: true
 });
 
+app.allowPanelOpen = false;
 
 $(document).on('pageInit', function (e) {
     app.closePanel();
@@ -29,34 +30,26 @@ $(document).on('pageInit', function (e) {
 
 var mapa = {};
 var user = {};
- user.login = function(){
+user.login = function () {
     app.closePanel();
     app.showPreloader('Espere');
     $(".view-login").hide();
     $(".view-main").show();
     mapa.opciones = {
-        center: new google.maps.LatLng( 19, -99.1333),
+        center: new google.maps.LatLng(19, -99.1333),
         zoom: 4,
         disableDefaultUI: true
     };
-    /*
-    var styles = [
-        {
-          featureType: "poi",
-          stylers: [
-           { visibility: "off" }
-          ]   
-        }
-    ];
-    */
     mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
-    require('js/gps.js',function(){
+    require('js/gps.js', function () {
         GPS.mapa = mapa.canvas;
         GPS.mapaModal = mapa.modal;
         GPS.iniciaMapa();
         mapa = {};
         app.hidePreloader();
     });
+
+    app.allowPanelOpen = true;
 }
 
 
