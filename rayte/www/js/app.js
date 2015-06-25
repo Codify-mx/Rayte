@@ -54,7 +54,7 @@ var user = {};
         GPS.mapa = mapa.canvas;
         GPS.mapaModal = mapa.modal;
         GPS.iniciaMapa();
-        //mapa = {};
+        mapa = {};
         app.hidePreloader();
     });
 }
