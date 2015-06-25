@@ -227,6 +227,17 @@ div[data-page="index"] .page-content{
     background: #009bdb;
     
 }
+
+.popover:after{
+  content:"";
+  border-left: 20px solid  transparent;
+  border-right: 20px  solid  transparent;
+  border-top: 20px  solid #009bdb;
+  position:absolute;
+  bottom:0;
+  margin-bottom: -20px;
+  margin-left: -20px;
+}
 .map-popover{
     padding: 0 10px 10px;
     text-align: center;
@@ -314,6 +325,19 @@ div[data-page="index"] .page-content{
   background-color: white;
 }
 
+#popover-confirm-no {
+  background: url('../assets/iconos/cancelar.png') no-repeat center;
+  background-size: contain;
+  height: 3em;
+  border-right: 1px solid #2f3946;
+}
+
+#popover-confirm-yes {
+  background: url('../assets/iconos/aceptar.png') no-repeat center;
+  background-size: contain;
+  height: 3em;
+}
+
 .arrow-down {
 	width: 0; 
 	height: 0; 
@@ -330,6 +354,7 @@ div[data-page="index"] .page-content{
     background: black;
     opacity: .4;
     display: none;
+    z-index: 1;
 }
 
 .rating { 
