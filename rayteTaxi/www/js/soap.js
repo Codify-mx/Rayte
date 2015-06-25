@@ -4,6 +4,13 @@ var soap = {
             id: id
         }, fn);
     },
+    updatePosition: function (latlong)
+    {
+        soap.core('saveTaxiPosition', {
+            latlong: latlong
+        }, function () {
+        });
+    },
     core: function (op, data, fn, error, tipo) {
         $.ajax({
             url: 'http://104.131.60.162/index.php/REST/' + op,
