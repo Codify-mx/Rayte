@@ -1032,15 +1032,22 @@ var GPS = {
             if (!$$(this).val())
                 $('#map-address').val(GPS.pin.usuario.address);
         });
-        
+        /*
         $('#van-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(1);
+        });*/
+        $$("#van-taxi-button").swipe( "enable");
+        $$("#van-taxi-button").swipe( {
+            swipe:function(event, direction, distance, duration, fingerCount) {
+              console.log('izq');  
+            },
+            threshold: 0
         });
-        
+        /*
         $('#car-taxi-button').touchstart(function () {
             GPS.setTipoTaxi(2);
         });
-        
+        */
         $('#request-taxi-button').touchstart(function () {
             $$(this).addClass('active');
         });
@@ -1093,6 +1100,8 @@ var GPS = {
             $$(this).removeClass('active');
             GPS.muestraRutaMapa();
         });
+        
+        
         
         GPS.muestraRutaMapa();
     }
