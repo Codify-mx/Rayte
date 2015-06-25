@@ -554,3 +554,39 @@ div[data-page="index"] .page-content{
       margin: 0 auto;
   }
 }
+
+.camion
+{
+    z-index: 10000;
+    position: relative;
+    margin-top: -14%;
+}
+.camion img
+{
+    width: 30%;
+    display: block;
+    margin: 0 auto;
+}
+.camion img:nth-child(2)
+{
+    margin-top: -7%;
+    width: 6%;
+    margin-left: 39%;
+}
+.camion img:nth-child(3)
+{
+    margin-top: -6%;
+    width: 6%;
+    margin-left: 56.5%;
+}
+
+.llantas {
+    -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+    from {-webkit-transform: rotate(0deg);}
+    to   {-webkit-transform: rotate(359deg);}
+}
+
+
