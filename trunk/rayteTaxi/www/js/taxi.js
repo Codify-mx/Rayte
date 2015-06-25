@@ -1,14 +1,21 @@
 
 
 var TAXI = {
+    interval: -1,
     updatePosition: function () {
-
+        TAXI.interval = setInterval(function () {
+            require('js/soap.js', function () {
+                var latlong = GPS.pin.usuario.getPosition();
+                soap.updatePosition(latlong);
+            });
+        }, 3000);
     },
     login: function (id) {
         require('js/soap.js', function () {
             soap.login(id, function (data) {
                 if (data.correcto)
                 {
+                    TAXI.id = data.id;
                     app.closePanel();
                     app.showPreloader('Espere');
                     $(".view-login").hide();
@@ -28,6 +35,7 @@ var TAXI = {
                     });
 
                     app.allowPanelOpen = true;
+                    TAXI.updatePosition();
                 }
                 else
                 {
