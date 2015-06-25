@@ -890,7 +890,8 @@ var GPS = {
         $$(me).css('top', (modalOffset.top - meHeight-20));
         $$(me).css('left', ((deviceWidth / 2) - (meWidth / 2)));
         $$(me).show();
-        $$('.blured').show();
+        //$$('.blured').show();
+        $$('.blured').addClass('active');
     },
     muestraRutaMapa: function(tipo){
         switch(tipo) {
@@ -921,6 +922,7 @@ var GPS = {
                 app.hidePreloader();
             break;
             default:
+                $$('.blured').removeClass('active');
                 $$('.map-popover').hide();
                 $$('.map-main-menu').show();
                 $$('.on-route').hide();
@@ -1063,7 +1065,8 @@ var GPS = {
             GPS.muestraRutaMapa('taxi');
             GPS.actualizaPinTaxi();
             $$('#popover-confirm').hide();
-            $$('.blured').hide();
+            //$$('.blured').hide();
+            $$('.blured').removeClass('active');
             $$('.map-main-menu').hide();
             $$('.on-route').show();
             setTimeout(function () {
@@ -1078,7 +1081,8 @@ var GPS = {
         $('#popover-confirm-no').touchstart(function () {
             GPS.muestraRutaMapa();
             $$('#popover-confirm').hide();
-            $$('.blured').hide();
+            //$$('.blured').hide();
+            $$('.blured').removeClass('active');
         });
 
         $('.btn-send').touchstart(function () {
