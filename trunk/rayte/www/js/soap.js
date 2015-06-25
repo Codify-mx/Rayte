@@ -90,7 +90,7 @@ var soap = {
     },
     core: function (op, data, fn, error, tipo) {
         $.ajax({
-            url: 'https://kiwishop.mx/erp/REST/' + op,
+            url: 'http://104.131.60.162/index.php/REST/' + op,
             type: 'POST',
             dataType: tipo || 'json',
             data: data,
