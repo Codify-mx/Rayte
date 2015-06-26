@@ -1,41 +1,70 @@
 
 <div data-page="edit-profile" id="page-edit-profile" class="page cached">
     <div class="page-content ios">
-        <div class="content-block-title"><i class="back"></i>Editar Perfil</div>
+        <div class="content-block-title"><i class="back"></i>M&eacute;todos de Pago</div>
         <div class="content-block">
-            <div class="row no-gutter">
-                <div class="col-25 edit-profile-image-container">
-                    <div class="edit-profile-image"></div>
-                </div>
-                <div class="col-75 ">
-                        <input type="text" id="edit-profile-nombre" placeholder="Nombre..." class="col-90 page-input" />
-                        <input type="text" id="edit-profile-apellido" placeholder="Apellido..." class="col-90 page-input" />
-                    <div class="row no-gutter">
-                        <span class="col-33" id="edit-profile-tel-code">MX</span>
-                        <input type="text" id="edit-profile-tel" placeholder="(xxx) xxxx-xx-xx" class="col-66 page-input" />
-                    </div> 
+            <div class="accordion-item payment-accordion">
+                <div class="accordion-item-toggle"><i></i>Tarjetas de Cr&eacute;dito<span class="right">(3)</span></div>
+                <div class="accordion-item-content">
+                    <ul>
+                        <li class="row">
+                            <div class="col-66 payment-info-card">
+                                <div class="col-100">Roberto Obreg&oacute;n</div>
+                                <div class="col-100">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-33 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                        <li class="row">
+                            <div class="col-66 payment-info-card">
+                                <div class="col-100">Roberto Obreg&oacute;n</div>
+                                <div class="col-100">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-33 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                        <li class="row">
+                            <div class="col-66 payment-info-card">
+                                <div class="col-100">Roberto Obreg&oacute;n</div>
+                                <div class="col-100">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-33 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="content-block-title">Cambiar contraseña</div>
-        <div class="content-block">
-            <div class="row no-gutter password-input">
-                <i class="col-10 "></i>
-                <input type="password" id="edit-profile-password" placeholder="Contrase&ntilde;a actual" class="col-90 page-input" />
+        <div class="content-block payment-add row">
+            <div class="title row col-100 ">
+                <i></i>
+                <span class="col-85">Agregar Tarjeta</span>
             </div>
-            <div class="row no-gutter password-input new">
-                <i class="col-10 "></i>
-                <input type="password" id="edit-profile-new" placeholder="Nueva contrase&ntilde;a" class="col-90 page-input" />
+            <div class="row col-90">
+                <input type="text" id="payment-add-number" placeholder="N&uacute;mero de Tarjeta" class="col-100 page-input" />
             </div>
-            <div class="row no-gutter password-input repeat">
-                <i class="col-10 "></i>
-                <input type="password" id="edit-profile-repeat" placeholder="Repite contrase&ntilde;a" class="col-90 page-input" />
+            <div class="row col-90">
+                <input type="text" id="payment-add-name" placeholder="Nombre en tarjeta" class="col-100 page-input" />
             </div>
-            <div class="row">
-                <a type="text" id="edit-profile-forgot" class="col-100">He olvidado mi contraseña</a>
+            <div class="row col-90">
+                <input type="text" id="payment-add-expires" placeholder="Expira" class="col-50 page-input" />
+                <input type="text" id="payment-add-code" placeholder="C&oacute;digo" class="col-50 page-input" />
             </div>
-            <div class="row">
-                <a id="edit-profile-save" class="col-100 page-button">Guardar Cambios</a>
+            <div class="row col-90">
+                <input type="text" id="payment-add-zip" placeholder="C&oacute;digo zip" class="col-50 page-input" />
+            </div>
+            <div class="row col-100">
+                <a id="payment-add-save" class="col-100 page-button">Guardar Tarjeta</a>
+            </div>
+        </div>
+        <div class="content-block prepaid">
+            <div class="title row no-gutter">
+                <i></i>
+                <span class="col-60">Pre-pago</span>
+                <span class="col-25">$ XXXX.xx</span>
             </div>
         </div>
     </div>

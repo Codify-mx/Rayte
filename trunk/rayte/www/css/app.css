@@ -619,10 +619,6 @@ html,body
       width: 270px;
       margin: 0 auto;
   }
-  .row{
-    width: 100%;
-    text-align: center;
-  }
 }
 
 
@@ -710,14 +706,15 @@ html,body
   padding: 3% 0;
 }
 
-.page-button{
-    background-color: #009bdb;
-    color: #FFF;
-    font-size: .9em;
-    text-transform: uppercase;
-    border-radius: 10px;
-    padding: 5%;
-    margin: 0px 18%;
+.page-button {
+  background-color: #009bdb;
+  color: #FFF;
+  font-size: .85em;
+  text-transform: uppercase;
+  border-radius: 8px;
+  padding: 4% 5%;
+  margin: 0 16%;
+  text-align: center;
 }
 
 .navbar{
@@ -727,6 +724,7 @@ html,body
 
 .page-content.ios .content-block{
   margin-top: 0;
+  padding: 0 25px;
 }
 
 .page-content.ios .content-block:before{
@@ -735,7 +733,7 @@ html,body
   height:1px;
   background-color: #CCC;
   display: block;
-margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .page-content.ios .content-block-title{
@@ -754,8 +752,106 @@ margin-bottom: 10px;
 .page-content.ios .content-block-title:first-child i {
   background: url(../assets/iconos/flecha.png) no-repeat center;
   background-size: contain;
-  height: 15px;
-  width: 15px;
+  height: 1em;
+  width: 1em;
   position: absolute;
   left: 0;
+}
+
+
+/***** METODOS DE PAGO ****/
+
+
+.payment-accordion .accordion-item-toggle i {
+  background: url('../assets/iconos/tarjetas.png') no-repeat center;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  display: flex;
+  float: left;
+  margin-right: 5%;
+  font-size: 1.5em;
+  line-height: .75em;
+  vertical-align: -15%;
+}
+.payment-accordion .accordion-item-toggle span {
+  float: right;
+}
+
+.payment-accordion ul{
+    padding-left: 0;
+    padding-right: 2%
+}
+.payment-accordion ul li{
+  padding: 5px 0;
+  border-bottom: 1px solid #898F99;
+}
+
+.payment-delete-card{
+    padding-top: 3%;
+    text-align: right;
+}
+.payment-delete-card a{
+  color: #CCC ;
+  font-size: .9em;
+  padding: 15% 0;
+}
+
+.payment-info-card{
+  color: #009bdb;
+  font-size: .9em;
+}
+
+
+.payment-add .page-input{
+  margin-left:0px;
+}
+.payment-add .row{
+  margin-left: 10%
+}
+.payment-add .row:first-child{
+  margin-left: 0;
+  margin-bottom: 3%;
+}
+.payment-add .row:last-child{
+  margin-top: 5%;
+  margin-left: 0;
+}
+
+.page-content.ios .payment-add{
+  margin-top: -3%;
+}
+.payment-add .title i {
+  background: url('../assets/iconos/metodos.png') no-repeat center;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  display: flex;
+  float: left;
+  margin-right: 5%;
+  font-size: 1.5em;
+  line-height: .75em;
+  vertical-align: -15%;
+}
+
+.prepaid i {
+  background: url('../assets/iconos/prepago.png') no-repeat center;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  display: flex;
+  float: left;
+  margin-right: 5%;
+  font-size: 1.5em;
+  line-height: .75em;
+  vertical-align: -15%;
+  margin-top: -1px;
+}
+
+.prepago span:last-child{
+    color: #009bdb;
+}
+
+.payment-add .title span{
+  margin-right: 2%;
 }
