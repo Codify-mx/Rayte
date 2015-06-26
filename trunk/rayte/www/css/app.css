@@ -963,3 +963,8 @@ html,body
 .login-container .register span{
   color: #009bdb;
 }
+
+.login-container input::-webkit-input-placeholder{ color: #009bdb; }
+.login-container inputt:-moz-placeholder{ color: #009bdb; }
+.login-container input::-moz-placeholder{ color: #009bdb;; }
+.login-container input:-ms-input-placeholder{ color: #009bdb; }
