@@ -92,9 +92,40 @@
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                         </div>
                         <div class="row no-gutter botones">
-                            <a class="col-50" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
+                            <a class="col-50 open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
                             <a class="col-50" href="#" id="registrate">Registrate</a>
                         </div>
+                    </div>
+                      <div class="login-screen">
+    <div class="view">
+      <div class="page">
+        <div class="page-content login-screen-content">
+          <div class="login-screen-title">
+                                <img src="img/logo.png" alt="" />
+                            </div>
+                            <div class="login-container">
+                                <div class="row">
+                                    <input class="col-100" type="text" id="usuario" placeholder="Correo electr&oacute;nico" />
+                                </div>
+                                <div class="row">
+                                    <input class="col-100"type="text" id="password" placeholder="Contrase&ntilde;a"/>
+                                </div>
+                                <div class="row">
+                                    <a class="forgot-btn col-100">&iquest;Olvidaste la contrase&ntilde;a? </a>
+                                </div>
+                                <div class="row">
+                                    <a id="popup-login-btn" class="login-btn col-100" >Iniciar sesi&oacute;n</a>
+                                </div>
+                                <div class="row">
+                                    <a class="forgot-btn register col-100">&iquest;No tienes una cuenta? <span>Crea una cuenta aqu&iacute;</span></a>
+                                </div>
+                            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+                    <div class="popup popup-login">
+                        
                     </div>
                 </div>
             </div>
@@ -251,11 +282,12 @@
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
             
             require('js/app.js', function () {
-                //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+                /*//if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
                 if (parseInt(localStorage.login) === 1 )
                 {
-                    
-                   
+                    */
+                   //user.login();
+                   /*
                     require('js/gps.js', function () {
                         $(".view-login").hide();
                         $(".view-main").show();
@@ -277,7 +309,7 @@
                         localStorage.cliente_actual = '';
                     }
                    */
-                } 
+               /* } */
             });
         </script>
 

@@ -681,16 +681,16 @@ var GPS = {
      *  pide un taxi específico, si no está disponible o se cancela, busca el siquiente taxi
      *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
      */
-    pedirTaxi: function () {
-        app.showPreloader('Pidiendo Taxi...');
+    pedirTaxi: function (taxi) {
+        //app.showPreloader('Pidiendo Taxi...');
         var OlatLng = GPS.pin.usuario.getPosition();
         var DlatLng = GPS.pin.destino.getPosition();
-        /*
-         *'taxiId': taxi.id,
-            'ubicacionTaxi': JSON.stringify(taxi.latlng),
-            */
+        
+                     //'id_usuario': app.ls.id_usuario,
+            
         var datos = {
-            'id_usuario': app.ls.id_usuario,
+            'taxiId': taxi.id,
+            'ubicacionTaxi': JSON.stringify(taxi.latlng),
             'latlngOrigen': JSON.stringify(OlatLng),
             'direccionOrigen': GPS.pin.usuario.address,
             'latlngDestino': JSON.stringify(DlatLng),
@@ -707,7 +707,7 @@ var GPS = {
                     console.log('pedir taxi');
                     if (objJSON.status == '200') {
                         app.hidePreloader();
-                        app.showPreloader("Calculando Ruta...");
+                        //app.showPreloader("Calculando Ruta...");
                         taxi = objJSON.taxi;
                         $('#taxi-conductor').html(taxi.nombreConductor);
                         $('#taxi-id').html(taxi.id);
@@ -724,7 +724,7 @@ var GPS = {
                         GPS.directionsService.route(request, GPS.validarRutaTaxi);
                     } else {
                         console.log('pedir taxi vacio');
-                        /*GPS.taxis.shift();
+                        GPS.taxis.shift();
                         if (GPS.taxis.length) {
                             GPS.pedirTaxi(GPS.taxis[0]);
                         } else {
@@ -736,7 +736,7 @@ var GPS = {
                                 confirmButtonText: "Aceptar"
                             });
                         }
-                        */
+                        
                     }
                 } catch (e) {
                     app.hidePreloader();
@@ -881,6 +881,7 @@ var GPS = {
      *  @param {string} over css selector sobre el cual se va a calcular la posicion
      */
     showModal: function (me, over) {
+        app.hidePreloader();
         $$('.map-popover').hide();
         var meHeight = $$(me).outerHeight();
         var meWidth = $$(me).outerWidth();
@@ -948,15 +949,6 @@ var GPS = {
         
         GPS.initiatePushNotifications();
         
-        
-        
-        var opciones = {
-            center: new google.maps.LatLng(19, -99.1333),
-            zoom: 4,
-            disableDefaultUI: true
-        };
-        GPS.mapa = new google.maps.Map(document.getElementById('map-canvas'), opciones);
-
         GPS.pin.usuario = new google.maps.Marker({
             icon: {
                 url: 'http://104.131.60.162/indicador-usuario.png',
@@ -1066,15 +1058,22 @@ var GPS = {
             $$(this).addClass('active');
         });
         
+        var rT = false;
+        $('#request-taxi-button').touchend(function(){
+            GPS.getTaxi();
+            $$(this).removeClass('active');
+        });
+        /*
         $$(document).on('touchend','#request-taxi-button', function(){
             $$(this).removeClass('active');
-            //GPS.getTaxi();
-            GPS.pedirTaxi();
+            GPS.getTaxi();
+            //GPS.pedirTaxi();
         });
-        
+        /*
         $$(document).on('touchcancel','#request-taxi-button', function(){
             $$(this).removeClass('active');
         });
+        */
         
         /* Eventos para botones de mapa */
         $$(document).on('touchstart','.map-panel-button', function(){
@@ -1112,6 +1111,7 @@ var GPS = {
         $$(document).on('touchstart','.btn-send', function(){
             $$(this).addClass('active');
             GPS.muestraRutaMapa();
+            rT = false;
         });
         
         $$(document).on('touchend','.btn-send', function(e){

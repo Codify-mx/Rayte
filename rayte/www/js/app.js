@@ -34,15 +34,19 @@ $("#logout").on('touchstart', function (e) {
     app.hidePreloader();
 });
 
-$("#login-button").on('touchstart', function () {
+$("#popup-login-btn").on('touchstart', function () {
+    user.login();
+    /*
     require('login/login.js', function () {
         mainView.router.loadPage('./login/register.html');
         $(".view-main").show();
         $(".view-login").hide();
     });
+    */
 });
 
 $("#login-boton").on('touchstart', function () {
+    app.popup('.popup-login');
     /*app.showPreloader('Espere');
     require('js/soap.js', function () {
         var user = $("#usuario").val().trim();
