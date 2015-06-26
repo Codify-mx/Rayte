@@ -34,6 +34,14 @@ $("#logout").on('touchstart', function (e) {
     app.hidePreloader();
 });
 
+$("#login-button").on('touchstart', function () {
+    require('login/login.js', function () {
+        mainView.router.loadPage('./login/register.html');
+        $(".view-main").show();
+        $(".view-login").hide();
+    });
+});
+
 $("#login-boton").on('touchstart', function () {
     /*app.showPreloader('Espere');
     require('js/soap.js', function () {

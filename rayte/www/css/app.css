@@ -895,3 +895,71 @@ html,body
 #contact-coment:-moz-placeholder{ font-size:.85em; }
 #contact-coment::-moz-placeholder{ font-size:.85em; }
 #contact-coment:-ms-input-placeholder{ font-size:.85em; }
+
+
+
+.reset-pass i {
+  background: url('../assets/iconos/mail.png') no-repeat center;
+  width: 1em;
+  height: 1em;
+  background-size: contain;
+  font-size: 1.5em;
+  line-height: .75em;
+  margin-top: .2em;
+}
+.reset-pass .page-input{
+  margin-top: 0;
+}
+.reset-pass .title{
+  margin-top: 2em;
+}
+
+.reset-pass .page-button{
+  margin-top: 2em;
+}
+
+.login-container{
+  padding: 0 15%;
+}
+
+#page-login{
+  background: white;
+}
+
+.login-container input{
+  background: #ECEEEF;
+  color: #009bdb;
+  padding: 1em .7em;
+  border: none;
+  border-radius: 7px
+}
+
+.login-container .row{
+  margin: 1em 0;
+}
+
+.login-container .forgot-btn{
+  font-size: .7em;
+  text-align: center;
+  color: #2f3946;
+}
+
+.login-container .login-btn{
+  background: #b9bd30;
+  color: #FFF;
+  text-align: center;
+  padding: 1em .7em;
+  border-radius: 7px;
+  text-transform: uppercase;
+}
+
+.login-container .register{
+   font-size: .7em;
+  text-align: center;
+  color: #2f3946;
+}
+
+
+.login-container .register span{
+  color: #009bdb;
+}

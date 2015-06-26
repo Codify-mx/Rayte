@@ -76,7 +76,7 @@
         <div class="views">
             <div class="view view-login ">
                 <div class="page">
-                    <div class="page-content login-screen-content">
+                    <div class="page-content">
                         <div class="login-screen-title">
                             <img src="img/logo.png" alt="" />
                         </div>
@@ -92,47 +92,8 @@
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                         </div>
                         <div class="row no-gutter botones">
-                            <a class="col-50 open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
+                            <a class="col-50" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
                             <a class="col-50" href="#" id="registrate">Registrate</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="login-screen">
-                    <div class="view">
-                        <div class="page">
-                            <div class="page-content login-screen-content">
-                                <div class="login-screen-title">Rayte</div>
-                                <form>
-                                    <div class="list-block">
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">Usuario</div>
-                                                    <div class="item-input">
-                                                        <input type="text" name="username" id="usuario" placeholder="Your username">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title label">Contrase&ntilde;a</div>
-                                                    <div class="item-input">
-                                                        <input type="password" id="password" name="password" placeholder="Your password">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="list-block">
-                                        <ul>
-                                            <li><a href="#" id="login-boton" class="item-link list-button">Iniciar</a></li>
-                                        </ul>
-                                        <div class="list-block-label">
-                                            <p><a href="#" class="close-login-screen">Regresar</a></p>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -290,24 +251,15 @@
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
             
             require('js/app.js', function () {
-             /*   //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+                //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
                 if (parseInt(localStorage.login) === 1 )
-                {*/
+                {
                     
-                    /*
-                    mapa.opciones = {
-                        center: new google.maps.LatLng(19, -99.1333),
-                        zoom: 4,
-                        disableDefaultUI: true
-                    };*/
-                    //mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
+                   
                     require('js/gps.js', function () {
-                        //GPS.mapa = mapa.canvas;
-                        //GPS.mapaModal = mapa.modal;
                         $(".view-login").hide();
                         $(".view-main").show();
-                        //GPS.iniciaMapa();
-                        //mapa = {};
+                        GPS.iniciaMapa();
                         app.hidePreloader();
                     });
                     app.allowPanelOpen = true;
@@ -324,8 +276,8 @@
                     {
                         localStorage.cliente_actual = '';
                     }
-                   
-                } */
+                   */
+                } 
             });
         </script>
 
