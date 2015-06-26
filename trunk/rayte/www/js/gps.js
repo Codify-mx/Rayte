@@ -364,6 +364,7 @@ var GPS = {
      *  cambia el valor de tipo taxi
      */
     setTipoTaxi: function (val) {
+        console.log(val);
         GPS.tipoTaxi = val;
     },
     /*
@@ -1046,11 +1047,11 @@ var GPS = {
         $$(document).on('touchstart','#search-address-button', function(){
             GPS.codeAddress();
         });
-        $$(document).on('touchstart','#car-taxi-button', function(){
+        $$(document).on('touchstart','#car-taxi-button', function(e){
             GPS.setTipoTaxi(2);
         });
         
-        $$(document).on('touchstart','#van-taxi-button', function(){
+        $$(document).on('touchstart','#van-taxi-button', function(e){
             GPS.setTipoTaxi(1);
         });
         
@@ -1058,22 +1059,17 @@ var GPS = {
             $$(this).addClass('active');
         });
         
-        var rT = false;
-        $('#request-taxi-button').touchend(function(){
-            GPS.getTaxi();
-            $$(this).removeClass('active');
-        });
-        /*
+        
         $$(document).on('touchend','#request-taxi-button', function(){
             $$(this).removeClass('active');
             GPS.getTaxi();
             //GPS.pedirTaxi();
         });
-        /*
+        
         $$(document).on('touchcancel','#request-taxi-button', function(){
             $$(this).removeClass('active');
         });
-        */
+        
         
         /* Eventos para botones de mapa */
         $$(document).on('touchstart','.map-panel-button', function(){
@@ -1137,7 +1133,14 @@ var GPS = {
         $$(document).on('touchend touchcancel','.item-content', function(e){
            $$(this).removeClass('active');
         });
-
+        $$(function() {      
+            $$(".map-menu").swipe( {
+            //Generic swipe handler for all directions
+            swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+              console.log("You swiped " + fingerData );  
+            }
+          });
+        });
         GPS.muestraRutaMapa();
     }
 }
