@@ -26,14 +26,14 @@
                 <div class="item-title profile-pic">¡Bienvenido <span id="usr-name">Usuario!</span></div>    
                 <div class="list-block">
                     <ul>
-                        <li class="item-content" id="perfil">
+                        <li class="item-content" id="edit-profile">
                             <div class="item-media"><i class="fa menu-edit-profile fa-lg"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">Perfil</div>
                                 <div class="item-after"></div>
                             </div>
                         </li>
-                        <li class="item-content" id="pago">
+                        <li class="item-content" id="payment">
                             <div class="item-media"><i class="fa menu-payment fa-lg"></i></div>
                             <div class="item-inner">
                                 <div class="item-title">M&eacute;todos de pago</div>
@@ -261,14 +261,6 @@
                         </div>
                         <div class="blured"></div>
                     </div>
-                    <div data-page="categorias" id="categorias" class="page cached">
-                        <div class="page-content">
-                            <a href="#" class="link" id="back-catalogo"><i class="icon icon-back"></i><span>Atras</span></a>
-                            <div class="content-block">
-                                <h2>categorias</h2>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -296,23 +288,26 @@
             var css = jQuery("#css");
             var href = css.attr('href');
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
+            
             require('js/app.js', function () {
-                //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+             /*   //if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
                 if (parseInt(localStorage.login) === 1 )
-                {
-                    $(".view-login").hide();
-                    $(".view-main").show();
+                {*/
+                    
+                    /*
                     mapa.opciones = {
                         center: new google.maps.LatLng(19, -99.1333),
                         zoom: 4,
                         disableDefaultUI: true
-                    };
-                    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
+                    };*/
+                    //mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
                     require('js/gps.js', function () {
-                        GPS.mapa = mapa.canvas;
-                        GPS.mapaModal = mapa.modal;
-                        GPS.iniciaMapa();
-                        mapa = {};
+                        //GPS.mapa = mapa.canvas;
+                        //GPS.mapaModal = mapa.modal;
+                        $(".view-login").hide();
+                        $(".view-main").show();
+                        //GPS.iniciaMapa();
+                        //mapa = {};
                         app.hidePreloader();
                     });
                     app.allowPanelOpen = true;
@@ -329,8 +324,8 @@
                     {
                         localStorage.cliente_actual = '';
                     }
-                    */
-                }
+                   
+                } */
             });
         </script>
 

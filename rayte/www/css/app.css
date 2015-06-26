@@ -624,3 +624,138 @@ html,body
     text-align: center;
   }
 }
+
+
+
+
+/***** EDIT PROFILE ****/
+.edit-profile-image-container{
+    height: 70px;
+    border-radius: 50%;
+    border: 5px solid #2f3946;
+    padding: 3px;
+    margin-top: 5px;
+}
+.edit-profile-image{
+    background: url("../assets/iconos/usuario.png") no-repeat center;
+    background-size: contain;
+    width: 100%;
+    height: 100%;   
+    border-radius:50%;
+}
+
+.page-input{
+  border: 1px solid #CCC;
+  border-radius: 5px;
+  padding: 2%;
+  margin: 5px 0 0 10px;
+}
+
+#edit-profile-tel{
+    margin-left: 0px;
+}
+#edit-profile-tel-code{
+  margin-top: 10px;
+  padding-left: 15%;}
+
+#edit-profile-tel-code:before{
+  content: '';
+  background: url('../assets/iconos/telefono.png') no-repeat center;
+  background-size: contain;
+  height: 6%;
+  width: 6%;
+  position: absolute;
+  margin-left: -8%;
+  margin-top: -2.25%;
+}
+
+
+.password-input i {
+  background: url('../assets/iconos/privacidad.png') no-repeat center;
+  background-size: contain;
+  height: 20px;
+  margin-top: 3%;
+}
+.password-input input.page-input{
+  margin-left:0px;
+}
+
+.password-input.new{
+  margin-bottom:0;
+  margin-top: 3%;
+}
+
+.password-input.new > input {
+  margin-bottom:0px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom: none;
+}
+
+.password-input.repeat > input {
+  margin-top:0px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.password-input.repeat > i {
+  margin-top: 3%;
+}
+
+#edit-profile-forgot{
+    text-align: center;
+  color: #7d7d7d;
+  font-size: .8em;
+  margin: 4% 0;
+  padding: 3% 0;
+}
+
+.page-button{
+    background-color: #009bdb;
+    color: #FFF;
+    font-size: .9em;
+    text-transform: uppercase;
+    border-radius: 10px;
+    padding: 5%;
+    margin: 0px 18%;
+}
+
+.navbar{
+    color: #009bdb;
+    background: #FFFFFF;
+}
+
+.page-content.ios .content-block{
+  margin-top: 0;
+}
+
+.page-content.ios .content-block:before{
+  content:'';
+  width: 100%;
+  height:1px;
+  background-color: #CCC;
+  display: block;
+margin-bottom: 10px;
+}
+
+.page-content.ios .content-block-title{
+ color: #009bdb;
+ text-align: center;
+ text-transform: capitalize;
+ font-size: 1.2em;
+}
+
+.page-content.ios{
+  padding-top: 20px;
+}
+.page-content.ios .content-block-title:first-child{
+  margin-top: 0;
+}
+.page-content.ios .content-block-title:first-child i {
+  background: url(../assets/iconos/flecha.png) no-repeat center;
+  background-size: contain;
+  height: 15px;
+  width: 15px;
+  position: absolute;
+  left: 0;
+}
