@@ -19,11 +19,12 @@
 
 var rayte = {
     onDeviceReady: function() {
+        console.log('device ready');
          var networkState = navigator.connection.type;
          //console.log(networkState);
          if ( networkState === Connection.NONE  ) {
             $$('#login-button').removeClass('open-login-screen');
-            $$('#login-button').click(rayte.onDeviceReady);
+            $('#login-button').touchstart(rayte.onDeviceReady);
             alert("No hay conexion");
          }else{
              $$('#login-button').addClass('open-login-screen');
