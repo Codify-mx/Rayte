@@ -4,7 +4,7 @@ var $ = Framework7.$;
 
 var app = new Framework7({
     animateNavBackIcon: true,
-    swipePanel: 'right',
+    //swipePanel: 'right',
     modalButtonOk: 'Aceptar',
     modalButtonCancel: 'Cancelar'
 });
@@ -35,7 +35,7 @@ $("#logout").on('touchstart', function (e) {
 });
 
 $("#login-boton").on('touchstart', function () {
-    app.showPreloader('Espere');
+    /*app.showPreloader('Espere');
     require('js/soap.js', function () {
         var user = $("#usuario").val().trim();
         var pass = $("#password").val().trim();
@@ -82,7 +82,7 @@ $("#login-boton").on('touchstart', function () {
             app.hidePreloader();
             app.alert('Debe de introducir un usuario y una contraseña', 'Error');
         }
-    });
+    });*/
 });
 
 /** control de mapa **/
@@ -111,4 +111,7 @@ user.login = function () {
     app.allowPanelOpen = true;
 }
 
+ $$(document).on('touchstart','.back',function(){
+        mainView.router.back();
+ });
 

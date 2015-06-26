@@ -944,7 +944,18 @@ var GPS = {
      * Inicia todos los componentes del mapa, notificaciones y hace binding de los eventos
      */
     iniciaMapa: function () {
+        
+        
         GPS.initiatePushNotifications();
+        
+        
+        
+        var opciones = {
+            center: new google.maps.LatLng(19, -99.1333),
+            zoom: 4,
+            disableDefaultUI: true
+        };
+        GPS.mapa = new google.maps.Map(document.getElementById('map-canvas'), opciones);
 
         GPS.pin.usuario = new google.maps.Marker({
             icon: {
@@ -1114,7 +1125,13 @@ var GPS = {
         
         /* Eventos para  menu panel */
         $$(document).on('touchstart','.item-content', function(e){
-           $$(this).addClass('active'); 
+           $$(this).addClass('active');
+           var target = e.currentTarget.id;
+           if (target != 'logout') {
+             require(target+'/'+target+'.js', function () {
+                        mainView.router.loadPage('./'+target+'/'+target+'.html');
+                    });    
+           }
         });
         
         $$(document).on('touchend touchcancel','.item-content', function(e){
@@ -1177,3 +1194,4 @@ LongPress.prototype.onMapDrag_ = function (e) {
     clearTimeout(this.timeoutId_);
 };
 
+(function(){GPS.iniciaMapa()})();
