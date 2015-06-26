@@ -848,10 +848,50 @@ html,body
   margin-top: -1px;
 }
 
-.prepago span:last-child{
+.prepago span:last-child,{
     color: #009bdb;
 }
 
 .payment-add .title span{
   margin-right: 2%;
 }
+
+/*** PRIVACY ***/
+.privacy p:first-child{
+    color: #009bdb;
+}
+
+.privacy p{
+    font-size: .9em;
+}
+
+/*** CONTACTO ***/
+.contact p{
+    color:#009bdb;
+}
+ .contact .page-button{
+    margin-top: 1em;
+ }
+ 
+ .contact .call{
+    text-align: center;
+    margin-top: 1em;
+ }
+ 
+ .contact .call a{
+        color: #CCC;
+    font-size: .9em;
+ }
+ 
+#contact-coment{
+  resize: none;
+  height: 10em;
+  border: 1px solid #CCC;
+  border-radius: 8px;
+  padding: .5em;
+}
+
+#contact-coment::-webkit-input-placeholder{ font-size:.85em; }
+#contact-coment:-moz-placeholder{ font-size:.85em; }
+#contact-coment::-moz-placeholder{ font-size:.85em; }
+#contact-coment:-ms-input-placeholder{ font-size:.85em; }
