@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="css/framework7.min.css">
         <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+        <link rel="stylesheet" id="css" href="css/bootstrap.css">
         <link rel="stylesheet" id="css" href="css/app.css">
         <link rel="apple-touch-icon" href="touch-icon-iphone.png">
         <link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-ipad.png">
@@ -61,6 +62,13 @@
                                 <div class="item-after"></div>
                             </div>
                         </li>
+                        <li class="item-content" id="about">
+                            <div class="item-media"><i class="fa menu-about fa-lg"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Acerca de</div>
+                                <div class="item-after"></div>
+                            </div>
+                        </li>
                         <li class="item-content" id="logout">
                             <div class="item-media"><i class="fa menu-logout fa-lg"></i></div>
                             <div class="item-inner">
@@ -91,9 +99,11 @@
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                             <img src="assets/animaciones/llantas.png" alt="" class="llantas"/>
                         </div>
-                        <div class="row no-gutter botones">
-                            <a class="col-50 open-login-screen" href="#" data-view=".view-login" id="login-button">Iniciar sesión</a>
-                            <a class="col-50 open-popup" data-popup=".popup-registro"  href="#" id="registrate">Registrate</a>
+                        <div class="container">
+                            <div class="row  botones">
+                                <a class="col-xs-6 open-login-screen"  data-view=".view-login" id="login-button">Iniciar sesión</a>
+                                <a class="col-xs-6 open-popup" data-popup=".popup-registro" id="registrate">Registrate</a>
+                            </div>
                         </div>
                     </div>
                     <div class="login-screen">
@@ -103,21 +113,21 @@
                                     <div class="login-screen-title">
                                         <img src="assets/img/logorayte.png" alt="Rayte" />
                                     </div>
-                                    <div class="login-container">
+                                    <div class="login-container container">
                                         <div class="row">
-                                            <input class="col-100" type="text" id="usuario" placeholder="Correo electr&oacute;nico" />
+                                            <input class="col-xs-12" type="text" id="usuario" placeholder="Correo electr&oacute;nico" />
                                         </div>
                                         <div class="row">
-                                            <input class="col-100"type="text" id="password" placeholder="Contrase&ntilde;a"/>
+                                            <input class="col-xs-12"type="text" id="password" placeholder="Contrase&ntilde;a"/>
                                         </div>
                                         <div class="row">
-                                            <a class="forgot-btn col-100 open-popup close-login-screen" data-popup=".popup-reset">&iquest;Olvidaste la contrase&ntilde;a? </a>
+                                            <a class="forgot-btn col-xs-12 open-popup close-login-screen" data-popup=".popup-reset">&iquest;Olvidaste la contrase&ntilde;a? </a>
                                         </div>
                                         <div class="row">
-                                            <a id="popup-login-btn" class="login-btn col-100" >Iniciar sesi&oacute;n</a>
+                                            <a id="popup-login-btn" class="login-btn col-xs-12" >Iniciar sesi&oacute;n</a>
                                         </div>
                                         <div class="row">
-                                            <a class="forgot-btn register col-100">&iquest;No tienes una cuenta? <span class="open-popup close-login-screen" data-popup=".popup-registro">Crea una cuenta aqu&iacute;</span></a>
+                                            <a class="forgot-btn register col-xs-12">&iquest;No tienes una cuenta? <span class="open-popup close-login-screen" data-popup=".popup-registro">Crea una cuenta aqu&iacute;</span></a>
                                         </div>
                                         
                                     </div>
@@ -130,22 +140,21 @@
                             <div class="login-screen-title">
                                 <img src="assets/img/logorayte.png" alt="Rayte" />
                             </div>
-
-                            <div class="login-container">
+                            <div class="login-container container">
                                 <div class="row">
-                                    <input class="col-100" type="text" id="nombre" placeholder="Nombre completo" />
+                                    <input class="col-xs-12" type="text" id="nombre" placeholder="Nombre completo" />
                                 </div>
                                 <div class="row">
-                                    <input class="col-100" type="text" id="email" placeholder="Correo electr&oacute;nico"/>
+                                    <input class="col-xs-12" type="text" id="email" placeholder="Correo electr&oacute;nico"/>
                                 </div>
                                 <div class="row">
-                                    <input class="col-100" type="papssword" id="password" placeholder="Contrase&ntilde;a"/>
+                                    <input class="col-xs-12" type="papssword" id="password" placeholder="Contrase&ntilde;a"/>
                                 </div>
                                 <div class="row">
-                                    <a class="login-btn col-100" >Iniciar sesi&oacute;n</a>
+                                    <a class="login-btn col-xs-12" >Iniciar sesi&oacute;n</a>
                                 </div>
                                 <div class="row">
-                                    <a class="forgot-btn register col-100">&iquest;Ya tienes una cuenta? <span class="close-popup open-login-screen">Inicia sesi&oacute;n</span></a>
+                                    <a class="forgot-btn register col-xs-12">&iquest;Ya tienes una cuenta? <span class="close-popup open-login-screen">Inicia sesi&oacute;n</span></a>
                                 </div>
                             </div>
                             <div class="login-footer"></div>
@@ -154,18 +163,18 @@
                             <div class="login-screen-title">
                                 <img src="assets/img/logorayte.png" alt="Rayte" />
                             </div>
-                            <div class="login-container">
+                            <div class="login-container container">
                                 <div class="row reset">
                                     Reestablecer contrase&ntilde;a
                                 </div>
                                 <div class="row">
-                                    <input class="col-100" type="text" id="reset-email" placeholder="Correo electr&oacute;nico"/>
+                                    <input class="col-xs-12" type="text" id="reset-email" placeholder="Correo electr&oacute;nico"/>
                                 </div>
                                 <div class="row">
-                                    <a class="login-btn col-100" >Enviar</a>
+                                    <a class="login-btn col-xs-12" >Enviar</a>
                                 </div>
                                 <div class="row">
-                                    <a class="forgot-btn col-100 close-popup open-login-screen">Regresar</a>
+                                    <a class="forgot-btn col-xs-12 close-popup open-login-screen">Regresar</a>
                                 </div>
                             </div>
                             <div class="login-footer"></div>
@@ -179,71 +188,81 @@
                             <div id="map-canvas" ></div>
                             <a class="map-button map-panel-button"></a>
                             <a class="map-button map-center-button"></a>
+                            <a class="map-button map-call-button"></a>
                             <div class="map-menu">
                                 <div class="map-main-menu">
-                                    <div class="row no-gutter search-address">
-                                        <a id="search-address-button" class="col-15"></a>
-                                        <input id="map-address" type="text" placeholder="Destino..." class="col-85"/>
+                                    <div class="row search-address">
+                                        <a id="search-address-button" class="col-xs-2"></a>
+                                        <input id="map-address" type="text" placeholder="Destino..." class="col-xs-10"/>
                                     </div>
-                                    <div class="row no-gutter vehicle-container">
-                                        <a id="van-taxi-button"class="col-50 vehicle van" href="#"></a>
-                                        <a id="car-taxi-button" class="col-50 vehicle car" href="#"></a>
+                                    <div class="row vehicle-container swiper-container">
+                                         <div class="swiper-wrapper">
+                                            <div class="col-xs-12 vehicle van swiper-slide" ></div>
+                                            <div class="swiper-slide row">
+                                                <div id="van-taxi-button" class="vehicle van col-xs-6"></div>
+                                                <div id="car-taxi-button" class="vehicle car col-xs-6"></div>
+                                            </div>
+                                            <div class="col-xs-12 vehicle car swiper-slide"></div>
+                                        </div>
                                     </div> 
                                 </div>
-                                <div class="on-route">
-                                    <div class="row">
-                                        <ul class="col-50">
+                                <div class="on-route row">
+
+                                        <div class="col-xs-3 image-container taxi-driver-image-container">
+                                                <div class="edit-profile-image"></div>
+                                        </div>
+                                        <ul class="col-xs-4">
                                             <li>Detalles</li>
                                             <li id="taxi-conductor">Nombre</li>
                                             <li id="taxi-id">ID</li>
                                             <li id="taxi-placas">Placas</li>
                                         </ul>
-                                        <ul class="col-40">
+                                        <ul class="col-xs-4">
                                             <li>Tiempo Estimado</li>
                                             <li class="time" >9:00 min</li>
                                         </ul>
-                                    </div>
+
                                 </div>
                                 <div class="row">
-                                    <a id="request-taxi-button" class="col-100">PEDIR RAYTE</a>
+                                    <a id="request-taxi-button" class="col-xs-12">PIDE RAYTE</a>
                                 </div>
                             </div>
                         </div>
 
                         <div id="popover-confirm" class="popover map-popover">
                             <div class="popover-inner">
-                                <div class="row header">
-                                    <h3 class="col-100">Recorrido</h3>
+                                <div class="header">
+                                    <h4>Recorrido</h4>
                                 </div>
                                 <div class="container">
                                     <div class="row title">
-                                        <label class="col-100">Hemos seleccionado la mejor ruta para ti</label>
+                                        <label class="col-xs-12">Hemos seleccionado la mejor ruta para ti</label>
                                     </div>
-                                    <div class="row no-gutter route">
-                                        <label class="col-25">Origen</label>
-                                        <span id="popover-confirm-start" class="col-75">Soy una direccion de origen</span>
+                                    <div class="row route">
+                                        <label class="col-xs-3">Origen</label>
+                                        <span id="popover-confirm-start" class="col-xs-9">Soy una direccion de origen</span>
                                     </div>
-                                    <div class="row no-gutter route">
-                                        <label class="col-25">Destino</label>
-                                        <span id="popover-confirm-end" class="col-75">Soy una direccion de destino</span>
+                                    <div class="row route">
+                                        <label class="col-xs-3">Destino</label>
+                                        <span id="popover-confirm-end" class="col-xs-9">Soy una direccion de destino</span>
                                     </div>
                                     <div class="row preview">
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <span class="col-100">Tiempo de llegada</span>
-                                                <span id="popover-confirm-time" class="col-100">3:00 min</span>
-                                            </div>
+                                        <div class="col-xs-6">
+                        
+                                                <span class="col-xs-12">Tiempo de llegada</span>
+                                                <span id="popover-confirm-time" class="col-xs-12">3:00 min</span>
+                                 
                                         </div>
-                                        <div class="col-50">
-                                            <div class="row">
-                                                <span class="col-100">Costo</span>
-                                                <span id="popover-confirm-cost" class="col-100">$ 50.00</span>
-                                            </div>
+                                        <div class="col-xs-6">
+                       
+                                                <span class="col-xs-12">Costo</span>
+                                                <span id="popover-confirm-cost" class="col-xs-12">$ 50.00</span>
+                            
                                         </div>
                                     </div>
-                                    <div class="row no-gutter">
-                                        <a href="#" id="popover-confirm-no" class="col-50"></a>
-                                        <a href="#" id="popover-confirm-yes" class="col-50"></a>
+                                    <div class="row">
+                                        <a  id="popover-confirm-no" class="col-xs-6"></a>
+                                        <a  id="popover-confirm-yes" class="col-xs-6"></a>
                                     </div>
                                 </div>
                             </div>
@@ -251,17 +270,17 @@
                         <div id="popover-rate" class="popover map-popover">
                             <div class="popover-inner">
                                 <div class="row header">
-                                    <h3 class="col-100">¡Hemos llegado!</h3>
+                                    <h4 class="col-xs-12">¡Hemos llegado!</h4>
                                 </div>
                                 <div class="container">
-                                    <div class="row preview">
-                                        <div class="col-100">
-                                            <span class="col-100">Califica tu experiencia</span>
+                                    <div class="row service">
+                                        <div class="col-xs-12">
+                                            <span class="col-xs-12">Califica tu experiencia</span>
                                         </div>
                                     </div>
                                     <div class="row service">
-                                        <label class="col-100">Servicio</label>
-                                        <fieldset class="rating">
+                                        <label>Servicio</label>
+                                        <fieldset class="rating col-xs-11">
                                             <input type="radio" id="star5" name="rating" value="5" />
                                             <label class = "full" for="star5" ></label>
                                             <input type="radio" id="star4" name="rating" value="4" />
@@ -275,13 +294,13 @@
                                         </fieldset>
                                     </div>
                                     <div class="row service">
-                                        <label class="col-100">Comentarios</label>
-                                        <textarea id="popover-rate-comments" class="col-100" ></textarea>
-                                        <span class="col-100" >Omitir este paso</span>
+                                        <label >Comentarios</label>
+                                        <textarea id="popover-rate-comments" class="col-xs-12" ></textarea>
+                                        <span class="col-xs-12" >Omitir este paso</span>
                                     </div>
-                                    <div class="row">
-                                        <a class="btn-send" href="#">Enviar</a>
-                                    </div>
+                                   
+                                        <a class="btn-send col-xs-8" >Enviar</a>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -295,7 +314,6 @@
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/require.js"></script>
         <script src="js/jquery.js"></script>
-        <script src="js/jquery.touchSwipe.js"></script>
         <script src="js/sweetalert.min.js"></script>
         <script type="text/javascript"
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlWP6M9z-zsuGTW3NWK1tavW6mXTpa_t8">

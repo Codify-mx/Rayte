@@ -364,7 +364,6 @@ var GPS = {
      *  cambia el valor de tipo taxi
      */
     setTipoTaxi: function (val) {
-        console.log(val);
         GPS.tipoTaxi = val;
     },
     /*
@@ -945,10 +944,20 @@ var GPS = {
     /*
      * Inicia todos los componentes del mapa, notificaciones y hace binding de los eventos
      */
-    iniciaMapa: function () {
+    iniciaMapa: function (){
         
         
         GPS.initiatePushNotifications();
+        
+        GPS.menuSwiper = app.swiper('.swiper-container', {
+            speed: 400,
+            spaceBetween: 0,
+            initialSlide:1,
+            onReachBeginning: function(){GPS.setTipoTaxi(1);},
+            onReachEnd: function(){GPS.setTipoTaxi(2);},
+            onSlideChangeEnd: function(swiper){if(swiper.activeIndex===1){GPS.setTipoTaxi(0);}},
+            resistance:false
+        });
         
         GPS.pin.usuario = new google.maps.Marker({
             icon: {
@@ -1047,14 +1056,15 @@ var GPS = {
         $$(document).on('touchstart','#search-address-button', function(){
             GPS.codeAddress();
         });
+        /*
         $$(document).on('touchstart','#car-taxi-button', function(e){
-            GPS.setTipoTaxi(2);
+            GPS.menuSwiper.slideTo(2)
         });
         
         $$(document).on('touchstart','#van-taxi-button', function(e){
-            GPS.setTipoTaxi(1);
+            GPS.menuSwiper.slideTo(0)
         });
-        
+        */
         $$(document).on('touchstart','#request-taxi-button', function(){
             $$(this).addClass('active');
         });
@@ -1078,6 +1088,10 @@ var GPS = {
         
         $$(document).on('touchstart','.map-center-button', function(){
            GPS.muestraRutaMapa();
+        });
+        
+        $$(document).on('touchstart','.map-call-button', function(){
+            window.open('tel:4773937010', '_system');
         });
         
         /* Eventos para popover confirm */
@@ -1133,14 +1147,8 @@ var GPS = {
         $$(document).on('touchend touchcancel','.item-content', function(e){
            $$(this).removeClass('active');
         });
-        $$(function() {      
-            $$(".map-menu").swipe( {
-            //Generic swipe handler for all directions
-            swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-              console.log("You swiped " + fingerData );  
-            }
-          });
-        });
+        
+        
         GPS.muestraRutaMapa();
     }
 }
