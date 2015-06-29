@@ -21,6 +21,7 @@ var mainView = app.addView('.view-main', {
 
 app.allowPanelOpen = false;
 
+
 $(document).on('pageInit', function (e) {
     app.closePanel();
 });
