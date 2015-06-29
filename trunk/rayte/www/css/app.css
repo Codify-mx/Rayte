@@ -1023,6 +1023,14 @@ html,body
   z-index: -1;
 }
 
-
+.input-group-addon{
+  background-size: contain;
+  border: none;
+}
+.input-group .form-control:last-child{
+  margin-left: 10%;
+  width: 90%;
+  border-radius: 4px;
+}
 
 
