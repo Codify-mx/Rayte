@@ -26,6 +26,8 @@ $(document).on('pageInit', function (e) {
     app.closePanel();
 });
 
+
+
 $("#logout").on('touchstart', function (e) {
     app.ls.clear();
     app.closePanel();
@@ -36,14 +38,78 @@ $("#logout").on('touchstart', function (e) {
 });
 
 $("#popup-login-btn").on('touchstart', function () {
-    user.login();
-    /*
-    require('login/login.js', function () {
-        mainView.router.loadPage('./login/register.html');
-        $(".view-main").show();
-        $(".view-login").hide();
+    //user.login();
+    rayte.swalPreloader('Espere...');
+    require('js/soap.js', function () {
+        var user = $("#usuario").val().trim();
+        var pass = $("#password").val().trim();
+        if (user !== '' && pass !== '')
+        {
+            soap.login(user, pass, function (data) {
+                console.log(data);
+                $("#usuario,#password").val('');
+                if (parseInt(data.id_usuario) != -1)
+                {
+                    app.hidePreloader();
+                    app.ls.login = 1;
+                    app.ls.id_usuario = data.id_usuario;
+                    user.login();
+                    /*
+                    $(".view-login").hide();
+                    $(".view-main").show();
+                    mapa.opciones = {
+                        center: new google.maps.LatLng(19, -99.1333),
+                        zoom: 4,
+                        disableDefaultUI: true
+                    };
+                    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
+                    require('js/gps.js', function () {
+                        GPS.mapa = mapa.canvas;
+                        GPS.mapaModal = mapa.modal;
+                        GPS.iniciaMapa();
+                        mapa = {};
+                        app.hidePreloader();
+                    });
+                    app.allowPanelOpen = true;*/
+                }
+                else
+                {
+                    app.ls.login = 0;
+                    app.ls.version = 0;
+                    //app.hidePreloader();
+                    //app.alert('Usuario y/o Password incorrecto', 'Error');
+                    swal({
+                        title: "Erro de login!",
+                        text: 'Usuario y/o Password incorrecto',
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                }
+               
+            },function(){
+                console.log('error login');
+                swal({
+                    title: "Erro de login!",
+                    text: 'Ocurrio un error, porfavor intentelo más tarde',
+                    type: "error",
+                    confirmButtonText: "Aceptar"
+                });
+                app.ls.login = 1;
+            });
+            
+        }
+        else
+        {
+            //app.hidePreloader();
+            //app.alert('Debe de introducir un usuario y una contraseña', 'Error');
+            swal({
+                title: "Erro de login!",
+                text: 'Debe de introducir un usuario y una contraseña',
+                type: "error",
+                confirmButtonText: "Aceptar"
+            });
+        }
     });
-    */
 });
 
 
@@ -109,15 +175,10 @@ user.login = function () {
     app.showPreloader('Espere');
     $(".view-login").hide();
     $(".view-main").show();
-    mapa.opciones = {
-        center: new google.maps.LatLng(19, -99.1333),
-        zoom: 4,
-        disableDefaultUI: true
-    };
-    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
+    
     require('js/gps.js', function () {
-        GPS.mapa = mapa.canvas;
-        GPS.mapaModal = mapa.modal;
+        //GPS.mapa = mapa.canvas;
+        //GPS.mapaModal = mapa.modal;
         GPS.iniciaMapa();
         mapa = {};
         app.hidePreloader();

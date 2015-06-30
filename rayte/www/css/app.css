@@ -571,7 +571,7 @@ html,body
   width: 100%;
 }
 
-.botones a {
+.botones button {
     background-color: #EBF7F7;
     border: 2px solid #ADD55D;
     text-align: center;
@@ -684,18 +684,20 @@ html,body
     margin-left: 0px;
 }
 #edit-profile-tel-code{
-  margin-top: 10px;
-  padding-left: 15%;}
+  margin-top: 6%;
+  padding-left: 15%;
+  font-size: .7em;
+}
 
-#edit-profile-tel-code:before{
-  content: '';
-  background: url('../assets/iconos/telefono.png') no-repeat center;
-  background-size: contain;
-  height: 6%;
-  width: 6%;
-  position: absolute;
-  margin-left: -8%;
-  margin-top: -2.25%;
+#edit-profile-tel-code:before {
+    content: '';
+    background: url('../assets/iconos/telefono.png') no-repeat center;
+    background-size: contain;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    margin-left: -85%;
+    margin-top: 0;
 }
 
 
@@ -748,6 +750,7 @@ html,body
   padding: 4% 5%;
   margin: 0 16%;
   text-align: center;
+  border: none;
 }
 
 .navbar{
@@ -757,10 +760,17 @@ html,body
 
 .page-content.ios .content-block{
     margin-top: 0;
-    padding: 0 25px;
+    padding: 0 10px;
     text-align: justify;
 }
 
+.page-content.ios .content-block-title:first-child+.content-block:before{
+  content:'';
+  width: 0%;
+}
+.content-block > .row{
+  padding-left: 10px;
+}
 .page-content.ios .content-block:before{
   content:'';
   width: 100%;
@@ -775,19 +785,28 @@ html,body
  text-align: center;
  text-transform: capitalize;
  font-size: 1.2em;
+ line-height: 2em;
 }
 
 .page-content.ios{
-  padding-top: 20px;
+  padding: 5px 15px 0;
 }
 .page-content.ios .content-block-title:first-child{
-  margin-top: 0;
+  margin: 0 auto;
+}
+
+.page-content.ios .content-block-title:first-child:after{
+     content:'';
+  width: 100%;
+  height:1px;
+  background-color: #CCC;
+  display: block;
 }
 .page-content.ios .content-block-title:first-child i {
-  background: url(../assets/iconos/flecha.png) no-repeat center;
-  background-size: contain;
-  height: 1em;
-  width: 1em;
+  background: url(../assets/iconos/flecha.png) no-repeat left center;
+  background-size: 50%;
+  height: 2em;
+  width: 2em;
   position: absolute;
   left: 0;
 }
@@ -985,6 +1004,7 @@ html,body
   padding: 1em .7em;
   border-radius: 7px;
   text-transform: uppercase;
+  border: none;
 }
 
 .login-container .register{
@@ -1028,7 +1048,7 @@ html,body
   border: none;
 }
 .input-group .form-control:last-child{
-  margin-left: 10%;
+  margin-left: 5%;
   width: 90%;
   border-radius: 4px;
 }

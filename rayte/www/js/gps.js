@@ -73,7 +73,7 @@ var GPS = {
      */
     cancelWatch: function () {
         navigator.geolocation.clearWatch(GPS.watchID);
-        GPS.agregaMensaje('terminado');
+        //GPS.agregaMensaje('terminado');
         $('#fetch').html('Iniciar');
         $('#fetch').unbind("click");
         $('#fetch').click(function () {
@@ -86,8 +86,7 @@ var GPS = {
      *  Obtiene la posición actual del dispositivo
      */
     centrarMapa: function () {
-        //app.hidePreloader();
-        app.showPreloader('Buscando ubicacion ...');
+        GPS.swalPreloader('Buscando ubicación ...');
         navigator.geolocation.getCurrentPosition(GPS.onSuccessCenter, GPS.onError);
     },
     /*
@@ -102,16 +101,17 @@ var GPS = {
         GPS.pin.usuario.setPosition(myLatlng);
         $$('.fixed-marker').show();
         GPS.codeLatLng(myLatlng, GPS.pin.usuario, true);
-        app.hidePreloader();
+        swal.close();
+       // app.hidePreloader();
     },
     /*
      * Se llama al estar listo el dispositivo, centra el mapa en la posicion y agrega evento para poder inciciar el servicio de rastreo
      */
     onDeviceReady: function () {
-        GPS.agregaMensaje('Listo');
+        //GPS.agregaMensaje('Listo');
         GPS.iniciaMapa();
         GPS.centrarMapa();
-        GPS.agregaMensaje('Si watch');
+        //GPS.agregaMensaje('Si watch');
         $('#fetch').html('Rastrear');
         $('#fetch').unbind("click");
         $('#fetch').click(function () {
@@ -139,20 +139,23 @@ var GPS = {
      *  Manda un mensaje en caso de no poder obtener la posición
      */
     onError: function (error) {
-        app.hidePreloader();
+        //app.hidePreloader();
+        GPS.agregaMensaje('No ha sido posible obtener su ubicación',true);
+        /*
         swal({
-            title: "Buscar Ubicación",
+            title: "Error al buscar ubicación",
             text: "No ha sido posible obtener su ubicación",
             type: "error",
             confirmButtonText: "Aceptar"
         });
+        */
     },
     /*
      *  Guarda la posicíon obtenida en un arreglo e imprime la posicion en pantalla
      *  @param Object position Objeto de posición generado por el servicio getCurrentPosition o watchPosition
      */
     onSuccess: function (position) {
-        GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
+        //GPS.agregaMensaje('Lat: ' + position.coords.latitude + ' Lng: ' + position.coords.longitude);
         var myLatLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         GPS.latlng.push(myLatLng);
         if (GPS.polyline.route) {
@@ -174,25 +177,68 @@ var GPS = {
             }
         });
     },
+    llamarOperadora: function(){
+        window.open('tel:4773937010', '_system');
+    },
     /*
      *  Envia mensaje a pantalla
      *  @oaram String mensaje Mensaje a enviar a pantalla
      */
-    agregaMensaje: function (mensaje) {
-        /* var node = document.createElement("LI");
-         var textnode = document.createTextNode(mensaje);
-         node.appendChild(textnode);
-         console.log(mensaje);
-         document.getElementById("position").appendChild(node);*/
+    agregaMensaje: function (mensaje,call) {
+        if (call) {
+            swal({
+                title: mensaje,
+                text: "¿ Desea llamar a la operadora ?",
+                showCancelButton: true,
+                confirmButtonColor: "#009bdb",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                cancelButtonColor: "#2f3946",
+                closeOnConfirm: true,
+                animation: true,
+                imageUrl: "./assets/iconos/ayuda.png"
+            },function () {
+                GPS.llamarOperadora();
+            });
+        }else{
+            swal({
+                title: "Error de Conexión!",
+                text: mensaje,
+                type: "error",
+                confirmButtonText: "Aceptar"
+            });  
+        }
     },
     /*
      *  Obtiene la posición geografica (latlng) mediante una direcion (Calle numero colonia)
      *  genera un pin nuevo en la posición
      */
     codeAddress: function () {
-        app.showPreloader('Buscando...');
-        var address = document.getElementById("map-address").value;
-        GPS.geocoder.geocode({'address': address}, GPS.validarCodeAddress);
+        if (rayte.checkConnection()) {
+            if (document.getElementById("map-address").value.trim() === '' || document.getElementById("map-address").value.trim() === GPS.pin.usuario.address) {
+                swal({
+                    title: "¡ No hay dirección !",
+                    text: "Porfavor escribe una dirección",
+                    type: "error",
+                    confirmButtonText: "Aceptar"
+                });
+            }else{
+                GPS.swalPreloader('Buscando...');
+                var address = document.getElementById("map-address").value;
+                GPS.geocoder.geocode({'address': address}, GPS.validarCodeAddress);
+            }
+        }else{
+            GPS.agregaMensaje('No existe conexión de internet',true);
+            /*
+            swal({
+                title: "Error de Conexión!",
+                text: "No existe conexión de internet",
+                type: "error",
+                confirmButtonText: "Aceptar"
+            });
+            */
+        }
+        
     },
     /*
      *  Obtiene la dirección (Calle numero colonia)  mediante una posicion (latlng)
@@ -215,7 +261,6 @@ var GPS = {
      *  Calcula la ruta mas corta entre dos puntos y la muestra en el mapa
      */
     calcularRuta: function () {
-        GPS.agregaMensaje("Calcular ruta");
         var origen = GPS.pin.usuario.getPosition() || '';
         var destino = GPS.pin.destino.getPosition() || '';
         var request = {
@@ -230,13 +275,11 @@ var GPS = {
         if (google.maps.DirectionsStatus.OK) {
             var index = GPS.calulaRutaCorta(result.routes);
             GPS.pin.taxi.setMap(GPS.mapa);
-            //GPS.directionsDisplay.setDirections(result);
-            //GPS.directionsDisplay.setRouteIndex(index);
             GPS.rutas.taxi.index = index;
             GPS.rutas.taxi.directions = result;
             GPS.muestraRutaMapa('taxi');
             GPS.pin.destino.setMap(null);
-            app.hidePreloader();
+            swal.close();
             $$('#popover-confirm-start').html(GPS.pin.usuario.address);
             $$('#popover-confirm-end').html(GPS.pin.destino.address);
             $$('#popover-confirm-time').html(result.routes[0].legs[0].duration.text);
@@ -280,7 +323,7 @@ var GPS = {
      * Imprime en consola el arreglo de latlng creado
      */
     imprimeArreglo: function () {
-        GPS.agregaMensaje('Imprime array: ' + GPS.latlng.length);
+        //GPS.agregaMensaje('Imprime array: ' + GPS.latlng.length);
         for (var x in GPS.latlng) {
             console.log(GPS.latlng[x]);
         }
@@ -293,14 +336,14 @@ var GPS = {
         GPS.polyline.live.getPath().push(latlng);
         GPS.pin.usuario.setPosition(latlng);
         GPS.mapa.panTo(latlng);
-        GPS.agregaMensaje('Dibujado live: ' + latlng);
+        //GPS.agregaMensaje('Dibujado live: ' + latlng);
     },
     /*
      *  @deprecated
      *  Dibuja el camino recorrido en base al arreglo total de posiciones ( no tiempo real )
      */
     dibujaRecorrido: function () {
-        GPS.agregaMensaje('Dibuja Recorrido');
+        //GPS.agregaMensaje('Dibuja Recorrido');
         GPS.polyline.aux = new google.maps.Polyline({
             map: GPS.mapa,
             strokeColor: '#FF0000',
@@ -342,14 +385,14 @@ var GPS = {
     inRoute: function (myPosition, polyline) {
         //console.log(google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline, Math.pow(10, -2)));
         if (google.maps.geometry.poly.isLocationOnEdge(myPosition, polyline, Math.pow(10, -3))) {
-            GPS.agregaMensaje('Estoy en la ruta');
+            //GPS.agregaMensaje('Estoy en la ruta');
             if (GPS.pin.usuario.range.getBounds().contains(GPS.pin.destino.getPosition())) {
                 console.log('Llego  al destino');
             } else {
                 console.log('Llego el taxi');
             }
         } else {
-            GPS.agregaMensaje('No estoy en la ruta');
+           // GPS.agregaMensaje('No estoy en la ruta');
         }
     },
     /*
@@ -370,44 +413,48 @@ var GPS = {
      * Obtiene una posición aleatoria del servidor, mueve el pin de destion a la posicion
      */
     getTaxi: function () {
-        if (GPS.tipoTaxi) {
-            if (GPS.pin.destino.getMap()) {
-                app.showPreloader('Pidiendo...');
-                var jqxhr = $.ajax({
-                    method: "get",
-                    url: "http://104.131.60.162/index.php/REST/getTaxisLocation",
-                    dataType: "json",
-                    crossDomain: true,
-                    success: function (objJSON) {
-                        console.log('getTAxilocation exito');
-                        console.log(objJSON);
-                        GPS.buscaTaxistaCercano(objJSON);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        app.hidePreloader();
-                        swal({
-                            title: "Error al get taxi!",
-                            text: textStatus,
-                            type: "error",
-                            confirmButtonText: "Aceptar"
-                        });
-                    }
-                });
-            }else{
+        if (rayte.checkConnection()) {
+            if (GPS.tipoTaxi) {
+                if (GPS.pin.destino.getMap()) {
+                    GPS.swalPreloader('Pidiendo...');
+                    var jqxhr = $.ajax({
+                        method: "get",
+                        url: "http://104.131.60.162/index.php/REST/getTaxisLocation",
+                        dataType: "json",
+                        crossDomain: true,
+                        beforeSend: function(){
+                                $$(document).off('touchend touchstart','#request-taxi-button');
+                        },
+                        success: function (objJSON) {
+                            GPS.buscaTaxistaCercano(objJSON);
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            swal({
+                                title: "Error al get taxi!",
+                                text: textStatus,
+                                type: "error",
+                                confirmButtonText: "Aceptar"
+                            });
+                        }
+                    });
+                }else{
+                    swal({
+                        title: "Elige un Destino!!",
+                        text: 'Seleccione La ubicacion de destino',
+                        type: "warning",
+                        confirmButtonText: "Aceptar"
+                    });
+                }
+            } else {
                 swal({
-                    title: "Elige un Destino!!",
-                    text: 'Seleccione La ubicacion de destino',
+                    title: "Elige un Taxi!!",
+                    text: 'Seleccione Vehiculo a solicitar',
                     type: "warning",
                     confirmButtonText: "Aceptar"
                 });
             }
-        } else {
-            swal({
-                title: "Elige un Taxi!!",
-                text: 'Seleccione Vehiculo a solicitar',
-                type: "warning",
-                confirmButtonText: "Aceptar"
-            });
+        }else{
+            GPS.agregaMensaje('No existe conexión de internet',true);
         }
     },
     /*
@@ -423,7 +470,6 @@ var GPS = {
      *  @param google.maps.LatLng latlng posicion hacia la cual se desea calcular la ruta
      */
     menuPresionado: function (latlng) {
-
         swal({
             title: "Seleccionar destino",
             text: "¿ Ruta hasta aquí ?",
@@ -435,12 +481,11 @@ var GPS = {
             cancelButtonColor: "#2f3946",
             closeOnConfirm: true,
             animation: false,
-        },
-                function () {
-                    GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(), latlng.lng()));
-                    GPS.codeLatLng(GPS.pin.destino.getPosition(), GPS.pin.destino);
-                    GPS.calcularRuta();
-                });
+        },function () {
+            GPS.pin.destino.setPosition(new google.maps.LatLng(latlng.lat(), latlng.lng()));
+            GPS.codeLatLng(GPS.pin.destino.getPosition(), GPS.pin.destino);
+            GPS.calcularRuta();
+        });
     },
     /*
      *  Determina que realizar en base al estatus obtenido al generar la ruta
@@ -452,39 +497,44 @@ var GPS = {
             case google.maps.DirectionsStatus.OK:
                 var index = GPS.calulaRutaCorta(result.routes);
                 GPS.getPolyline(result.routes[GPS.calulaRutaCorta(result.routes)]);
-                //GPS.directionsDisplay.setDirections(result);
-                //GPS.directionsDisplay.setRouteIndex(index);
                 GPS.rutas.usuario.index = index;
                 GPS.rutas.usuario.directions = result;
                 GPS.muestraRutaMapa('usuario');
                 GPS.polyline.route = GPS.getPolyline(result.routes[index]);
-                //GPS.inRoute(GPS.pin.usuario, GPS.polyline.route);
-                app.hidePreloader();
+                swal.close();
                 break;
             case google.maps.DirectionsStatus.INVALID_REQUEST:
-                GPS.agregaMensaje("Solicitud Inválida");
+                //GPSps("Solicitud Inválida");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
                 break;
             case google.maps.DirectionsStatus.MAX_WAYPOINTS_EXCEEDED:
-                GPS.agregaMensaje("Demasiados puntos intermedios");
+               // GPS.agregaMensaje("Demasiados puntos intermedios");
+                GPS.agregaMensaje('Ocurrio un error',true);
                 break;
             case google.maps.DirectionsStatus.NOT_FOUND:
-                GPS.agregaMensaje("Algun punto intermedio no fue encontrado");
+                //GPS.agregaMensaje("Algun punto intermedio no fue encontrado");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
                 break;
             case google.maps.DirectionsStatus.OVER_QUERY_LIMIT:
-                GPS.agregaMensaje("Limite de peticiones");
+                //GPS.agregaMensaje("Limite de peticiones");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
                 break;
             case google.maps.DirectionsStatus.REQUEST_DENIED:
-                GPS.agregaMensaje("Se denegó el acceso a la api");
+                //GPS.agregaMensaje("Se denegó el acceso a la api");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
                 break;
             case google.maps.DirectionsStatus.UNKNOWN_ERROR:
-                GPS.agregaMensaje("No se pudo procesar debido a un error del servidor");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
+                //GPS.agregaMensaje("No se pudo procesar debido a un error del servidor");
                 break;
             case google.maps.DirectionsStatus.ZERO_RESULTS:
-                GPS.agregaMensaje("No se pudo encontrar una ruta entre el origen y el destino");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
+                //GPS.agregaMensaje("No se pudo encontrar una ruta entre el origen y el destino");
                 break;
             default:
-                GPS.agregaMensaje("direction false");
-                break;
+                //GPS.agregaMensaje("direction false");
+                GPS.agregaMensaje('No se pudo obtener la dirección',true);
+            break;
         }
     },
     /*
@@ -495,33 +545,38 @@ var GPS = {
     validarCodeAddress: function (results, status) {
         switch (status) {
             case google.maps.GeocoderStatus.OK:
-                //GPS.mapa.setCenter(results[0].geometry.location);
-                GPS.pin.destino.setPosition(results[0].geometry.location);
-                var dir = results[0].address_components;
-                var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
-                GPS.pin.destino.address = direccion;
-                GPS.calcularRuta();
+                    GPS.pin.destino.setPosition(results[0].geometry.location);
+                    var dir = results[0].address_components;
+                    var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
+                    GPS.pin.destino.address = direccion;
+                    GPS.calcularRuta();
                 break;
             case google.maps.GeocoderStatus.ERROR:
-                GPS.agregaMensaje("Geocoder: No se pudo contactar con los servidores");
+                    GPS.agregaMensaje("Ocurrio un error",true);
+                    //agrega al log ( id_usuario, codeAdress,ERROR, "Geocoder: No se pudo contactar con los servidores" );
                 break;
             case google.maps.GeocoderStatus.INVALID_REQUEST:
-                GPS.agregaMensaje("Geocoder: Solicitud Inválida");
+                    //agrega al log ( id_usuario, codeAdress,INVALID_REQUEST, "Geocoder: Solicitud Inválida" );
+                    GPS.agregaMensaje("No pudimos encontrar la dirección",true);
                 break;
             case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-                GPS.agregaMensaje("Geocoder: Limite de peticiones");
+                //agrega al log ( id_usuario, codeAdress,OVER_QUERY_LIMIT, "Geocoder: Limite de peticiones" );
+                    GPS.agregaMensaje("Ocurrio un error",true);
                 break;
             case google.maps.GeocoderStatus.REQUEST_DENIED:
-                GPS.agregaMensaje("Geocoder: Se denegó el acceso a la api");
+                    //agrega al log ( id_usuario, codeAdress,REQUEST_DENIED, "Geocoder: Se denegó el acceso a la api" );
+                    GPS.agregaMensaje("Ocurrio un error",true);
                 break;
             case google.maps.GeocoderStatus.UNKNOWN_ERROR:
-                GPS.agregaMensaje("Geocoder: No se pudo procesar debido a un error del servidor");
+                //agrega al log ( id_usuario, codeAdress,UNKNOWN_ERROR, "Geocoder: No se pudo procesar debido a un error del servidor" );
+                    GPS.agregaMensaje("Ocurrio un error",true);
                 break;
             case google.maps.GeocoderStatus.ZERO_RESULTS:
-                GPS.agregaMensaje("Geocoder: No se pudo encontrar la direccion especificada");
+                    //agrega al log ( id_usuario, codeAdress,ZERO_RESULTS, "Geocoder: No se pudo encontrar la direccion especificada" );
+                    GPS.agregaMensaje("Ocurrio un error",true);
                 break;
             default:
-                GPS.agregaMensaje("geocoder false");
+                    GPS.agregaMensaje("Ocurrio un error", true);
                 break;
         }
     },
@@ -592,7 +647,7 @@ var GPS = {
                             if (GPS.taxis.length) {
                                 GPS.pedirTaxi(GPS.taxis[0]);
                             } else {
-                                app.hidePreloader();
+                                //app.hidePreloader();
                                 swal({
                                     title: "Error!",
                                     text: "No hay taxis disponibles",
@@ -607,7 +662,7 @@ var GPS = {
                             }, 5000);
                             break;
                         default:
-                            app.hidePreloader();
+                            //app.hidePreloader();
                             swal({
                                 title: "Error!",
                                 text: "No hay Respuesta",
@@ -682,96 +737,98 @@ var GPS = {
      *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
      */
     pedirTaxi: function (taxi) {
-        //app.showPreloader('Pidiendo Taxi...');
-        var OlatLng = GPS.pin.usuario.getPosition();
-        var DlatLng = GPS.pin.destino.getPosition();
-        
-                     //'id_usuario': app.ls.id_usuario,
-            
-        var datos = {
-            'taxiId': taxi.id,
-            'ubicacionTaxi': JSON.stringify(taxi.latlng),
-            'latlngOrigen': JSON.stringify(OlatLng),
-            'direccionOrigen': GPS.pin.usuario.address,
-            'latlngDestino': JSON.stringify(DlatLng),
-            'direccionDestino': GPS.pin.destino.address
-        };
-        var jqxhr = $.ajax({
-            method: "POST",
-            url: "http://104.131.60.162/index.php/REST/requestTaxi",
-            dataType: "json",
-            data: datos,
-            crossDomain: true,
-            success: function (objJSON) {
-                try {
-                    console.log('pedir taxi');
-                    if (objJSON.status == '200') {
-                        app.hidePreloader();
-                        //app.showPreloader("Calculando Ruta...");
-                        taxi = objJSON.taxi;
-                        $('#taxi-conductor').html(taxi.nombreConductor);
-                        $('#taxi-id').html(taxi.id);
-                        $('#taxi-placas').html(taxi.placas);
-                        var ubTaxi = JSON.parse(objJSON.ubicacionTaxi);
-                        GPS.pin.taxi.setPosition({lat: ubTaxi.A, lng: ubTaxi.F});
-                        GPS.pin.taxi.idTaxi = taxi.id;
-                        var request = {
-                            origin: GPS.taxis[0].latlng,
-                            destination: GPS.pin.usuario.getPosition() || '',
-                            travelMode: google.maps.TravelMode.DRIVING,
-                            provideRouteAlternatives: true
-                        };
-                        GPS.directionsService.route(request, GPS.validarRutaTaxi);
-                    } else {
-                        console.log('pedir taxi vacio');
-                        GPS.taxis.shift();
-                        if (GPS.taxis.length) {
-                            GPS.pedirTaxi(GPS.taxis[0]);
-                        } else {
-                            app.hidePreloader();
+        if (rayte.checkConnection()) {
+            if (GPS.tipoTaxi) {
+                if (GPS.pin.destino.getMap()) {
+                    GPS.swalPreloader('Pidiendo...');
+                    var OlatLng = GPS.pin.usuario.getPosition();
+                    var DlatLng = GPS.pin.destino.getPosition();
+                    //'id_usuario': app.ls.id_usuario,
+                    var datos = {
+                        'taxiId': taxi.id,
+                        'ubicacionTaxi': JSON.stringify(taxi.latlng),
+                        'latlngOrigen': JSON.stringify(OlatLng),
+                        'direccionOrigen': GPS.pin.usuario.address,
+                        'latlngDestino': JSON.stringify(DlatLng),
+                        'direccionDestino': GPS.pin.destino.address
+                    };
+                    var jqxhr = $.ajax({
+                        method: "POST",
+                        url: "http://104.131.60.162/index.php/REST/requestTaxi",
+                        dataType: "json",
+                        data: datos,
+                        beforeSend: function(){
+                            $$(document).off('touchend touchstart','#request-taxi-button');
+                        },
+                        crossDomain: true,
+                        success: function (objJSON) {
+                            try {
+                                if (objJSON.status == '200') {
+                                    GPS.swalPreloader('Calculando ruta ...');
+                                    taxi = objJSON.taxi;
+                                    $('#taxi-conductor').html(taxi.nombreConductor);
+                                    $('#taxi-id').html(taxi.id);
+                                    $('#taxi-placas').html(taxi.placas);
+                                    var ubTaxi = JSON.parse(objJSON.ubicacionTaxi);
+                                    GPS.pin.taxi.setPosition({lat: ubTaxi.A, lng: ubTaxi.F});
+                                    GPS.pin.taxi.idTaxi = taxi.id;
+                                    var request = {
+                                        origin: GPS.taxis[0].latlng,
+                                        destination: GPS.pin.usuario.getPosition() || '',
+                                        travelMode: google.maps.TravelMode.DRIVING,
+                                        provideRouteAlternatives: true
+                                    };
+                                    GPS.directionsService.route(request, GPS.validarRutaTaxi);
+                                } else {
+                                    GPS.agregaMensaje('No hemos podido encontrar un taxi cercano', true);
+                                    GPS.taxis.shift();
+                                    if (GPS.taxis.length) {
+                                        GPS.pedirTaxi(GPS.taxis[0]);
+                                    } else {
+                                        swal({
+                                            title: "Error!",
+                                            text: "No hay taxis disponibles",
+                                            type: "error",
+                                            confirmButtonText: "Aceptar"
+                                        });
+                                    }
+                                }
+                            } catch (e) {
+                                swal({
+                                    title: "Error al pedir taxi 200!",
+                                    text: e.message,
+                                    type: "error",
+                                    confirmButtonText: "Aceptar"
+                                });
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
                             swal({
-                                title: "Error!",
-                                text: "No hay taxis disponibles",
+                                title: "Error al pedir taxi!",
+                                text: textStatus + ': ' + errorThrown,
                                 type: "error",
                                 confirmButtonText: "Aceptar"
                             });
                         }
-                        
-                    }
-                } catch (e) {
-                    app.hidePreloader();
+                    });
+                }else{
                     swal({
-                        title: "Error al pedir taxi 200!",
-                        text: e.message,
-                        type: "error",
+                        title: "Elige un Destino!!",
+                        text: 'Seleccione La ubicacion de destino',
+                        type: "warning",
                         confirmButtonText: "Aceptar"
                     });
                 }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                app.hidePreloader();
-                console.log(datos);
+            } else {
                 swal({
-                    title: "Error al pedir taxi!",
-                    text: textStatus + ': ' + errorThrown,
-                    type: "error",
+                    title: "Elige un Taxi!!",
+                    text: 'Seleccione Vehiculo a solicitar',
+                    type: "warning",
                     confirmButtonText: "Aceptar"
                 });
             }
-        });
-    },
-    /*
-     * Verifica que tipo de conexion tiene el dispositivo, si no existe conexion manda mensaje de error
-     */
-    checkConnection: function () {
-        var networkState = navigator.connection.type;
-        if (networkState === Connection.NONE) {
-            swal({
-                title: "Error de Conexión!",
-                text: "No existe conexión de internet",
-                type: "error",
-                confirmButtonText: "Aceptar"
-            });
+        }else{
+            GPS.agregaMensaje('No existe conexión de internet',true);
         }
     },
     /*
@@ -806,13 +863,6 @@ var GPS = {
                     } else {
                         console.log('Llego el taxi');
                     }
-                    /*app.hidePreloader();
-                     swal({
-                     title: "Error al pedir taxi!",
-                     text: textStatus + ': ' + errorThrown,
-                     type: "error",
-                     confirmButtonText: "Aceptar"
-                     });*/
                 }
             });
         }, 1200);
@@ -843,14 +893,12 @@ var GPS = {
                 throw new Error("Error 500: No hay rutas compatibles");
             }
         } catch (e) {
-            app.hidePreloader();
             swal({
                 title: "Error Buscar Taxi Cercano !",
                 text: e.message,
                 type: "error",
                 confirmButtonText: "Aceptar"
             });
-            //siguiente ? 
         }
     },
     /*
@@ -870,7 +918,7 @@ var GPS = {
         swal({
             title: "Espere porfavor",
             text: message,
-            type: "warning",
+            type: "info",
             showConfirmButton: false,
             showCancelButton: false
         });
@@ -881,7 +929,7 @@ var GPS = {
      *  @param {string} over css selector sobre el cual se va a calcular la posicion
      */
     showModal: function (me, over) {
-        app.hidePreloader();
+        swal.close();
         $$('.map-popover').hide();
         var meHeight = $$(me).outerHeight();
         var meWidth = $$(me).outerWidth();
@@ -897,7 +945,6 @@ var GPS = {
         $$(me).css('top', (modalOffset.top - meHeight-20));
         $$(me).css('left', ((deviceWidth / 2) - (meWidth / 2)));
         $$(me).show();
-        //$$('.blured').show();
         $$('.blured').addClass('active');
     },
     muestraRutaMapa: function(tipo){
@@ -913,7 +960,7 @@ var GPS = {
                 GPS.directionsDisplay.setMap(GPS.mapa);
                 GPS.pin.taxi.setMap(null);
                 $$('.fixed-marker').hide();
-                app.hidePreloader();
+                swal.close();
             break;
             case 'taxi':
                 var ruta  = GPS.rutas.taxi.directions.routes[GPS.rutas.taxi.index];
@@ -938,6 +985,13 @@ var GPS = {
                 GPS.pin.usuario.setMap(null);
                 GPS.pin.destino.setMap(null);
                 GPS.centrarMapa();
+                $$(document).off('touchstart','#request-taxi-button').on('touchstart','#request-taxi-button', function(){
+                    $$(this).addClass('active');
+                });
+                $$(document).off('touchend','#request-taxi-button').on('touchend','#request-taxi-button', function(){
+                    $$(this).removeClass('active');
+                    GPS.getTaxi();
+                });
             break;
         }
     },
@@ -945,8 +999,13 @@ var GPS = {
      * Inicia todos los componentes del mapa, notificaciones y hace binding de los eventos
      */
     iniciaMapa: function (){
-        
-        
+        swal.setDefaults({ animation: false });
+        var opciones = {
+            //center: new google.maps.LatLng(19, -99.1333),
+            zoom: 4,
+            disableDefaultUI: true
+        };
+        GPS.mapa = new google.maps.Map(document.getElementById('map-canvas'), opciones);
         GPS.initiatePushNotifications();
         
         GPS.menuSwiper = app.swiper('.swiper-container', {
@@ -968,11 +1027,7 @@ var GPS = {
         GPS.overlay =  new google.maps.OverlayView();
         GPS.overlay.draw = function() {};
         GPS.overlay.setMap(GPS.mapa);
-       
-
-        
         GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: false});
-
         google.maps.event.addListener(GPS.pin.usuario, "position_changed", function () {
             GPS.pin.usuario.range.setCenter(GPS.pin.usuario.getPosition());
         });
@@ -991,22 +1046,18 @@ var GPS = {
             var markerWidth = $$('.fixed-marker').width()/2;
             $$('.fixed-marker').offset({top:(p.y-markerHeight),left:(p.x-markerWidth)});
         });
-
-
         GPS.pin.destino = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-destino.png',
             }
         });
-        
         GPS.pin.taxi = new google.maps.Marker({
             map: GPS.mapa,
             icon: {
                 url: 'http://104.131.60.162/indicador-taxi.png',
             }
         });
-        
         GPS.geocoder = new google.maps.Geocoder();
         GPS.polyline.live = new google.maps.Polyline({
             map: GPS.mapa,
@@ -1029,7 +1080,6 @@ var GPS = {
         google.maps.event.addListener(GPS.mapa, 'longpress', function (event) {
             GPS.menuPresionado(event.latLng);
         });
-        
         GPS.mapa.setOptions({
             styles: [
                 {
@@ -1052,6 +1102,17 @@ var GPS = {
                 $('#map-address').val(GPS.pin.usuario.address);
         });
         
+        $$('#map-address').on('keyup', function(e) {
+            var theEvent = e || window.event;
+            var keyPressed = theEvent.keyCode || theEvent.which;
+            if (keyPressed == 13) {
+                $$('#search-address-button').trigger( 'touchstart' );
+                $$(this).blur();
+            }
+            return true;
+        });
+
+        
         /* Eventos para map menu */
         $$(document).on('touchstart','#search-address-button', function(){
             GPS.codeAddress();
@@ -1065,6 +1126,7 @@ var GPS = {
             GPS.menuSwiper.slideTo(0)
         });
         */
+        /*
         $$(document).on('touchstart','#request-taxi-button', function(){
             $$(this).addClass('active');
         });
@@ -1073,9 +1135,8 @@ var GPS = {
         $$(document).on('touchend','#request-taxi-button', function(){
             $$(this).removeClass('active');
             GPS.getTaxi();
-            //GPS.pedirTaxi();
         });
-        
+        */
         $$(document).on('touchcancel','#request-taxi-button', function(){
             $$(this).removeClass('active');
         });
@@ -1091,7 +1152,7 @@ var GPS = {
         });
         
         $$(document).on('touchstart','.map-call-button', function(){
-            window.open('tel:4773937010', '_system');
+            GPS.llamarOperadora();
         });
         
         /* Eventos para popover confirm */

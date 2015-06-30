@@ -20,15 +20,53 @@
 var rayte = {
     onDeviceReady: function() {
         console.log('device ready');
-         var networkState = navigator.connection.type;
-         //console.log(networkState);
-         if ( networkState === Connection.NONE  ) {
-            $$('#login-button').removeClass('open-login-screen');
-            $('#login-button').touchstart(rayte.onDeviceReady);
-            alert("No hay conexion");
-         }else{
-             $$('#login-button').addClass('open-login-screen');
-         }
+        require('js/app.js', function () {
+            require('js/sweetalert.min.js',function(){
+                console.log(localStorage.login);
+                    if (parseInt(localStorage.login) === 1 ) {
+                        user.login();
+                    }
+                swal.setDefaults({ animation: false });
+                if(!rayte.checkConnection()){
+                    swal({
+                        title: "Error de Conexión!",
+                        text: "No existe conexión de internet",
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    }); 
+                }else{
+                   /* swal({
+                        title: "Conexión establecida",
+                        text: "Si hay conexión con el servidor",
+                        type: "success",
+                        confirmButtonText: "Aceptar"
+                    });
+                    */
+                    
+                }
+            }); 
+        });     
+    },
+    checkConnection: function () {
+        try{
+             var networkState = navigator.connection.type;
+            if (networkState === Connection.NONE) {
+               return false;
+            }
+            return true;
+        }catch(err){
+           return true; 
+        }
+       
+    },
+    swalPreloader: function (message) {
+        swal({
+            title: "Espere porfavor",
+            text: message,
+            type: "info",
+            showConfirmButton: false,
+            showCancelButton: false
+        });
     }
 };
 
