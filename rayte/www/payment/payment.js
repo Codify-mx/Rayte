@@ -1,7 +1,8 @@
 app.onPageInit('payment', function (page) {
      require('js/soap.js', function () {
           console.log('load soap');
-         payment.getCard();
+        // payment.getCard();
+     });
 });
 
 app.onPageInit('reset-pass',function(page){
@@ -11,8 +12,8 @@ app.onPageInit('reset-pass',function(page){
      });
 });
 
-var profile = {
-     addCard: function(){
+var payment = {
+     newCard: function(){
             rayte.swalPreloader('Guardando...');
             if (!rayte.validaForm('frm-payment-add')){
                 var datos = {
@@ -32,69 +33,40 @@ var profile = {
                 });
             }
      },
-     compruebaPass: function(){
-          var nueva = $$("#edit-profile-new").val().trim();
-          var repeat = $$("#edit-profile-repeat").val().trim();
-          if (nueva != repeat) {
-               return false;
-          }
-          return true;
+     addCard: function(id,nombre,numero){
+          var li = '<li class="row" id="card-'+id+'">';
+               li+='<div class="col-xs-8 payment-info-card">';
+               li+='<div class="col-xs-12">'+nombre+'</div>';
+               li+='<div class="col-xs-12">'+numero+'</div>';
+               li+='</div>';
+               li+='<div class="col-xs-4 payment-delete-card">';
+               li+='<a>Eliminar</a>';
+               li+='</div>';
+               li+='</li>';
+          $$('#card-container').append(li);
+          $$('.amount').html('('+$$('li[id^=card-]').length+')');
      },
-     updateProfile: function(datos){
-          soap.usuario.editarProfile(datos, function (data) {
+     deleteCard: function(id){
+          soap.pago.eliminaTarjeta(id, function (data) {
                if (parseInt(data.id_usuario) != -1){
-                   swal.close();
-                   app.ls.login = 1;
-                   app.ls.login = data.nombre;
-                   app.ls.login = data.apellido;
-                   app.ls.tel = data.telefono;
+                   $$('#card-'+id).remove();
+                   $$('.amount').html('('+$$('li[id^=card-]').length+')');
                }else{
                    swal({
                        title: "Error !",
-                       text: 'Ocurrio un error al actualizar la información',
+                       text: 'Ocurrio un error al eliminar la tarjeta',
                        type: "error",
                        confirmButtonText: "Aceptar"
                    });
                }
            },function(){
-               console.log('error edit');
+               console.log('error delete card');
                  swal({
                        title: "Error !",
-                       text: 'Ocurrio un error al actualizar la información',
-                       type: "error",
-                       confirmButtonText: "Aceptar"
-                 });
-           });
-     },
-     resetPassword: function(){
-          rayte.swalPreloader('Espere...');
-           var email = $$('#payment-add-save').val().trim();
-           soap.usuario.resetEmail(email, function (data) {
-               if (parseInt(data.id_usuario) != -1){
-                   swal.close();
-                   app.ls.login = 1;
-                    swal({
-                       title: "Se cambio la contraseña",
-                       text: 'Se ha enviado un correo a su cuenta con su contraseña',
-                       type: "succes",
-                       confirmButtonText: "Aceptar"
-                   });
-               }else{
-                   swal({
-                       title: "Error !",
-                       text: 'Ocurrio un error al enviar el correo',
+                       text: 'Ocurrio un error al eliminar la tarjeta',
                        type: "error",
                        confirmButtonText: "Aceptar"
                    });
-               }
-           },function(){
-               console.log('error edit');
-                 swal({
-                       title: "Error !",
-                       text: 'Ocurrio un error al enviar el correo',
-                       type: "error",
-                       confirmButtonText: "Aceptar"
-                 });
            });
      }
-}
+};
