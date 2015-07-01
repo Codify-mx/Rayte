@@ -114,22 +114,23 @@
                                         <img src="assets/img/logorayte.png" alt="Rayte" />
                                     </div>
                                     <div class="login-container container">
-                                        <div class="row">
-                                            <input class="col-xs-12" type="text" id="usuario" placeholder="Correo electr&oacute;nico" />
-                                        </div>
-                                        <div class="row">
-                                            <input class="col-xs-12"type="text" id="password" placeholder="Contrase&ntilde;a"/>
-                                        </div>
-                                        <div class="row">
-                                            <a class="forgot-btn col-xs-12 open-popup close-login-screen" data-popup=".popup-reset">&iquest;Olvidaste la contrase&ntilde;a? </a>
-                                        </div>
-                                        <div class="row">
-                                            <button id="popup-login-btn" class="login-btn col-xs-12" >Iniciar sesi&oacute;n</button>
-                                        </div>
-                                        <div class="row">
+                                        <form id="frm-login">
+                                            <div class="row form-group">
+                                                <input class="col-xs-12 form-control" type="email" id="usuario" placeholder="Correo electr&oacute;nico" />
+                                            </div>
+                                            <div class="row">
+                                                <input class="col-xs-12 form-control" type="password" id="password" placeholder="Contrase&ntilde;a"/>
+                                            </div>
+                                            <div class="row">
+                                                <a class="forgot-btn col-xs-12 open-popup close-login-screen" data-popup=".popup-reset">&iquest;Olvidaste la contrase&ntilde;a? </a>
+                                            </div>
+                                            <div class="row">
+                                                <button type="submit" id="popup-login-btn" class="login-btn col-xs-12" >Iniciar sesi&oacute;n</button>
+                                            </div>
+                                            <div class="row">
+                                        </form>
                                             <a class="forgot-btn register col-xs-12">&iquest;No tienes una cuenta? <span class="open-popup close-login-screen" data-popup=".popup-registro">Crea una cuenta aqu&iacute;</span></a>
                                         </div>
-                                        
                                     </div>
                                     <div class="login-footer"></div>
                                 </div>
@@ -141,18 +142,20 @@
                                 <img src="assets/img/logorayte.png" alt="Rayte" />
                             </div>
                             <div class="login-container container">
-                                <div class="row">
-                                    <input class="col-xs-12" type="text" id="nombre" placeholder="Nombre completo" />
-                                </div>
-                                <div class="row">
-                                    <input class="col-xs-12" type="text" id="email" placeholder="Correo electr&oacute;nico"/>
-                                </div>
-                                <div class="row">
-                                    <input class="col-xs-12" type="papssword" id="password" placeholder="Contrase&ntilde;a"/>
-                                </div>
-                                <div class="row">
-                                    <button class="login-btn col-xs-12" >Iniciar sesi&oacute;n</button>
-                                </div>
+                                <form id="frm-registro">
+                                    <div class="row">
+                                        <input class="col-xs-12 form-control" type="text" id="registro-nombre" placeholder="Nombre completo" />
+                                    </div>
+                                    <div class="row">
+                                        <input class="col-xs-12 form-control" type="email" id="registro-email" placeholder="Correo electr&oacute;nico"/>
+                                    </div>
+                                    <div class="row">
+                                        <input class="col-xs-12 form-control" type="password" id="registro-pass" placeholder="Contrase&ntilde;a"/>
+                                    </div>
+                                    <div class="row">
+                                        <button  type="submit" class="login-btn col-xs-12" >Iniciar sesi&oacute;n</button>
+                                    </div>
+                                </form>
                                 <div class="row">
                                     <a class="forgot-btn register col-xs-12">&iquest;Ya tienes una cuenta? <span class="close-popup open-login-screen">Inicia sesi&oacute;n</span></a>
                                 </div>
@@ -333,36 +336,38 @@
             var href = css.attr('href');
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
 
-          require('js/app.js', function () {
-             
-                /*//if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
-                 if (parseInt(localStorage.login) === 1 )
-                 {
-                 */
-               // user.login();
-                /*
-                 require('js/gps.js', function () {
-                 $(".view-login").hide();
-                 $(".view-main").show();
-                 GPS.iniciaMapa();
-                 app.hidePreloader();
-                 });
-                 app.allowPanelOpen = true;
-                 //init.inflate();
+            require('js/app.js', function () {
+                    /* if (parseInt(localStorage.login) === 1 ) {
+                         user.login();
+                     }*/
+                 /*//if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+                  if (parseInt(localStorage.login) === 1 )
+                  {
+                  */
+                // user.login();
                  /*
-                 if (localStorage.cliente_actual !== undefined && localStorage.cliente_actual !== '' &&
-                 parseInt(localStorage.cliente_actual) !== 0 && localStorage.cliente_actual !== 'null'
-                 && localStorage.cliente_actual !== 'NaN' && typeof localStorage.cliente_nombre !== "undefined" &&
-                 localStorage.cliente_nombre !== '' && localStorage.clientes !== '[]')
-                 {
-                 $("#cliente_actual").html('Cliente actual: ' + localStorage.cliente_nombre);
-                 }
-                 else
-                 {
-                 localStorage.cliente_actual = '';
-                 }
-                 */
-                /* } */
+                  require('js/gps.js', function () {
+                  $(".view-login").hide();
+                  $(".view-main").show();
+                  GPS.iniciaMapa();
+                  app.hidePreloader();
+                  });
+                  app.allowPanelOpen = true;
+                  //init.inflate();
+                  /*
+                  if (localStorage.cliente_actual !== undefined && localStorage.cliente_actual !== '' &&
+                  parseInt(localStorage.cliente_actual) !== 0 && localStorage.cliente_actual !== 'null'
+                  && localStorage.cliente_actual !== 'NaN' && typeof localStorage.cliente_nombre !== "undefined" &&
+                  localStorage.cliente_nombre !== '' && localStorage.clientes !== '[]')
+                  {
+                  $("#cliente_actual").html('Cliente actual: ' + localStorage.cliente_nombre);
+                  }
+                  else
+                  {
+                  localStorage.cliente_actual = '';
+                  }
+                  */
+                 /* } */
             });
         </script>
 

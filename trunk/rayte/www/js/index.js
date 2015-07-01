@@ -22,10 +22,9 @@ var rayte = {
         console.log('device ready');
         require('js/app.js', function () {
             require('js/sweetalert.min.js',function(){
-                console.log(localStorage.login);
-                    if (parseInt(localStorage.login) === 1 ) {
-                        user.login();
-                    }
+                if (parseInt(localStorage.login) === 1 ) {
+                    user.login();
+                }
                 swal.setDefaults({ animation: false });
                 if(!rayte.checkConnection()){
                     swal({
@@ -67,6 +66,26 @@ var rayte = {
             showConfirmButton: false,
             showCancelButton: false
         });
+    },
+    validaForm: function(form,excepto){
+        if(!$$.isArray(excepto)){
+            excepto = [excepto];
+        }
+        var err = false;
+        $$('#'+form+' :input:not(:button)').each(function(){
+            if($$.inArray($$(this).attr('id'),excepto)){
+                if (!$$.trim($$(this).val()) ) {
+                    $$(this).removeClass('has-success').addClass('has-error');
+                    err = true;
+                }else{
+                    $$(this).removeClass('has-error').addClass('has-success');
+                }
+            }
+        });
+        return err;
+    },
+    resetForm: function(form){
+        $$('#'+form+' :input:not(:button)').val('').removeClass('has-error has-success');
     }
 };
 

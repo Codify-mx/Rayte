@@ -4,7 +4,6 @@ var $ = Framework7.$;
 
 var app = new Framework7({
     animateNavBackIcon: true,
-    //swipePanel: 'right',
     modalButtonOk: 'Aceptar',
     modalButtonCancel: 'Cancelar'
 });
@@ -29,163 +28,132 @@ $(document).on('pageInit', function (e) {
 
 
 $("#logout").on('touchstart', function (e) {
-    app.ls.clear();
-    app.closePanel();
-    app.showPreloader('Espere');
-    $(".view-main").hide();
-    $(".view-login").show();
-    app.hidePreloader();
+    user.logout();
 });
 
-$("#popup-login-btn").on('touchstart', function () {
-    //user.login();
-    rayte.swalPreloader('Espere...');
-    require('js/soap.js', function () {
-        var user = $("#usuario").val().trim();
-        var pass = $("#password").val().trim();
-        if (user !== '' && pass !== '')
-        {
-            soap.login(user, pass, function (data) {
-                console.log(data);
-                $("#usuario,#password").val('');
-                if (parseInt(data.id_usuario) != -1)
-                {
-                    app.hidePreloader();
-                    app.ls.login = 1;
-                    app.ls.id_usuario = data.id_usuario;
-                    user.login();
-                    /*
-                    $(".view-login").hide();
-                    $(".view-main").show();
-                    mapa.opciones = {
-                        center: new google.maps.LatLng(19, -99.1333),
-                        zoom: 4,
-                        disableDefaultUI: true
-                    };
-                    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
-                    require('js/gps.js', function () {
-                        GPS.mapa = mapa.canvas;
-                        GPS.mapaModal = mapa.modal;
-                        GPS.iniciaMapa();
-                        mapa = {};
-                        app.hidePreloader();
-                    });
-                    app.allowPanelOpen = true;*/
-                }
-                else
-                {
-                    app.ls.login = 0;
-                    app.ls.version = 0;
-                    //app.hidePreloader();
-                    //app.alert('Usuario y/o Password incorrecto', 'Error');
-                    swal({
-                        title: "Erro de login!",
-                        text: 'Usuario y/o Password incorrecto',
-                        type: "error",
-                        confirmButtonText: "Aceptar"
-                    });
-                }
-               
-            },function(){
-                console.log('error login');
-                swal({
-                    title: "Erro de login!",
-                    text: 'Ocurrio un error, porfavor intentelo más tarde',
-                    type: "error",
-                    confirmButtonText: "Aceptar"
-                });
-                app.ls.login = 1;
-            });
-            
-        }
-        else
-        {
-            //app.hidePreloader();
-            //app.alert('Debe de introducir un usuario y una contraseña', 'Error');
-            swal({
-                title: "Erro de login!",
-                text: 'Debe de introducir un usuario y una contraseña',
-                type: "error",
-                confirmButtonText: "Aceptar"
-            });
-        }
-    });
+$("#frm-login").on('submit', function (e) {
+    e.preventDefault();
+    user.login();
 });
-
-
 
 $("#login-boton").on('touchstart', function () {
     app.popup('.popup-login');
-    /*app.showPreloader('Espere');
-    require('js/soap.js', function () {
-        var user = $("#usuario").val().trim();
-        var pass = $("#password").val().trim();
-        if (user !== '' && pass !== '')
-        {
-            soap.login(user, pass, function (data) {
-                console.log(data);
-                $("#usuario,#password").val('');
-                if (parseInt(data.id_usuario) != -1)
-                {
-                    app.hidePreloader();
-                    app.ls.login = 1;
-                    app.ls.id_usuario = data.id_usuario;
-                    $(".view-login").hide();
-                    $(".view-main").show();
-                    mapa.opciones = {
-                        center: new google.maps.LatLng(19, -99.1333),
-                        zoom: 4,
-                        disableDefaultUI: true
-                    };
-                    mapa.canvas = new google.maps.Map(document.getElementById('map-canvas'), mapa.opciones);
-                    require('js/gps.js', function () {
-                        GPS.mapa = mapa.canvas;
-                        GPS.mapaModal = mapa.modal;
-                        GPS.iniciaMapa();
-                        mapa = {};
-                        app.hidePreloader();
-                    });
-                    app.allowPanelOpen = true;
-                }
-                else
-                {
-                    app.ls.login = 0;
-                    app.ls.version = 0;
-                    app.hidePreloader();
-                    app.alert('Usuario y/o Password incorrecto', 'Error');
-                }
-               
-            });
-            
-        }
-        else
-        {
-            app.hidePreloader();
-            app.alert('Debe de introducir un usuario y una contraseña', 'Error');
-        }
-    });*/
 });
 
-/** control de mapa **/
+$("#frm-registro").on('submit', function (e) {
+    e.preventDefault();
+    user.register();
+});
 
-var mapa = {};
-var user = {};
-user.login = function () {
-    app.closePanel();
-    app.showPreloader('Espere');
-    $(".view-login").hide();
-    $(".view-main").show();
-    
-    require('js/gps.js', function () {
-        //GPS.mapa = mapa.canvas;
-        //GPS.mapaModal = mapa.modal;
-        GPS.iniciaMapa();
-        mapa = {};
-        app.hidePreloader();
-    });
-
-    app.allowPanelOpen = true;
-}
+var user = {
+    login: function(){
+        rayte.swalPreloader('Espere...');
+        require('js/soap.js', function () {
+        /* 
+            var user = $("#usuario").val().trim();
+            var pass = $("#password").val().trim();
+            if (user !== '' && pass !== ''){
+                soap.login(user, pass, function (data) {
+                    $("#usuario,#password").val('');
+                    if (parseInt(data.id_usuario) != -1){
+        */        
+                        swal.close();
+                        app.ls.login = 1;
+                        //app.ls.id_usuario = data.id_usuario;
+                        $(".view-login").hide();
+                        $(".view-main").show();
+                        require('js/gps.js', function () {
+                            GPS.iniciaMapa();
+                        });
+                        app.allowPanelOpen = true;
+        /*            
+                    }else{
+                        app.ls.login = 0;
+                        app.ls.version = 0;
+                        swal({
+                            title: "Erro de login!",
+                            text: 'Usuario y/o Password incorrecto',
+                            type: "error",
+                            confirmButtonText: "Aceptar"
+                        });
+                    }
+                },function(){
+                    console.log('error login');
+                    swal({
+                        title: "Erro de login!",
+                        text: 'Ocurrio un error, porfavor intentelo más tarde',
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                });       
+            }else{
+                swal({
+                    title: "Erro de login!",
+                    text: 'Debe de introducir un usuario y una contraseña',
+                    type: "error",
+                    confirmButtonText: "Aceptar"
+                });
+            }
+            
+        */ 
+        });
+    },
+    logout: function(){
+        app.ls.clear();
+        app.closePanel();
+        rayte.swalPreloader('Espere...');
+        $(".view-main").hide();
+        $(".view-login").show();
+        swal.close();
+    },
+    register: function(){
+        require('js/soap.js', function () {
+            var user = $("#registro-nombre").val().trim();
+            var email = $("#registro-email").val().trim();
+            var pass = $("#registro-pass").val().trim();
+            if (user !== '' && pass !== ''){
+                soap.usuario.registrar(user, pass, function (data) {
+                    $("#registro-nombre,#registro-email,#registro-pass").val('');
+                    if (parseInt(data.id_usuario) != -1){
+                        app.hidePreloader();
+                        app.ls.login = 1;
+                        app.ls.id_usuario = data.id_usuario;
+                        $(".view-login").hide();
+                        $(".view-main").show();
+                        require('js/gps.js', function () {
+                            GPS.iniciaMapa();
+                        });
+                        app.allowPanelOpen = true;
+                    }else{
+                        app.ls.login = 0;
+                        app.ls.version = 0;
+                        swal({
+                            title: "Error de registro",
+                            text: 'Por favor inténtelo más tarde',
+                            type: "error",
+                            confirmButtonText: "Aceptar"
+                        });
+                    }
+                },function(){
+                    console.log('error registro');
+                    swal({
+                        title: "Error de registro",
+                        text: 'Por favor inténtelo más tarde',
+                        type: "error",
+                        confirmButtonText: "Aceptar"
+                    });
+                });     
+            }else{
+                swal({
+                    title: "Error de registro",
+                    text: 'Todos los datos son necesarios',
+                    type: "error",
+                    confirmButtonText: "Aceptar"
+                });
+            }
+        });
+    }
+};
 
  $$(document).on('touchstart','.back',function(){
         mainView.router.back();
