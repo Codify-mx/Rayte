@@ -26,10 +26,24 @@
                 <img src="" alt=""/>
                 <div class="list-block">
                     <ul>
-                        <li class="item-content" id="cart">
-                            <div class="item-media"><i class="fa fa-shopping-cart fa-lg"></i></div>
+                        <li class="item-content">
+                            <div class="item-media"><img src="assets/iconos/editarperfil.png" /></div>
                             <div class="item-inner">
                                 <div class="item-title">Perfil</div>
+                                <div class="item-after"></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-media"><img src="assets/iconos/historial.png" /></div>
+                            <div class="item-inner">
+                                <div class="item-title">Mis viajes</div>
+                                <div class="item-after"></div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-media"><img src="assets/iconos/estrella-rellena.png" /></div>
+                            <div class="item-inner">
+                                <div class="item-title">Mis calificaciones</div>
                                 <div class="item-after"></div>
                             </div>
                         </li>
@@ -97,6 +111,8 @@
                     <div data-page="index" class="page">
                         <div class="page-content">
                             <div id="map-canvas" ></div>
+                            <a class="map-button map-panel-button"></a>
+                            <a class="map-button map-center-button"></a>
                         </div>
 
                         <div id="popover-confirm" class="popover map-popover">
