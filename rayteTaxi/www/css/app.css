@@ -440,7 +440,7 @@ div[data-page="index"] .page-content{
 .fixed-marker{
     height: 66px;
     width: 48px;
-    background: url('http://104.131.60.162/indicador-usuario.png');
+    background: url('http://104.131.60.162/indicador-taxi.png');
     bacground-size: cover;
     background-repeat: no-repeat;
     position: absolute;
@@ -491,4 +491,23 @@ input.placeholder {
 @-webkit-keyframes rotation {
     from {-webkit-transform: rotate(0deg);}
     to   {-webkit-transform: rotate(359deg);}
+}
+
+.panel
+{
+    background:#FFFFFF;
+    color:#009bdb;
+}
+.item-content
+{
+    color: #009bdb !important;
+}
+
+.panel .item-media
+{
+    width: 15%;
+}
+.panel .item-media img
+{
+    width:100%;
 }
