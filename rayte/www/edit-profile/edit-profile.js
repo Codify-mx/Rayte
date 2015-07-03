@@ -38,7 +38,6 @@ var profile = {
                                         usuario: $$('edit-profile-nombre').val().trim(),
                                         apellido: $$('edit-profile-apellido').val().trim(),
                                         tel: $$('edit-profile-tel').val().trim(),
-                                        pass: $$('edit-profile-new').val().trim(),
                                         nuevo: $$('edit-profile-new').val().trim()
                                    };
                                    this.updateProfile(datos);
@@ -78,9 +77,8 @@ var profile = {
      },
      updateProfile: function(datos){
           soap.usuario.editarProfile(datos, function (data) {
-               if (parseInt(data.id_usuario) != -1){
+               if (parseInt(data.status) == 200){
                    swal.close();
-                   app.ls.login = 1;
                    app.ls.login = data.nombre;
                    app.ls.login = data.apellido;
                    app.ls.tel = data.telefono;
@@ -92,7 +90,7 @@ var profile = {
                        confirmButtonText: "Aceptar"
                    });
                }
-           },function(){
+          },function(){
                console.log('error edit');
                  swal({
                        title: "Error !",
@@ -100,15 +98,13 @@ var profile = {
                        type: "error",
                        confirmButtonText: "Aceptar"
                  });
-           });
+          });
      },
      resetPassword: function(){
           rayte.swalPreloader('Espere...');
            var email = $$('#payment-add-save').val().trim();
            soap.usuario.resetEmail(email, function (data) {
-               if (parseInt(data.id_usuario) != -1){
-                   swal.close();
-                   app.ls.login = 1;
+               if (parseInt(data.status) == 200){
                     swal({
                        title: "Se cambio la contraseña",
                        text: 'Se ha enviado un correo a su cuenta con su contraseña',

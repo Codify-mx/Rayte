@@ -178,7 +178,7 @@ var GPS = {
         });
     },
     llamarOperadora: function(){
-        window.open('tel:4773937010', '_system');
+        window.open('tel:4777178399', '_system');
     },
     /*
      *  Envia mensaje a pantalla
@@ -225,7 +225,7 @@ var GPS = {
             }else{
                 GPS.swalPreloader('Buscando...');
                 var address = document.getElementById("map-address").value;
-                GPS.geocoder.geocode({'address': address}, GPS.validarCodeAddress);
+                GPS.geocoder.geocode({'address': address,bounds:GPS.pin.usuario.cityBounds,region: 'MX'}, GPS.validarCodeAddress);
             }
         }else{
             GPS.agregaMensaje('No existe conexión de internet',true);
@@ -247,11 +247,13 @@ var GPS = {
     codeLatLng: function (latlng, pin, centrar) {
         GPS.geocoder.geocode({'latLng': latlng}, function (results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
+                console.log(results);
                 var dir = results[0].address_components;
                 var direccion =dir[1].short_name+' '+dir[0].short_name+', '+dir[2].short_name;
                 pin.address = direccion;
                 if (centrar)
                     $('#map-address').val(direccion);
+                    GPS.pin.usuario.cityBounds = results[4].geometry.bounds;
             } else {
                 // GPS.validarCodeAddress(results, status);
             }
@@ -283,7 +285,7 @@ var GPS = {
             $$('#popover-confirm-start').html(GPS.pin.usuario.address);
             $$('#popover-confirm-end').html(GPS.pin.destino.address);
             $$('#popover-confirm-time').html(result.routes[0].legs[0].duration.text);
-            $$('#popover-confirm-cost').html(result.routes[0].legs[0].distance.value);
+            
             GPS.showModal('#popover-confirm', '#request-taxi-button');
         } else {
             swal({
@@ -736,16 +738,16 @@ var GPS = {
      *  pide un taxi específico, si no está disponible o se cancela, busca el siquiente taxi
      *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
      */
-    pedirTaxi: function (taxi) {
+    pedirTaxi: function () {
         if (rayte.checkConnection()) {
             if (GPS.tipoTaxi) {
                 if (GPS.pin.destino.getMap()) {
                     GPS.swalPreloader('Pidiendo...');
                     var OlatLng = GPS.pin.usuario.getPosition();
                     var DlatLng = GPS.pin.destino.getPosition();
-                    //'id_usuario': app.ls.id_usuario,
+                    ////'taxiId': taxi.id,
                     var datos = {
-                        'taxiId': taxi.id,
+                        'id_usuario': localStorage.id_usuario,
                         'ubicacionTaxi': JSON.stringify(taxi.latlng),
                         'latlngOrigen': JSON.stringify(OlatLng),
                         'direccionOrigen': GPS.pin.usuario.address,
@@ -847,12 +849,13 @@ var GPS = {
                 dataType: "json",
                 data: {taxiId: GPS.pin.taxi.idTaxi},
                 crossDomain: true,
-                success: function (objJSON) {
-                    console.log('success update taxi');
-                    if (GPS.pin.usuario.range.getBounds().contains(GPS.pin.usuario.getPosition())) {
-                        console.log('Llego el taxi');
-                    } else {
-                        console.log('Llego el taxi');
+                success: function (data) {
+                    if (parseInt(data.status) == 200){
+                        var ubTaxi = JSON.parse(objJSON.ubicacionTaxi);
+                        GPS.pin.taxi.setPosition({lat: ubTaxi.A, lng: ubTaxi.F});
+                        if (GPS.pin.usuario.range.getBounds().contains(GPS.pin.taxi.getPosition())) {
+                            GPS.showModal('#popover-rate', '#request-taxi-button');
+                        } 
                     }
                     //GPS.pin.taxi.setPosition(objJSON.latlng);
                 },
@@ -860,9 +863,7 @@ var GPS = {
                     console.log('error update taxi');
                     if (GPS.pin.usuario.range.getBounds().contains(GPS.pin.usuario.getPosition())) {
                         console.log('Llego el taxi');
-                    } else {
-                        console.log('Llego el taxi');
-                    }
+                    } 
                 }
             });
         }, 1200);
@@ -990,7 +991,29 @@ var GPS = {
                 });
                 $$(document).off('touchend','#request-taxi-button').on('touchend','#request-taxi-button', function(){
                     $$(this).removeClass('active');
-                    GPS.getTaxi();
+                    //GPS.getTaxi();
+                    //GPS.pedirTaxi();
+                    swal({
+                        title: "Seleccionar método de pago",
+                        text: '<select class="col-xs-12 form-control" id="metodo-pago"><option value="1">Tarjeta</option><option value="2">Pre-pago</option></select>',
+                        showCancelButton: true,
+                        confirmButtonColor: "#009bdb",
+                        confirmButtonText: "Si",
+                        cancelButtonText: "No",
+                        cancelButtonColor: "#2f3946",
+                        closeOnConfirm: true,
+                        animation: false,
+                        html:true
+                    },function () {
+                        require('js/soap.js',function(){
+                            soap.pago.saveMetodo($$('#metodo-pago').val(),function(data){
+                                GPS.pedirTaxi();
+                            },function(){
+                                rayte.swalError('Error enviar metodo');
+                            });
+                        });
+                    });
+                    
                 });
             break;
         }
@@ -1015,9 +1038,26 @@ var GPS = {
             onReachBeginning: function(){GPS.setTipoTaxi(1);},
             onReachEnd: function(){GPS.setTipoTaxi(2);},
             onSlideChangeEnd: function(swiper){if(swiper.activeIndex===1){GPS.setTipoTaxi(0);}},
-            resistance:false
+            resistance:false,
+            preventClicks:false,
+            slideToClickedSlide:true,
+            onTap: function(swiper,event){
+                if (event.target.id == 'car-taxi-button') {
+                    GPS.menuSwiper.slideTo(2);
+                    GPS.setTipoTaxi(2);
+                }else if (event.target.id == 'van-taxi-button') {
+                    GPS.menuSwiper.slideTo(0);
+                    GPS.setTipoTaxi(1);
+                }else{
+                    GPS.menuSwiper.slideTo(1);
+                    GPS.setTipoTaxi(0);
+                }
+            }
         });
         
+        $$('.swiper-slide .van').on('touchstart',function(){
+            console.log('click');
+        });
         GPS.pin.usuario = new google.maps.Marker({
             icon: {
                 url: 'http://104.131.60.162/indicador-usuario.png',
@@ -1080,6 +1120,7 @@ var GPS = {
         google.maps.event.addListener(GPS.mapa, 'longpress', function (event) {
             GPS.menuPresionado(event.latLng);
         });
+        
         GPS.mapa.setOptions({
             styles: [
                 {
@@ -1163,13 +1204,8 @@ var GPS = {
             $$('.blured').removeClass('active');
             $$('.map-main-menu').hide();
             $$('.on-route').show();
-            setTimeout(function () {
-                GPS.muestraRutaMapa('usuario');
-                clearInterval(GPS.taxiInterval);
-                setTimeout(function(){
-                    GPS.showModal('#popover-rate', '#request-taxi-button');
-                    }, 5000);
-            }, 5000);
+            
+            
         });
 
         $$(document).on('touchstart','#popover-confirm-no', function(){
