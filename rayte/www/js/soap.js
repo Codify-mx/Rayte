@@ -16,14 +16,14 @@ var soap = {
                     },fn,error);
         },
         editarProfile: function(data,fn,error){
-            data.id_usuario = localStorage.login;
+            data.id_usuario = localStorage.id_usuario;
              soap.core('editarPerfil',
                     data,fn,error);
         },
         resetEmail: function(email,fn,error){
             soap.core('resetEmail',
                     {
-                        id_usuario:localStorage.login,
+                        id_usuario:localStorage.id_usuario,
                         correo: email
                     },fn,error);
         }
@@ -32,24 +32,24 @@ var soap = {
         eliminaTarjeta: function(id,fn,error){
             soap.core('eliminaTarjeta',
                     {
-                        id_usuario:localStorage.login,
+                        id_usuario:localStorage.id_usuario,
                         id_tarjeta: id
                     },fn,error);
         },
         agregaTarjeta: function(data,fn,error){
-            data.id_usuario = localStorage.login;
+            data.id_usuario = localStorage.id_usuario;
             soap.core('agregaTarjeta',data,fn,error);
         },
         getTarjetas: function(fn,error){
             soap.core('getTarjetas',
                     {
-                        id_usuario:localStorage.login
+                        id_usuario:localStorage.id_usuario
                     },fn,error);
         },
         saveMetodo: function(id,fn,error){
             soap.core('saveMetodoPago',
                     {
-                        id_usuario:localStorage.login,
+                        id_usuario:localStorage.id_usuario,
                         id_metodo: id
                     },fn,error);
         }
@@ -58,7 +58,7 @@ var soap = {
         addComment:function(comment,fn,error){
             soap.core('addComment',
                     {
-                        id_usuario:localStorage.login,
+                        id_usuario:localStorage.id_usuario,
                         comentario: comment
                     },fn,error);
         }
@@ -67,7 +67,7 @@ var soap = {
         getHistorial:function(fn,error){
             soap.core('getHistorial',
                     {
-                        id_usuario:localStorage.login
+                        id_usuario:localStorage.id_usuario
                     },fn,error);
         }
     },
@@ -75,7 +75,7 @@ var soap = {
         getHistorial:function(fn,error){
             soap.core('sentRate ',
                     {
-                        id_usuario:localStorage.login
+                        id_usuario:localStorage.id_usuario
                         
                     },fn,error);
         }

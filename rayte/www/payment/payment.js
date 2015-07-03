@@ -6,7 +6,7 @@ app.onPageInit('payment', function (page) {
 });
 
 app.onPageInit('reset-pass',function(page){
-     $$(document).on('touchstart','#payment-add-save', function(e){
+     $$(document).off('touchstart','#payment-add-save').on('touchstart','#payment-add-save', function(e){
           e.preventDefault();
           profile.resetPassword();
      });

@@ -25,8 +25,16 @@ var rayte = {
             //document.addEventListener("backbutton", rayte.onBackKeyDown, false);
             $$(document).on('backbutton',rayte.onBackKeyDown);
             require('js/sweetalert.min.js',function(){
+                
                 if (parseInt(localStorage.login) === 1 ) {
-                    user.login();
+                    $(".view-login").hide();
+                    $(".view-main").show();
+                    require('js/gps.js', function () {
+                        GPS.iniciaMapa();
+                    });
+                    app.allowPanelOpen = true;
+                }else{
+                    $$('.botones').slideDown();
                 }
                 swal.setDefaults({ animation: false });
                 if(!rayte.checkConnection()){

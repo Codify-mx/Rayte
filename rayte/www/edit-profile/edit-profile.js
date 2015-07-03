@@ -1,18 +1,18 @@
 app.onPageInit('edit-profile', function (page) {
      require('js/soap.js', function () {
           console.log('load soap');
-          $$(document).on('touchstart','#edit-profile-forgot', function(e){
+          $$(document).off('touchstart','#edit-profile-forgot').on('touchstart','#edit-profile-forgot', function(e){
                mainView.router.loadPage('./edit-profile/reset-pass.html');
           });
           
-          $$(document).on('touchstart','#edit-profile-save', function(e){
+          $$(document).off('touchstart','#edit-profile-save').on('touchstart','#edit-profile-save', function(e){
                e.preventDefault();
                profile.save();
           });
           
-          $$('#edit-profile-nombre').val(localStorage.nombre);
-          $$('#edit-profile-apellido').val(localStorage.apellido);
-          $$('#edit-profile-tel').val(localStorage.tel);
+          $$('#edit-profile-nombre').val($$.trim(localStorage.nombre));
+          $$('#edit-profile-apellido').val($$.trim(localStorage.apellido));
+          $$('#edit-profile-tel').val($$.trim(localStorage.telefono));
           
           $$("#edit-profile-tel").blur(function(){
                $$(this).val(function(i, text) {
@@ -39,10 +39,10 @@ var profile = {
                          if ($$.trim($$('edit-profile-new').val())) {
                               if (this.compruebaPass()) {
                                    var datos = {
-                                        usuario: $$('edit-profile-nombre').val().trim(),
-                                        apellido: $$('edit-profile-apellido').val().trim(),
-                                        tel: $$('edit-profile-tel').val().trim(),
-                                        nuevo: $$('edit-profile-new').val().trim()
+                                        nombre: $$('#edit-profile-nombre').val().trim(),
+                                        apellido: $$('#edit-profile-apellido').val().trim(),
+                                        tel: $$('#edit-profile-tel').val().trim(),
+                                        nuevo: $$('#edit-profile-new').val().trim()
                                    };
                                    this.updateProfile(datos);
                              }else{
@@ -55,9 +55,9 @@ var profile = {
                              }
                          }else{
                               var datos = {
-                                   usuario: $$('edit-profile-nombre').val().trim(),
-                                   apellido: $$('edit-profile-apellido').val().trim(),
-                                   tel: $$('edit-profile-tel').val().trim(),
+                                   nombre: $$('#edit-profile-nombre').val().trim(),
+                                   apellido: $$('#edit-profile-apellido').val().trim(),
+                                   tel: $$('#edit-profile-tel').val().trim(),
                               };
                               this.updateProfile(datos);
                          }
@@ -81,11 +81,12 @@ var profile = {
      },
      updateProfile: function(datos){
           soap.usuario.editarProfile(datos, function (data) {
+               console.log(data);
                if (parseInt(data.status) == 200){
                    swal.close();
-                   app.ls.login = data.nombre;
-                   app.ls.login = data.apellido;
-                   app.ls.tel = data.telefono;
+                   app.ls.nombre = datos.nombre;
+                   app.ls.apellido = datos.apellido;
+                   app.ls.telefono = datos.telefono;
                }else{
                    swal({
                        title: "Error !",

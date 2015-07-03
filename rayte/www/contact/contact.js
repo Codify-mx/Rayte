@@ -1,9 +1,9 @@
 app.onPageInit('contact', function (page) {
     console.log('contact');
-    $$('#llama-operadora').on('touchstart',function(){
+    $$('#llama-operadora').off('touchstart').on('touchstart',function(){
        GPS.llamarOperadora();
     });
-    $$('#contact-send').on('touchstart',function(){
+    $$('#contact-send').off('touchstart').on('touchstart',function(){
        contact.agregaComentario();
     });
 });

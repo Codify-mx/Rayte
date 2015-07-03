@@ -153,7 +153,7 @@
                                         <input class="col-xs-12 form-control" type="password" id="registro-pass" placeholder="Contrase&ntilde;a"/>
                                     </div>
                                     <div class="row">
-                                        <button  type="submit" class="login-btn col-xs-12" >Iniciar sesi&oacute;n</button>
+                                        <button  id="popup-register-btn" type="submit" class="login-btn col-xs-12" >Registrar</button>
                                     </div>
                                 </form>
                                 <div class="row">
@@ -212,7 +212,7 @@
                                 <div class="on-route row">
 
                                         <div class="col-xs-3 image-container taxi-driver-image-container">
-                                                <div class="edit-profile-image"></div>
+                                                <div id="taxi-imagen" class="edit-profile-image"></div>
                                         </div>
                                         <ul class="col-xs-4">
                                             <li>Detalles</li>
@@ -307,6 +307,28 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="popover-preview" class="popover map-popover">
+                            <div class="popover-inner">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Origen</label>
+                                    <input type="text" class="form-control" id="popover-preview-origen" placeholder="Direccion">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Destino</label>
+                                    <input type="text" class="form-control" id="popover-preview-destino" placeholder="Destino">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Metodo de Pago</label>
+                                    <select class="col-xs-12 form-control" id="metodo-pago">
+                                        <option value="1">Tarjeta</option>
+                                        <option value="2">Pre-pago</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-default" id="popover-preview-button" >Pedir</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="blured"></div>
                     </div>
                 </div>
@@ -337,6 +359,14 @@
             css.attr('href', href + '?t=' + utils.date('YmdHis'));
 
             require('js/app.js', function () {
+                if (parseInt(localStorage.login) === 1 ) {
+                    $(".view-login").hide();
+                    $(".view-main").show();
+                    require('js/gps.js', function () {
+                        GPS.iniciaMapa();
+                    });
+                    app.allowPanelOpen = true;
+                }
                     /* if (parseInt(localStorage.login) === 1 ) {
                          user.login();
                      }*/
