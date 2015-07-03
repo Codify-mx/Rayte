@@ -98,7 +98,7 @@ var GPS = {
         GPS.mapa.setCenter(myLatlng);
         GPS.mapa.setZoom(16);
         GPS.pin.usuario.setPosition(myLatlng);
-        $$('.fixed-marker').show();
+        //$$('.fixed-marker').show();
         GPS.codeLatLng(myLatlng, GPS.pin.usuario, true);
         swal.close();
        // app.hidePreloader();
@@ -123,7 +123,6 @@ var GPS = {
     },
     /*
      *  Inicia el servicio de rastreo
-     *  ahorita
      */
     startWatch: function () {
         GPS.polyline.live.setPath([]);
@@ -271,6 +270,7 @@ var GPS = {
             travelMode: google.maps.TravelMode.DRIVING,
             provideRouteAlternatives: true
         };
+        console.log(request);
         GPS.directionsService.route(request, GPS.validarRuta);
     },
     validarRutaTaxi: function (result, status) {
@@ -405,8 +405,20 @@ var GPS = {
     /*
      *  cambia el valor de tipo taxi
      */
-    setTipoTaxi: function (val) {
-        GPS.tipoTaxi = val;
+    menuSwiper: null,
+    /*
+    setTipoTaxi: function (swiper) {
+        if (swiper.isBeginning) {
+            GPS.tipoTaxi = 1;
+        }else if(swiper.isEnd){
+            GPS.tipoTaxi = 2;
+        }else{
+            GPS.tipoTaxi = 0;
+        }
+    },*/
+    getTipoTaxi: function(){
+        
+      return false;  
     },
     /*
      * Obtiene una posición aleatoria del servidor, mueve el pin de destion a la posicion
@@ -414,7 +426,7 @@ var GPS = {
     getTaxi: function () {
         if (rayte.checkConnection()) {
             if (GPS.tipoTaxi) {
-                if (GPS.pin.destino.getMap()) {
+                if (GPS.pin.destino.getMap() || true) {
                     GPS.swalPreloader('Pidiendo...');
                     var jqxhr = $.ajax({
                         method: "get",
@@ -492,6 +504,9 @@ var GPS = {
      *  @param google.maps.DirectionsStatus status estatus al generar la ruta
      */
     validarRuta: function (result, status) {
+        console.log('validar ruta');
+        console.log(status);
+        console.log(result);
         switch (status) {
             case google.maps.DirectionsStatus.OK:
                 var index = GPS.calulaRutaCorta(result.routes);
@@ -734,6 +749,24 @@ var GPS = {
             }
         });
     },
+    mostrarPreview: function(){
+        
+        $$('#popover-preview-origen').val(GPS.pin.usuario.address);
+        $$('#popover-preview-destino').val(GPS.pin.destino.address);
+        GPS.calcularRuta();
+        $$('#popover-preview-button').off('touchstart').on('touchstart',function(){
+            require('js/soap.js',function(){
+                soap.pago.saveMetodo($$('#metodo-pago').val(),function(data){
+                    GPS.pedirTaxi();
+                },function(){
+                    rayte.swalError('Error enviar metodo');
+                });
+            });
+        });
+       
+        GPS.showModal('#popover-preview', '#request-taxi-button');
+        
+    },
     /*
      *  pide un taxi específico, si no está disponible o se cancela, busca el siquiente taxi
      *  @param {Object} taxi objeto con la informacion del taxi ( id, latlng)
@@ -741,7 +774,7 @@ var GPS = {
     pedirTaxi: function () {
         if (rayte.checkConnection()) {
             if (GPS.tipoTaxi) {
-                if (GPS.pin.destino.getMap()) {
+                if (GPS.pin.destino.getPosition()) {
                     GPS.swalPreloader('Pidiendo...');
                     var OlatLng = GPS.pin.usuario.getPosition();
                     var DlatLng = GPS.pin.destino.getPosition();
@@ -764,6 +797,7 @@ var GPS = {
                         crossDomain: true,
                         success: function (objJSON) {
                             try {
+                                console.log(objJSON);
                                 if (objJSON.status == '200') {
                                     console.log(objJSON);
                                     GPS.swalPreloader('Calculando ruta ...');
@@ -774,6 +808,9 @@ var GPS = {
                                     //var ubTaxi = JSON.parse(objJSON.ubicacionTaxi);
                                     GPS.pin.taxi.setPosition({lat: objJSON.ubicacionTaxi.A, lng: objJSON.ubicacionTaxi.F});
                                     GPS.pin.taxi.idTaxi = taxi.id;
+                                    if (taxi.imagen) {
+                                        $$('.edit-profile-image').css("background-image", "url('"+taxi.imagen+"')"); 
+                                    }
                                     var request = {
                                         origin: GPS.pin.taxi.getPosition(),
                                         destination: GPS.pin.usuario.getPosition() || '',
@@ -781,7 +818,7 @@ var GPS = {
                                         provideRouteAlternatives: true
                                     };
                                     GPS.directionsService.route(request, GPS.validarRutaTaxi);
-                                } else {
+                                }/* else {
                                     GPS.agregaMensaje('No hemos podido encontrar un taxi cercano', true);
                                     GPS.taxis.shift();
                                     if (GPS.taxis.length) {
@@ -795,6 +832,7 @@ var GPS = {
                                         });
                                     }
                                 }
+                                */
                             } catch (e) {
                                 console.log(e);
                                 swal({
@@ -1006,7 +1044,11 @@ var GPS = {
                 GPS.pin.taxi.setMap(null);
                 GPS.pin.usuario.setMap(null);
                 GPS.pin.destino.setMap(null);
+                GPS.cancelWatch();
                 GPS.centrarMapa();
+                $$('.fixed-marker').show();
+                for (var i = 1; i <= GPS.taxiInterval+1; i++)
+                        window.clearInterval(i);
                 $$(document).off('touchstart','#request-taxi-button').on('touchstart','#request-taxi-button', function(){
                     $$(this).addClass('active');
                 });
@@ -1014,6 +1056,9 @@ var GPS = {
                     $$(this).removeClass('active');
                     //GPS.getTaxi();
                     //GPS.pedirTaxi();
+                   
+                    GPS.mostrarPreview();
+                    /*
                     swal({
                         title: "Seleccionar método de pago",
                         text: '<select class="col-xs-12 form-control" id="metodo-pago"><option value="1">Tarjeta</option><option value="2">Pre-pago</option></select>',
@@ -1034,7 +1079,7 @@ var GPS = {
                             });
                         });
                     });
-                    
+                    */
                 });
             break;
         }
@@ -1047,7 +1092,12 @@ var GPS = {
         var opciones = {
             //center: new google.maps.LatLng(19, -99.1333),
             zoom: 4,
-            disableDefaultUI: false
+            mapTypeControl: false,
+            noClear: true,
+            overviewMapControl: false,
+            panControl: false,
+            scaleControl:false,
+            streetViewControl: false
         };
         GPS.mapa = new google.maps.Map(document.getElementById('map-canvas'), opciones);
         GPS.initiatePushNotifications();
@@ -1056,22 +1106,30 @@ var GPS = {
             speed: 400,
             spaceBetween: 0,
             initialSlide:1,
-            onReachBeginning: function(){GPS.setTipoTaxi(1);},
-            onReachEnd: function(){GPS.setTipoTaxi(2);},
-            onSlideChangeEnd: function(swiper){if(swiper.activeIndex===1){GPS.setTipoTaxi(0);}},
+            /*
+            onReachBeginning: function(){GPS.setTipoTaxi(GPS.menuSwiper);},
+            onReachEnd: function(){GPS.setTipoTaxi(GPS.menuSwiper);},
+            */
+            onSlideChangeEnd: function(swiper){
+                 if (swiper.isBeginning) {
+                        GPS.tipoTaxi = 1;
+                }else if(swiper.isEnd){
+                        GPS.tipoTaxi = 2;
+                }else{
+                        GPS.tipoTaxi = 0;
+                }
+                console.log(GPS.tipoTaxi);
+            },
             resistance:false,
             preventClicks:false,
             slideToClickedSlide:true,
             onTap: function(swiper,event){
                 if (event.target.id == 'car-taxi-button') {
                     GPS.menuSwiper.slideTo(2);
-                    GPS.setTipoTaxi(2);
                 }else if (event.target.id == 'van-taxi-button') {
                     GPS.menuSwiper.slideTo(0);
-                    GPS.setTipoTaxi(1);
                 }else{
                     GPS.menuSwiper.slideTo(1);
-                    GPS.setTipoTaxi(0);
                 }
             }
         });
@@ -1088,25 +1146,33 @@ var GPS = {
         GPS.overlay =  new google.maps.OverlayView();
         GPS.overlay.draw = function() {};
         GPS.overlay.setMap(GPS.mapa);
-        GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: true});
+        
+        GPS.pin.usuario.range = new google.maps.Circle({map: GPS.mapa, radius: 100, visible: false});
+        
         google.maps.event.addListener(GPS.pin.usuario, "position_changed", function () {
             GPS.pin.usuario.range.setCenter(GPS.pin.usuario.getPosition());
         });
 
         google.maps.event.addListener(GPS.mapa, 'dragend', function () {
             if (!GPS.directionsDisplay.getDirections().routes.length) {
-                GPS.pin.usuario.setPosition(GPS.mapa.getCenter());
-                GPS.codeLatLng(GPS.mapa.getCenter(), GPS.pin.usuario, true);
+                console.log('dragend');
+                //GPS.pin.usuario.setPosition(GPS.mapa.getCenter());
+                //GPS.codeLatLng(GPS.mapa.getCenter(), GPS.pin.usuario, true);
+                GPS.pin.destino.setPosition(GPS.mapa.getCenter());
+                GPS.codeLatLng(GPS.mapa.getCenter(), GPS.pin.destino, true);
             }
         });
         
-        google.maps.event.addListenerOnce(GPS.mapa,'center_changed',function(){
-            $$('<div/>').addClass('fixed-marker').appendTo(GPS.mapa.getDiv());
+        google.maps.event.addListenerOnce(GPS.mapa,'tilesloaded', function(){
+             $$('<div/>').addClass('fixed-marker').appendTo(GPS.mapa.getDiv());
             var p = GPS.overlay.getProjection().fromLatLngToContainerPixel(GPS.mapa.getCenter());
             var markerHeight = $$('.fixed-marker').height();
             var markerWidth = $$('.fixed-marker').width()/2;
+            GPS.pin.destino.setPosition(GPS.mapa.getCenter());
             $$('.fixed-marker').offset({top:(p.y-markerHeight),left:(p.x-markerWidth)});
+            $$('.fixed-marker').show();
         });
+       
         GPS.pin.destino = new google.maps.Marker({
             map: GPS.mapa,
             icon: {

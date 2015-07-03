@@ -1,4 +1,4 @@
-var VERSION = 2;
+var VERSION = 1;
 
 var $ = Framework7.$;
 
@@ -35,6 +35,11 @@ $("#frm-login").on('submit', function (e) {
     e.preventDefault();
     user.login();
 });
+/*
+$("#popup-register-btn").off('touchstart').on('touchstart', function (e) {
+    user.register();
+});
+*/
 
 $("#login-boton").on('touchstart', function () {
     app.popup('.popup-login');
@@ -54,15 +59,19 @@ var user = {
             var pass = $("#password").val().trim();
             if (user !== '' && pass !== ''){
                 soap.login(user, pass, function (data) {
-                    $("#usuario,#password").val('');
+                    $$("#usuario,#password").val('');
+                    rayte.resetForm('frm-login');
+                     console.log(data);
                     if (parseInt(data.status) == 200){
-               
+                        
                         swal.close();
+                        app.ls.clear();
                         app.ls.login = 1;
+                        app.ls.version = VERSION;
                         app.ls.id_usuario = data.id_usuario;
                         app.ls.nombre = data.nombre;
                         app.ls.apellido = data.apellido;
-                        
+                        app.ls.telefono = data.telefono;
                         $(".view-login").hide();
                         $(".view-main").show();
                         require('js/gps.js', function () {
@@ -106,18 +115,21 @@ var user = {
         $(".view-main").hide();
         $(".view-login").show();
         swal.close();
+        $$('.botones').slideDown();
     },
     register: function(){
         require('js/soap.js', function () {
-            var user = $("#registro-nombre").val().trim();
-            var email = $("#registro-email").val().trim();
-            var pass = $("#registro-pass").val().trim();
-            if (user !== '' && pass !== ''){
-                soap.usuario.registrar(user, pass, function (data) {
+            var user = $$("#registro-nombre").val().trim();
+            var email = $$("#registro-email").val().trim();
+            var pass = $$("#registro-pass").val().trim();
+            if (user !== '' && email !== ''&& pass !== ''){
+                soap.usuario.registrar(user,email, pass, function (data) {
                     $("#registro-nombre,#registro-email,#registro-pass").val('');
+                    console.log(data);
                     if (parseInt(data.status) == 200){
-                        app.hidePreloader();
+                        app.ls.clear();
                         app.ls.login = 1;
+                        
                         app.ls.id_usuario = data.id_usuario;
                         $(".view-login").hide();
                         $(".view-main").show();
@@ -156,7 +168,7 @@ var user = {
     }
 };
 
- $$(document).on('touchstart','.back',function(){
+ $$(document).off('touchstart').on('touchstart','.back',function(){
         mainView.router.back();
  });
 
