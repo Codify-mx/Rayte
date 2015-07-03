@@ -49,24 +49,31 @@ var user = {
     login: function(){
         rayte.swalPreloader('Espere...');
         require('js/soap.js', function () {
-        /* 
+         
             var user = $("#usuario").val().trim();
             var pass = $("#password").val().trim();
             if (user !== '' && pass !== ''){
                 soap.login(user, pass, function (data) {
                     $("#usuario,#password").val('');
                     if (parseInt(data.id_usuario) != -1){
-        */        
+               
                         swal.close();
                         app.ls.login = 1;
-                        //app.ls.id_usuario = data.id_usuario;
+                        
+                        app.ls.id_usuario = data.id_usuario
+                        app.ls.id_usuario = data.nombre_usuario
+                        app.ls.id_usuario = data.apellido_usuario
+                        app.ls.id_usuario = data.tel_usuario
+                        app.ls.id_usuario = data.img_usuario
+
+
                         $(".view-login").hide();
                         $(".view-main").show();
                         require('js/gps.js', function () {
                             GPS.iniciaMapa();
                         });
                         app.allowPanelOpen = true;
-        /*            
+                   
                     }else{
                         app.ls.login = 0;
                         app.ls.version = 0;
@@ -94,8 +101,6 @@ var user = {
                     confirmButtonText: "Aceptar"
                 });
             }
-            
-        */ 
         });
     },
     logout: function(){
@@ -114,7 +119,7 @@ var user = {
             if (user !== '' && pass !== ''){
                 soap.usuario.registrar(user, pass, function (data) {
                     $("#registro-nombre,#registro-email,#registro-pass").val('');
-                    if (parseInt(data.id_usuario) != -1){
+                    if (parseInt(data.status) == 200){
                         app.hidePreloader();
                         app.ls.login = 1;
                         app.ls.id_usuario = data.id_usuario;

@@ -20,7 +20,10 @@
 var rayte = {
     onDeviceReady: function() {
         console.log('device ready');
+        
         require('js/app.js', function () {
+            //document.addEventListener("backbutton", rayte.onBackKeyDown, false);
+            $$(document).on('backbutton',rayte.onBackKeyDown);
             require('js/sweetalert.min.js',function(){
                 if (parseInt(localStorage.login) === 1 ) {
                     user.login();
@@ -67,6 +70,14 @@ var rayte = {
             showCancelButton: false
         });
     },
+    swalError: function(message){
+        swal({
+            title: "¡ Ocurrió un error !",
+            text: message,
+            type: "error",
+            confirmButtonText: "Aceptar"
+        });
+    },
     validaForm: function(form,excepto){
         if(!$$.isArray(excepto)){
             excepto = [excepto];
@@ -86,6 +97,10 @@ var rayte = {
     },
     resetForm: function(form){
         $$('#'+form+' :input:not(:button)').val('').removeClass('has-error has-success');
+    },
+    onBackKeyDown: function(){
+        //alert('atras');
+       mainView.router.back();
     }
 };
 
