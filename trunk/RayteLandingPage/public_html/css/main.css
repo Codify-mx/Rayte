@@ -1,4 +1,3 @@
-/*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
 
 html {
     color: #222;
@@ -44,85 +43,16 @@ textarea {
     resize: vertical;
 }
 
-.browserupgrade {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
 
-
-/* ===== Initializr Styles ==================================================
-   Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
-   ========================================================================== */
 
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
 }
 
 .wrapper {
-    width: 90%;
-    margin: 0 5%;
+    width: 100%;
 }
 
-/* ===================
-    ALL: Orange Theme
-   =================== */
-
-.header-container {
-    border-bottom: 20px solid #e44d26;
-}
-
-.footer-container,
-.main aside {
-    border-top: 20px solid #e44d26;
-}
-
-.header-container,
-.footer-container,
-.main aside {
-    background: #f16529;
-}
-
-.title {
-    color: white;
-}
-
-/* ==============
-    MOBILE: Menu
-   ============== */
-
-nav ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-nav a {
-    display: block;
-    margin-bottom: 10px;
-    padding: 15px 0;
-
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-
-    color: white;
-    background: #e44d26;
-}
-
-nav a:hover,
-nav a:visited {
-    color: white;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* ==============
-    MOBILE: Main
-   ============== */
 
 .main {
     padding: 30px 0;
@@ -174,29 +104,10 @@ nav a:hover {
 
 @media only screen and (min-width: 480px) {
 
-/* ====================
-    INTERMEDIATE: Menu
-   ==================== */
 
-    nav a {
-        float: left;
-        width: 27%;
-        margin: 0 1.7%;
-        padding: 25px 2%;
-        margin-bottom: 0;
-    }
-
-    nav li:first-child a {
-        margin-left: 0;
-    }
-
-    nav li:last-child a {
-        margin-right: 0;
-    }
-
-/* ========================
-    INTERMEDIATE: IE Fixes
-   ======================== */
+    /* ========================
+        INTERMEDIATE: IE Fixes
+       ======================== */
 
     nav ul li {
         display: inline;
@@ -209,20 +120,20 @@ nav a:hover {
 
 @media only screen and (min-width: 768px) {
 
-/* ====================
-    WIDE: CSS3 Effects
-   ==================== */
+    /* ====================
+        WIDE: CSS3 Effects
+       ==================== */
 
     .header-container,
     .main aside {
         -webkit-box-shadow: 0 5px 10px #aaa;
-           -moz-box-shadow: 0 5px 10px #aaa;
-                box-shadow: 0 5px 10px #aaa;
+        -moz-box-shadow: 0 5px 10px #aaa;
+        box-shadow: 0 5px 10px #aaa;
     }
 
-/* ============
-    WIDE: Menu
-   ============ */
+    /* ============
+        WIDE: Menu
+       ============ */
 
     .title {
         float: left;
@@ -233,9 +144,9 @@ nav a:hover {
         width: 38%;
     }
 
-/* ============
-    WIDE: Main
-   ============ */
+    /* ============
+        WIDE: Main
+       ============ */
 
     .main article {
         float: left;
@@ -250,12 +161,12 @@ nav a:hover {
 
 @media only screen and (min-width: 1140px) {
 
-/* ===============
-    Maximal Width
-   =============== */
+    /* ===============
+        Maximal Width
+       =============== */
 
     .wrapper {
-        width: 1026px; /* 1140px - 10% for margins */
+        width: 100%; /* 1140px - 10% for margins */
         margin: 0 auto;
     }
 }
@@ -370,4 +281,159 @@ nav a:hover {
     h3 {
         page-break-after: avoid;
     }
+}
+@font-face {
+    font-family: 'rayte';
+    src: url('../fuente.otf'); 
+    src: url('../fuente.otf') format("opentype");
+}
+
+body,html
+{
+    background:#7BCDD0;
+    width:100%;
+    font-family: 'rayte';
+}
+#titulo
+{
+    display:none;
+}
+.section
+{
+    height: 100vh;
+    width: 100vh;
+}
+#inicio
+{
+    background: url(../img/inicio.png) center center no-repeat;
+    background-size: 100%;
+}
+
+#info1
+{
+    background: url(../img/quees.png) white center center no-repeat;
+    background-size: contain;
+}
+#info2
+{
+    background: url(../img/quees2.png) white center center no-repeat;
+    background-size: contain;
+}
+#mapa
+{
+    background: url(../img/mapal.png) #F3F3F3 center center no-repeat;
+    background-size: contain;
+}
+#contacto
+{
+    background: white;
+}
+#descarga
+{
+    background: black;
+}
+#form
+{
+    margin:0 auto;
+    width:80%;
+}
+#form div
+{
+    float:left;
+    display:inline-block;
+}
+#titulo-contacto
+{
+    width:100%;
+    text-align: center;
+    margin:0 auto;
+    font-family:'rayte';
+    font-weight: bold;
+    color:#009BDD;
+    font-size: 28px;
+    padding-top:20px;
+    padding-bottom: 10px;
+}
+#titulo-efecto
+{
+    border-top: 5px solid #009BDD;
+    width:5%;
+    margin:0 auto;
+    padding-top:20px;
+}
+#info
+{
+    width: 39%;
+    height:100vh;
+    padding:5%;
+}
+#formulario
+{
+    width:39%;
+    height:100vh;
+    padding:5%;
+    text-transform: uppercase;
+}
+#formulario div
+{
+    margin-top:20px;
+}
+#formulario div,
+#formulario input,
+#formulario textarea
+{
+    display:block;
+    width:100%;
+}
+input
+{
+    height:30px;
+}
+textarea
+{
+    height: 150px;
+    resize: none;
+}
+input,textarea
+{
+    border:2px solid #7BCDD0;
+}
+#formulario label
+{
+    width:100%;
+
+}
+#formulario div:last-child
+{
+    width: 25%;
+    margin: 0 auto;
+    float: none;
+    margin-top: 20px;
+    padding: 15px;
+    display: inline-block;
+    margin-left: 34%;
+    border: 0;
+}
+#enviar
+{
+    color: white;
+    background: rgb(6,173,237);
+    text-align: center;
+}
+#info div
+{
+    width:100%;
+    float:left;
+}
+#operadora
+{
+    background: url('../img/operadoras.png') top left no-repeat;
+    background-size: 100%;
+    height: 100vh;
+    margin-top: 57px;
+}
+p
+{
+    text-transform: uppercase;
+    text-align: center;
 }
