@@ -55,18 +55,14 @@ var user = {
             if (user !== '' && pass !== ''){
                 soap.login(user, pass, function (data) {
                     $("#usuario,#password").val('');
-                    if (parseInt(data.id_usuario) != -1){
+                    if (parseInt(data.status) == 200){
                
                         swal.close();
                         app.ls.login = 1;
+                        app.ls.id_usuario = data.id_usuario;
+                        app.ls.nombre = data.nombre;
+                        app.ls.apellido = data.apellido;
                         
-                        app.ls.id_usuario = data.id_usuario
-                        app.ls.id_usuario = data.nombre_usuario
-                        app.ls.id_usuario = data.apellido_usuario
-                        app.ls.id_usuario = data.tel_usuario
-                        app.ls.id_usuario = data.img_usuario
-
-
                         $(".view-login").hide();
                         $(".view-main").show();
                         require('js/gps.js', function () {

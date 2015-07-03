@@ -71,6 +71,15 @@ var soap = {
                     },fn,error);
         }
     },
+    historial:{
+        getHistorial:function(fn,error){
+            soap.core('sentRate ',
+                    {
+                        id_usuario:localStorage.login
+                        
+                    },fn,error);
+        }
+    },
     core: function (op, data, fn, error, tipo) {
         console.log(op);
         console.log(data);

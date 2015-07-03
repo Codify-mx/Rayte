@@ -82,10 +82,12 @@ var rayte = {
         if(!$$.isArray(excepto)){
             excepto = [excepto];
         }
+        console.log(excepto);
         var err = false;
         $$('#'+form+' :input:not(:button)').each(function(){
             if($$.inArray($$(this).attr('id'),excepto)){
                 if (!$$.trim($$(this).val()) ) {
+                    console.log($$(this).attr('id'));
                     $$(this).removeClass('has-success').addClass('has-error');
                     err = true;
                 }else{

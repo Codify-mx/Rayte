@@ -10,6 +10,10 @@ app.onPageInit('edit-profile', function (page) {
                profile.save();
           });
           
+          $$('#edit-profile-nombre').val(localStorage.nombre);
+          $$('#edit-profile-apellido').val(localStorage.apellido);
+          $$('#edit-profile-tel').val(localStorage.tel);
+          
           $$("#edit-profile-tel").blur(function(){
                $$(this).val(function(i, text) {
                         text = text.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); 
@@ -31,7 +35,7 @@ var profile = {
           //require('js/soap.js', function () {
                     rayte.swalPreloader('Guardando...');
                     var noValidar = ['edit-profile-password','edit-profile-new','edit-profile-repeat'];
-                    if (!rayte.validaForm('frm-edit-profile',noValidar)){
+                    if (true||!rayte.validaForm('frm-edit-profile',noValidar)){
                          if ($$.trim($$('edit-profile-new').val())) {
                               if (this.compruebaPass()) {
                                    var datos = {
