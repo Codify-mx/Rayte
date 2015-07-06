@@ -1,0 +1,73 @@
+
+<div data-page="payment" id="page-payment" class="page cached">
+    <div class="page-content ios">
+        <div class="content-block-title"><i class="back"></i>M&eacute;todos de Pago</div>
+        <div class="content-block">
+            <div class="accordion-item payment-accordion">
+                <div class="accordion-item-toggle"><i></i>Tarjetas de Cr&eacute;dito<span class="amount right">(3)</span></div>
+                <div class="accordion-item-content">
+                    <ul id="card-container" class="container">
+                        <li class="row">
+                            <div class="col-xs-8 payment-info-card">
+                                <div class="col-xs-12">Roberto Obreg&oacute;n</div>
+                                <div class="col-xs-12">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-xs-4 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                        <li class="row">
+                            <div class="col-xs-8 payment-info-card">
+                                <div class="col-xs-12">Roberto Obreg&oacute;n</div>
+                                <div class="col-xs-12">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-xs-4 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                        <li class="row">
+                            <div class="col-xs-8 payment-info-card">
+                                <div class="col-xs-12">Roberto Obreg&oacute;n</div>
+                                <div class="col-xs-12">N&uacute;mero de Tarjeta</div>
+                            </div>
+                            <div class="col-xs-4 payment-delete-card">
+                                <a>Eliminar</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="content-block payment-add">
+            <div class="title row">
+                <i></i>
+                <span class="col-xs-10">Agregar Tarjeta</span>
+            </div>
+            <form id="frm-payment-add"class="container">
+                <div class="row">
+                    <input type="text" id="payment-add-number" placeholder="N&uacute;mero de Tarjeta" class="col-xs-12 page-input" />
+                </div>
+                <div class="row">
+                    <input type="text" id="payment-add-name" placeholder="Nombre en tarjeta" class="col-xs-12 page-input" />
+                </div>
+                <div class="row">
+                    <input type="text" id="payment-add-expires" placeholder="Expira" class="col-xs-6 page-input" />
+                    <input type="text" id="payment-add-code" placeholder="C&oacute;digo" class="col-xs-5 col-xs-offset-1 page-input" />
+                </div>
+                <div class="row">
+                    <input type="text" id="payment-add-zip" placeholder="C&oacute;digo zip" class="col-xs-6 page-input" />
+                </div>
+                <div class="row">
+                    <button type="button" id="payment-add-save" class="col-xs-8 page-button">Guardar Tarjeta</button>
+                </div>
+            </form>
+        </div>
+        <div class="content-block prepaid container">
+            <div class="title row">
+                <i></i>
+                <span class="col-xs-7">Pre-pago</span>
+                <span class="col-xs-3">$ XXXX.xx</span>
+            </div>
+        </div>
+    </div>
+</div>
