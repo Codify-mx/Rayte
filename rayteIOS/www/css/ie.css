@@ -1,9 +1,0 @@
-
-.row{
-   display: block\0/;
-   text-align: center\0/;
-}
-.row > [class*=col-]{
-    display: inline-block\0/;
-    float: left\0/;
-}
