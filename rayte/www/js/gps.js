@@ -990,7 +990,8 @@ var GPS = {
      */
     showModal: function (me, over) {
         swal.close();
-        $$('.map-popover').hide();
+        //$$('.map-popover').hide();
+        $$('.map-popover').removeClass('active');
         var meHeight = $$(me).outerHeight();
         var meWidth = $$(me).outerWidth();
         var modalOffset = $$(over).offset();
@@ -1004,7 +1005,9 @@ var GPS = {
         });
         $$(me).css('top', (modalOffset.top - meHeight-20));
         $$(me).css('left', ((deviceWidth / 2) - (meWidth / 2)));
-        $$(me).show();
+        //$$(me).show();
+        //  $$(me).show();
+        $$(me).addClass('active');
         $$('.blured').addClass('active');
     },
     muestraRutaMapa: function(tipo){
