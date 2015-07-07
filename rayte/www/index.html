@@ -20,7 +20,7 @@
         <link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-ipad-retina.png">
     </head>
     <body>
-        <div class="statusbar-overlay"></div>
+        <!--<div class="statusbar-overlay"></div>-->
         <div class="panel-overlay"></div>
         <div class="panel panel-right panel-reveal">
             <div class="content-block">
@@ -129,281 +129,277 @@
                                             </div>
                                             <div class="row">
                                         </form>
-                                            <a class="forgot-btn register col-xs-12">&iquest;No tienes una cuenta? <span class="open-popup close-login-screen" data-popup=".popup-registro">Crea una cuenta aqu&iacute;</span></a>
-                                        </div>
+                                        <a class="forgot-btn register col-xs-12">&iquest;No tienes una cuenta? <span class="open-popup close-login-screen" data-popup=".popup-registro">Crea una cuenta aqu&iacute;</span></a>
                                     </div>
-                                    <div class="login-footer"></div>
                                 </div>
+                                <div class="login-footer"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="popup popup-registro">
-                            <div class="login-screen-title">
-                                <img src="assets/img/logorayte.png" alt="Rayte" />
-                            </div>
-                            <div class="login-container container">
-                                <form id="frm-registro">
-                                    <div class="row">
-                                        <input class="col-xs-12 form-control" type="text" id="registro-nombre" placeholder="Nombre completo" />
-                                    </div>
-                                    <div class="row">
-                                        <input class="col-xs-12 form-control" type="email" id="registro-email" placeholder="Correo electr&oacute;nico"/>
-                                    </div>
-                                    <div class="row">
-                                        <input class="col-xs-12 form-control" type="password" id="registro-pass" placeholder="Contrase&ntilde;a"/>
-                                    </div>
-                                    <div class="row">
-                                        <button  id="popup-register-btn" type="submit" class="login-btn col-xs-12" >Registrar</button>
-                                    </div>
-                                </form>
-                                <div class="row">
-                                    <a class="forgot-btn register col-xs-12">&iquest;Ya tienes una cuenta? <span class="close-popup open-login-screen">Inicia sesi&oacute;n</span></a>
-                                </div>
-                            </div>
-                            <div class="login-footer"></div>
-                    </div>
-                    <div class="popup popup-reset">
-                            <div class="login-screen-title">
-                                <img src="assets/img/logorayte.png" alt="Rayte" />
-                            </div>
-                            <div class="login-container container">
-                                <div class="row reset">
-                                    Reestablecer contrase&ntilde;a
-                                </div>
-                                <div class="row">
-                                    <input class="col-xs-12" type="text" id="reset-email" placeholder="Correo electr&oacute;nico"/>
-                                </div>
-                                <div class="row">
-                                    <button class="login-btn col-xs-12" >Enviar</button>
-                                </div>
-                                <div class="row">
-                                    <a class="forgot-btn col-xs-12 close-popup open-login-screen">Regresar</a>
-                                </div>
-                            </div>
-                            <div class="login-footer"></div>
                     </div>
                 </div>
-            </div>
-            <div class="view view-main">
-                <div class="pages navbar-through toolbar-through">
-                    <div data-page="index" class="page">
-                        <div class="page-content">
-                            <div id="map-canvas" ></div>
-                            <a class="map-button map-panel-button"></a>
-                            <a class="map-button map-center-button"></a>
-                            <a class="map-button map-call-button"></a>
-                            <div class="map-menu">
-                                <div class="map-main-menu">
-                                    <div class="row search-address">
-                                        <a id="search-address-button" class="col-xs-2"></a>
-                                        <input id="map-address" type="text" placeholder="Destino..." class="col-xs-10"/>
-                                    </div>
-                                    <div class="row vehicle-container swiper-container">
-                                         <div class="swiper-wrapper">
-                                            <div class="col-xs-12 vehicle van swiper-slide" ></div>
-                                            <div class="swiper-slide row">
-                                                <div id="van-taxi-button" class="vehicle van col-xs-6"></div>
-                                                <div id="car-taxi-button" class="vehicle car col-xs-6"></div>
-                                            </div>
-                                            <div class="col-xs-12 vehicle car swiper-slide"></div>
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="on-route row">
-
-                                        <div class="col-xs-3 image-container taxi-driver-image-container">
-                                                <div id="taxi-imagen" class="edit-profile-image"></div>
-                                        </div>
-                                        <ul class="col-xs-4">
-                                            <li>Detalles</li>
-                                            <li id="taxi-conductor">Nombre</li>
-                                            <li id="taxi-id">ID</li>
-                                            <li id="taxi-placas">Placas</li>
-                                        </ul>
-                                        <ul class="col-xs-4">
-                                            <li>Tiempo Estimado</li>
-                                            <li class="time" >9:00 min</li>
-                                        </ul>
-
-                                </div>
-                                <div class="row">
-                                    <a id="request-taxi-button" class="col-xs-12">PIDE RAYTE</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="popover-confirm" class="popover map-popover">
-                            <div class="popover-inner">
-                                <div class="header">
-                                    <h4>Recorrido</h4>
-                                </div>
-                                <div class="container">
-                                    <div class="row title">
-                                        <label class="col-xs-12">Hemos seleccionado la mejor ruta para ti</label>
-                                    </div>
-                                    <div class="row route">
-                                        <label class="col-xs-3">Origen</label>
-                                        <span id="popover-confirm-start" class="col-xs-9">Soy una direccion de origen</span>
-                                    </div>
-                                    <div class="row route">
-                                        <label class="col-xs-3">Destino</label>
-                                        <span id="popover-confirm-end" class="col-xs-9">Soy una direccion de destino</span>
-                                    </div>
-                                    <div class="row preview">
-                                        <div class="col-xs-6">
-                        
-                                                <span class="col-xs-12">Tiempo de llegada</span>
-                                                <span id="popover-confirm-time" class="col-xs-12">3:00 min</span>
-                                 
-                                        </div>
-                                        <div class="col-xs-6">
-                       
-                                                <span class="col-xs-12">Costo</span>
-                                                <span id="popover-confirm-cost" class="col-xs-12">$ 50.00</span>
-                            
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <a  id="popover-confirm-no" class="col-xs-6"></a>
-                                        <a  id="popover-confirm-yes" class="col-xs-6"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="popover-rate" class="popover map-popover">
-                            <div class="popover-inner">
-                                <div class="row header">
-                                    <h4 class="col-xs-12">¡Hemos llegado!</h4>
-                                </div>
-                                <div class="container">
-                                    <div class="row service">
-                                        <div class="col-xs-12">
-                                            <span class="col-xs-12">Califica tu experiencia</span>
-                                        </div>
-                                    </div>
-                                    <div class="row service">
-                                        <label>Servicio</label>
-                                        <fieldset class="rating col-xs-11">
-                                            <input type="radio" id="star5" name="rating" value="5" />
-                                            <label class = "full" for="star5" ></label>
-                                            <input type="radio" id="star4" name="rating" value="4" />
-                                            <label class = "full" for="star4" ></label>
-                                            <input type="radio" id="star3" name="rating" value="3" />
-                                            <label class = "full" for="star3" ></label>
-                                            <input type="radio" id="star2" name="rating" value="2" />
-                                            <label class = "full" for="star2" ></label>
-                                            <input type="radio" id="star1" name="rating" value="1" />
-                                            <label class = "full" for="star1" ></label>
-                                        </fieldset>
-                                    </div>
-                                    <div class="row service">
-                                        <label >Comentarios</label>
-                                        <textarea id="popover-rate-comments" class="col-xs-12" ></textarea>
-                                        <span class="col-xs-12" >Omitir este paso</span>
-                                    </div>
-                                   
-                                        <a class="btn-send col-xs-8" >Enviar</a>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div id="popover-preview" class="popover map-popover">
-                            <div class="popover-inner">
-                                <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Origen</label>
-                                    <input type="text" class="form-control" id="popover-preview-origen" placeholder="Direccion">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Destino</label>
-                                    <input type="text" class="form-control" id="popover-preview-destino" placeholder="Destino">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">Metodo de Pago</label>
-                                    <select class="col-xs-12 form-control" id="metodo-pago">
-                                        <option value="1">Tarjeta</option>
-                                        <option value="2">Pre-pago</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-default" id="popover-preview-button" >Pedir</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="blured"></div>
+                <div class="popup popup-registro">
+                    <div class="login-screen-title">
+                        <img src="assets/img/logorayte.png" alt="Rayte" />
                     </div>
+                    <div class="login-container container">
+                        <form id="frm-registro">
+                            <div class="row">
+                                <input class="col-xs-12 form-control" type="text" id="registro-nombre" placeholder="Nombre completo" />
+                            </div>
+                            <div class="row">
+                                <input class="col-xs-12 form-control" type="email" id="registro-email" placeholder="Correo electr&oacute;nico"/>
+                            </div>
+                            <div class="row">
+                                <input class="col-xs-12 form-control" type="password" id="registro-pass" placeholder="Contrase&ntilde;a"/>
+                            </div>
+                            <div class="row">
+                                <button  id="popup-register-btn" type="submit" class="login-btn col-xs-12" >Registrar</button>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <a class="forgot-btn register col-xs-12">&iquest;Ya tienes una cuenta? <span class="close-popup open-login-screen">Inicia sesi&oacute;n</span></a>
+                        </div>
+                    </div>
+                    <div class="login-footer"></div>
+                </div>
+                <div class="popup popup-reset">
+                    <div class="login-screen-title">
+                        <img src="assets/img/logorayte.png" alt="Rayte" />
+                    </div>
+                    <div class="login-container container">
+                        <div class="row reset">
+                            Reestablecer contrase&ntilde;a
+                        </div>
+                        <div class="row">
+                            <input class="col-xs-12" type="text" id="reset-email" placeholder="Correo electr&oacute;nico"/>
+                        </div>
+                        <div class="row">
+                            <button class="login-btn col-xs-12" >Enviar</button>
+                        </div>
+                        <div class="row">
+                            <a class="forgot-btn col-xs-12 close-popup open-login-screen">Regresar</a>
+                        </div>
+                    </div>
+                    <div class="login-footer"></div>
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/framework7.min.js"></script>
-        <script type="text/javascript" src="js/utils.js"></script>
-        <script type="text/javascript" src="js/require.js"></script>
-        <script src="js/jquery.js"></script>
-        <script src="js/sweetalert.min.js"></script>
-        <script type="text/javascript"
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvPRZ-MZP584cqHukcaVNPoPHXvap5Hjg">
-        </script>
+        <div class="view view-main">
+            <div class="pages navbar-through toolbar-through">
+                <div data-page="index" class="page">
+                    <div class="page-content">
+                        <div id="map-canvas" ></div>
+                        <a class="map-button map-panel-button"></a>
+                        <a class="map-button map-center-button"></a>
+                        <a class="map-button map-call-button"></a>
+                        <div class="map-menu">
+                            <div class="map-main-menu">
+                                <div class="row search-address">
+                                    <a id="search-address-button" class="col-xs-2"></a>
+                                    <input id="map-address" type="text" placeholder="Destino..." class="col-xs-10"/>
+                                </div>
+                                <div class="row vehicle-container swiper-container">
+                                    <div class="swiper-wrapper">
+                                        <div class="col-xs-12 vehicle van swiper-slide" ></div>
+                                        <div class="swiper-slide row">
+                                            <div id="van-taxi-button" class="vehicle van col-xs-6"></div>
+                                            <div id="car-taxi-button" class="vehicle car col-xs-6"></div>
+                                        </div>
+                                        <div class="col-xs-12 vehicle car swiper-slide"></div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="on-route row">
+                                <div class="col-xs-3 image-container taxi-driver-image-container">
+                                    <div id="taxi-imagen" class="edit-profile-image"></div>
+                                </div>
+                                <ul class="col-xs-4">
+                                    <li>Detalles</li>
+                                    <li id="taxi-conductor">Nombre</li>
+                                    <li id="taxi-id">ID</li>
+                                    <li id="taxi-placas">Placas</li>
+                                </ul>
+                                <ul class="col-xs-4">
+                                    <li>Tiempo Estimado</li>
+                                    <li class="time" >9:00 min</li>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <a id="request-taxi-button" class="col-xs-12">PIDE RAYTE</a>
+                            </div>
+                        </div>
+                    </div>
 
-        <script>
-            $(document).ready(function () {
-                document.addEventListener('deviceready', rayte.onDeviceReady, false);
-            });
-        </script>
+                    <div id="popover-confirm" class="popover map-popover">
+                        <div class="popover-inner">
+                            <div class="header">
+                                <h4>Recorrido</h4>
+                            </div>
+                            <div class="container">
+                                <div class="row title">
+                                    <label class="col-xs-12">Hemos seleccionado la mejor ruta para ti</label>
+                                </div>
+                                <div class="row route">
+                                    <label class="col-xs-3">Origen</label>
+                                    <span id="popover-confirm-start" class="col-xs-9">Soy una direccion de origen</span>
+                                </div>
+                                <div class="row route">
+                                    <label class="col-xs-3">Destino</label>
+                                    <span id="popover-confirm-end" class="col-xs-9">Soy una direccion de destino</span>
+                                </div>
+                                <div class="row preview">
+                                    <div class="col-xs-6">
+                                        <span class="col-xs-12">Tiempo de llegada</span>
+                                        <span id="popover-confirm-time" class="col-xs-12">3:00 min</span>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <span class="col-xs-12">Costo</span>
+                                        <span id="popover-confirm-cost" class="col-xs-12">$ 50.00</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a  id="popover-confirm-no" class="col-xs-6"></a>
+                                    <a  id="popover-confirm-yes" class="col-xs-6"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="popover-rate" class="popover map-popover">
+                        <div class="popover-inner">
+                            <div class="row header">
+                                <h4 class="col-xs-12">¡Hemos llegado!</h4>
+                            </div>
+                            <div class="container">
+                                <div class="row service">
+                                    <div class="col-xs-12">
+                                        <span class="col-xs-12">Califica tu experiencia</span>
+                                    </div>
+                                </div>
+                                <div class="row service">
+                                    <label>Servicio</label>
+                                    <fieldset class="rating col-xs-11">
+                                        <input type="radio" id="star5" name="rating" value="5" />
+                                        <label class = "full" for="star5" ></label>
+                                        <input type="radio" id="star4" name="rating" value="4" />
+                                        <label class = "full" for="star4" ></label>
+                                        <input type="radio" id="star3" name="rating" value="3" />
+                                        <label class = "full" for="star3" ></label>
+                                        <input type="radio" id="star2" name="rating" value="2" />
+                                        <label class = "full" for="star2" ></label>
+                                        <input type="radio" id="star1" name="rating" value="1" />
+                                        <label class = "full" for="star1" ></label>
+                                    </fieldset>
+                                </div>
+                                <div class="row service">
+                                    <label >Comentarios</label>
+                                    <textarea id="popover-rate-comments" class="col-xs-12" ></textarea>
+                                    <span class="col-xs-12" >Omitir este paso</span>
+                                </div>
 
-        <script type="text/javascript">
-            var $$ = jQuery;
-        </script>
-        <script>
-            var css = jQuery("#css");
-            var href = css.attr('href');
-            css.attr('href', href + '?t=' + utils.date('YmdHis'));
+                                <a id="popover-rate-button" class=" btn btn-send" >Enviar</a>
 
-            require('js/app.js', function () {
-                if (parseInt(localStorage.login) === 1 ) {
-                    $(".view-login").hide();
-                    $(".view-main").show();
-                    require('js/gps.js', function () {
-                        GPS.iniciaMapa();
-                    });
-                    app.allowPanelOpen = true;
-                }
-                    /* if (parseInt(localStorage.login) === 1 ) {
-                         user.login();
-                     }*/
-                 /*//if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
-                  if (parseInt(localStorage.login) === 1 )
-                  {
-                  */
-                // user.login();
-                 /*
-                  require('js/gps.js', function () {
-                  $(".view-login").hide();
-                  $(".view-main").show();
-                  GPS.iniciaMapa();
-                  app.hidePreloader();
-                  });
-                  app.allowPanelOpen = true;
-                  //init.inflate();
-                  /*
-                  if (localStorage.cliente_actual !== undefined && localStorage.cliente_actual !== '' &&
-                  parseInt(localStorage.cliente_actual) !== 0 && localStorage.cliente_actual !== 'null'
-                  && localStorage.cliente_actual !== 'NaN' && typeof localStorage.cliente_nombre !== "undefined" &&
-                  localStorage.cliente_nombre !== '' && localStorage.clientes !== '[]')
-                  {
-                  $("#cliente_actual").html('Cliente actual: ' + localStorage.cliente_nombre);
-                  }
-                  else
-                  {
-                  localStorage.cliente_actual = '';
-                  }
-                  */
-                 /* } */
-            });
-        </script>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="popover-preview" class="popover map-popover">
+                        <div class="popover-inner">
+                            <form >
+                                <div class="row">
+                                    <label for="popover-preview-origen">Origen</label>
+                                    <input type="text" class="col-xs-10 form-control" id="popover-preview-origen" placeholder="Direccion">
+                                    <span id="popover-preview-arrow"class="col-xs-2 fa fa-location-arrow"></span>
+                                </div>
+                                <div class="row">
+                                    <label for="popover-preview-destino">Destino</label>
+                                    <input type="text" class="col-xs-12 form-control" id="popover-preview-destino" placeholder="Destino">
+                                </div>
+                                <div class="row">
+                                    <label for="exampleInputEmail1">Metodo de Pago</label>
+                                    <select class="col-xs-12 form-control" id="metodo-pago">
+                                        <option value="1">Tarjeta</option>
+                                        <option value="2">Efectivo</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <button type="button" class="btn btn-danger" id="popover-preview-cancel" >Cancelar</button>
+                                    <button type="button" class="btn btn-send" id="popover-preview-button" >Pedir</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="blured"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/require.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/sweetalert.min.js"></script>
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAvPRZ-MZP584cqHukcaVNPoPHXvap5Hjg">
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            document.addEventListener('deviceready', rayte.onDeviceReady, false);
+        });
+    </script>
+
+    <script type="text/javascript">
+        var $$ = jQuery;
+    </script>
+    <script>
+        var css = jQuery("#css");
+        var href = css.attr('href');
+        css.attr('href', href + '?t=' + utils.date('YmdHis'));
+
+        require('js/app.js', function () {
+           /* if (parseInt(localStorage.login) === 1) {
+                $(".view-login").hide();
+                $(".view-main").show();
+                require('js/gps.js', function () {
+                    GPS.iniciaMapa();
+                });
+                app.allowPanelOpen = true;
+            }
+            /* if (parseInt(localStorage.login) === 1 ) {
+             user.login();
+             }*/
+            /*//if (parseInt(localStorage.login) === 1 && parseInt(localStorage.version) === 2)
+             if (parseInt(localStorage.login) === 1 )
+             {
+             */
+            // user.login();
+            /*
+             require('js/gps.js', function () {
+             $(".view-login").hide();
+             $(".view-main").show();
+             GPS.iniciaMapa();
+             app.hidePreloader();
+             });
+             app.allowPanelOpen = true;
+             //init.inflate();
+             /*
+             if (localStorage.cliente_actual !== undefined && localStorage.cliente_actual !== '' &&
+             parseInt(localStorage.cliente_actual) !== 0 && localStorage.cliente_actual !== 'null'
+             && localStorage.cliente_actual !== 'NaN' && typeof localStorage.cliente_nombre !== "undefined" &&
+             localStorage.cliente_nombre !== '' && localStorage.clientes !== '[]')
+             {
+             $("#cliente_actual").html('Cliente actual: ' + localStorage.cliente_nombre);
+             }
+             else
+             {
+             localStorage.cliente_actual = '';
+             }
+             */
+            /* } */
+        });
+    </script>
 
 
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
 </html>

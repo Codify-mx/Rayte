@@ -30,6 +30,7 @@ var rayte = {
                     $(".view-login").hide();
                     $(".view-main").show();
                     require('js/gps.js', function () {
+                        console.log('require GPS');
                         GPS.iniciaMapa();
                     });
                     app.allowPanelOpen = true;

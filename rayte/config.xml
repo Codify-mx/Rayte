@@ -19,10 +19,10 @@
     <preference name="orientation" value="portrait" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon src="www/assets/img/android/48.png" density="ldpi" />
-        <icon src="www/assets/img/android/72.png" density="mdpi" />
-        <icon src="www/assets/img/android/96.png" density="hdpi" />
-        <icon src="www/assets/img/android/144.png" density="xhdpi" />
+        <icon src="www/assets/img/48.png" density="ldpi" />
+        <icon src="www/assets/img/72.png" density="mdpi" />
+        <icon src="www/assets/img/96.png" density="hdpi" />
+        <icon src="www/assets/img/144.png" density="xhdpi" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
